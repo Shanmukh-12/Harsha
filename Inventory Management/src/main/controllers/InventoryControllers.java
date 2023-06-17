@@ -14,7 +14,7 @@ public class InventoryControllers {
 
 	@RequestMapping(value = "/createIndentButton")
 	public String CallCreateIndent() {
-		return "inventory/indents";
+		return "inventory/createIndent";
 	}
 
 	@RequestMapping(value = "/adjustmentsButton")

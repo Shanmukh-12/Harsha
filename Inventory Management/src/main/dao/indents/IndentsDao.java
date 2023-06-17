@@ -8,7 +8,8 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Component;
 
-import main.models.indentModels.Indents;
+import main.models.indentModels.ProcurementIndentProductsList;
+import main.models.indentModels.ProcurementIndentsList;
 
 @Component
 public class IndentsDao {
@@ -17,14 +18,25 @@ public class IndentsDao {
 	private EntityManager entityManager;
 
 	@Transactional
-	public void createIndent(Indents indent) {
-		entityManager.persist(indent);
+	public boolean saveProcurementIndent(ProcurementIndentsList procurementIndentsList) {
+		System.out.println("Inside storeIndentsDao");
+		System.out.println(procurementIndentsList);
+		entityManager.persist(procurementIndentsList);
+		List<ProcurementIndentProductsList> pipl;
+        pipl = procurementIndentsList.getProductsList();
+		for (ProcurementIndentProductsList s : pipl) {
+			s.setIndentID(procurementIndentsList.getIndentID());
+			System.out.println(s);
+			entityManager.persist(s);
+		}
+		System.out.println(procurementIndentsList);
+		return true;
 	}
 
 	@Transactional
-	public List<Indents> getAllIndents() {
-		List<Indents> l = entityManager.createQuery("SELECT v FROM Indents v").getResultList();
-		for (Indents v : l) {
+	public List<ProcurementIndentsList> getAllIndents() {
+		List<ProcurementIndentsList> l = entityManager.createQuery("SELECT v FROM ProcurementIndentsList v").getResultList();
+		for (ProcurementIndentsList v : l) {
 			System.out.println(v.toString());
 		}
 		return l;

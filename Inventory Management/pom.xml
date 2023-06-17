@@ -12,9 +12,9 @@
 		<!-- SPRING & HIBERNATE / JPA -->
 		<spring.version>4.3.9.RELEASE</spring.version>
 		<hibernate.version>5.6.11.Final</hibernate.version>
-
+        
 	</properties>
-<dependencies>
+    <dependencies>
 <dependency>
 <groupId>org.springframework</groupId>
 <artifactId>spring-webmvc</artifactId>
@@ -119,7 +119,6 @@
 
 
 </dependencies>
-  
   <build>
     <sourceDirectory>src</sourceDirectory>
     <plugins>

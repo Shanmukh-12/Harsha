@@ -1,8 +1,8 @@
 package main.dao.storeIndents;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import main.models.storeModels.StoreIndentsList;
@@ -10,8 +10,9 @@ import main.models.storeModels.StoreIndentsList;
 @Component
 public class StoreIndentsDao {
 
-	@Autowired
-	EntityManager entityManager;
+	@PersistenceContext
+	private EntityManager entityManager;
+	
 	public boolean saveStoreIndent(StoreIndentsList sil)
 	{
 		System.out.println("Inside storeIndentsDao");

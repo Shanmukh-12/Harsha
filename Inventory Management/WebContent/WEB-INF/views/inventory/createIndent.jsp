@@ -38,12 +38,14 @@
     .table-container {
       display: flex;
       padding-bottom: 60px;
+      
     }
 
     .table-container table {
       flex: 1;
       margin-right: 10px;
       float:right;
+      
     }
 
     #product-form {
@@ -111,7 +113,6 @@
     
 #addedproducts{
 
-      display: flex;
       justify-content: center;
       align-items: center;
       margin-left:70px;
@@ -200,10 +201,60 @@
     }
 
   </style>
+  <script type="text/javascript">
+  
+  function getTableData() {
+	  const table = document.getElementById('products-table');
+	  const tableData = [];
+	  
+	  for (let i = 1; i < table.rows.length; i++) {
+	    const row = table.rows[i];
+	    const rowData = {};
+
+	    rowData["productId"] = row.cells[0].innerText;
+	    rowData["quantity"] = row.cells[4].querySelector('input').value;
+
+	    tableData.push(rowData);
+	  }
+
+	  const jsonData = {
+	    "productsList": tableData
+	  };
+
+	  return jsonData;
+	}
+
+  
+  function createIndent()
+  {
+  	var data = getTableData();
+  	const jsonData = JSON.stringify(data);
+		console.log(jsonData);
+  	$.ajax({
+  		url:"createProcurementIndent",
+  		method:"post",
+  		data:{"jsonData":jsonData},
+  		success:function(page)
+  		{
+  			console.log("Success");
+  		}
+  	
+  	});
+  }
+  
+  
+  
+  </script>
+  
+  
+  
+  
+  
+  
 </head>
 <body>
 <div id="htag">
-  <h2 align="center" style="padding-left: 110px; margin-bottom: 50px">Create Indent</h2>
+  <h2 align="center" style=" margin-bottom: 50px ;margin-right:160px;">Create Indent</h2>
   </div>
     <div id="products-dropdown">
     <label for="product-category" style="padding-right:10px; font-size:16px">Product Category </label>
@@ -223,16 +274,15 @@
      
       <thead>
         <tr>
-          <th>Product ID</th>
+          <th >Product ID</th>
           <th>Product Name</th>
           <th>Batch No.</th>
           <th>Stock</th>
           <th>Add</th>
         </tr>
       </thead>
-      <tbody>
         <tr>
-          <td>101</td>
+          <td>1</td>
           <td>Pears Soap</td>
           <td>14268</td>
           <td>50</td>
@@ -241,7 +291,7 @@
         </tr>
         
         <tr>
-          <td>102</td>
+          <td>4</td>
           <td>Santoor Soap</td>
           <td>14267</td>
           <td>50</td>
@@ -276,8 +326,6 @@
           <td>50</td>
           <td><button class="add-btn">Add</button></td>
         </tr>
-       
-      </tbody>
     </table>
 </div>
 </div>
@@ -289,7 +337,7 @@
     
       <thead>
         <tr>
-          <th>Product ID</th>
+          <th >Product ID</th>
           <th>Product Name</th>
           <th>Batch No.</th>
           <th>Stock</th>
@@ -299,7 +347,7 @@
       <tbody>
         <tr>
          
-          <td>101</td>
+          <td>2</td>
           <td>Pears Soap</td>
           <td>14268</td>
           <td>50</td>
@@ -355,22 +403,21 @@
 
    <h2 align="center" style="margin-bottom:20px">Indents List</h2>
    <div id="addedproducts" >
-       <form>
+       <form id="indentForm" onsubmit="createIndent();return false" method="post"   >
           <table class="table bg-white rounded shadow-sm  table-hover" id="products-table">
            <thead>
               <tr>
-                 <th>Product ID</th>
+                 <th id="productId">Product ID</th>
                  <th>Product Name</th>
-                 <th>Batch No.</th>
-                 <th>Stock</th>
-                 <th>Required Stock</th>
+                 <th id="batchId">Batch No.</th>
+                 <th >Stock</th>
+                 <th id="quantity">Required Stock</th>
                  <th>Action</th>
              </tr>
            </thead>
-           <tbody >
-           </tbody>
+           <tbody></tbody>
           </table>
-          <button type="button" id="createIndentButtonId">Create</button>
+          <button type="submit" id="createIndentButtonId">Create</button>
   </form>
 </div>
  <script>
@@ -449,6 +496,12 @@
             addRowToSelectedTable(row1);
         });
       }
+    
+
+    
   </script>
+  
+  
+  
 </body>
 </html>

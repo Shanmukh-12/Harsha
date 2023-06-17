@@ -1,37 +1,51 @@
 package main.controllers;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import main.dao.indents.IndentsDao;
-import main.models.indentModels.Indents;
+import main.models.indentModels.ProcurementIndentsList;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 
 @Controller
 public class IndentsController {
-
+	
+	
 	@Autowired
-	public IndentsDao p;
+	IndentsDao procurementIndentsDao;
+	
+	@PostMapping("/createProcurementIndent")
+	public String createStoreIndent(String jsonData, Model m) {
+		// System.out.println("Data is " + jsonData);
+		ObjectMapper objectMapper = new ObjectMapper();
+		ProcurementIndentsList procurementIndentsList = null;
 
+		try {
+			procurementIndentsList = objectMapper.readValue(jsonData, ProcurementIndentsList.class);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-	@GetMapping("/createIndent")
-	public String showCreateForm(Model model) {
-		// model.addAttribute("vendor", new Vendor());
+		m.addAttribute("data", procurementIndentsList);
+		System.out.println(procurementIndentsList.toString());
+
+		procurementIndentsDao.saveProcurementIndent(procurementIndentsList);
+
 		return "inventory/createIndent";
 	}
 
-	@GetMapping("/saveIndent")
-	public String saveVendor(Indents indent, Model model) {
-		p.createIndent(indent);
-		return "/addIndent";
-	}
 
 	@GetMapping("/indentsButton")
 	public String createVendor(Model m) {
-		m.addAttribute("indents", p.getAllIndents());
+		m.addAttribute("indents", procurementIndentsDao.getAllIndents());
 		return "inventory/indents";
 	}
 

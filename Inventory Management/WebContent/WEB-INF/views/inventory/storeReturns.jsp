@@ -98,7 +98,7 @@
         for (int i=0;i<5;i++) {
             %>
             <div class="issues-block">
-                <h4 class="store-indent-id">Store Return ID: <span class="bold">10023</span></h4>
+                <h4 class="store-indent-id">Stock Return ID: <span class="bold">10023</span></h4>
                 <div class="issue-details" >
                     <span class="label">IndentID:</span><span >A2345</span>
                         <span class="label">Returned Date:</span><span >2023-12-29</span>
