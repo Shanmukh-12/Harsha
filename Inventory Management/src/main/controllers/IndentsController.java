@@ -23,7 +23,6 @@ public class IndentsController {
 	
 	@PostMapping("/createProcurementIndent")
 	public String createStoreIndent(String jsonData, Model m) {
-		// System.out.println("Data is " + jsonData);
 		ObjectMapper objectMapper = new ObjectMapper();
 		ProcurementIndentsList procurementIndentsList = null;
 
