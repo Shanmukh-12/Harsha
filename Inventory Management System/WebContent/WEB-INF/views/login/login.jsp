@@ -386,7 +386,8 @@ button:hover{
               <input type="button" style="color:red" onclick="forgotrequest()" value="Forgot Password ?"> 
             </div>
             <input type="button" value="Login" onclick="login()">
-
+                <span id="emailError"></span>
+            
           </form>
         </div>
     
@@ -427,10 +428,11 @@ function login()
 	            password: y,
 	            user_type:z
 	        },
+	        dataType: "json",
 		  success: function(response) {
-			  
+			  console.log(response.authent);
 		    // Handle the response from the servlet if needed
-		    if(response==="login success")
+		    if(response.authent==="login success"){
 			  $.ajax({
 				  url: "HomeProcurement",
 				  type: "GET",
@@ -445,6 +447,17 @@ function login()
 				    console.error("AJAX request failed.");
 				  }
 				});
+		    }
+		    else
+		    	{
+		    	$('#emailError').css('color', 'red');
+		    	$('#emailError').css('font-weight', 'bold');
+		    	$('#emailError').css('text-align', 'center');
+
+	            $('#emailError').text("Invalid credentials");
+
+		    	}
+		    
 		  },
 		  error: function() {
 		    // Handle errors

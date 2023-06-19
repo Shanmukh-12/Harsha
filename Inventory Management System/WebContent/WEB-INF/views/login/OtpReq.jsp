@@ -67,9 +67,10 @@
       $.ajax({
         url: "check?Mail=" + email,
         type: "GET",
-        dataType: "text",
+        dataType: "json",
         success: function(response) {
-          if (response === "true") {
+        	console.log(response.authent);
+          if (response.authent === "true") {
             // User exists, proceed with sending OTP
             $.ajax({
               url: "sendotp?Mail=" + email,

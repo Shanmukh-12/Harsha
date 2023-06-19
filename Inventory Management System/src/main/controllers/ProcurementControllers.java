@@ -36,7 +36,6 @@ public class ProcurementControllers {
 	@Autowired
 	PasswordChangeBLL cp;
 	int i = 0;
-	HashMap<String, ModelData> modelattr = new HashMap<String, ModelData>();
 
 	@GetMapping("/HomeProcurement")
 	public String getIndex() {
@@ -113,62 +112,6 @@ public class ProcurementControllers {
 		return "procurement/Warehouse";
 	}
 
-	@RequestMapping(value = "/forgotrequest", method = RequestMethod.GET)
-	public String request() {
-		return "login/OtpReq";
-	}
 
-	@RequestMapping(value = "/changepass", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
-	@ResponseBody
-	public String changepass(password p) {
-		String t = cp.changePassword(p);
-		return t;
 
-	}
-
-	@RequestMapping(value = "/sendotp", method = RequestMethod.GET)
-	public String sendmail(MailDetails md, Model m) throws MessagingException {
-		i++;
-		System.out.println(i);
-		m.addAttribute("mail", md.getMail());
-		sm.sendEmail(md);
-
-		return "login/ChangePassword";
-
-	}
-
-	public ProcurementControllers() {
-
-	}
-
-	@RequestMapping(value = "/check", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
-	@ResponseBody
-	public String check(MailDetails md, Model m) throws MessagingException {
-		System.out.println("hello");
-		System.out.println("mail" + md.getMail());
-		return String.valueOf(x.check(md));
-
-	}
-
-	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = MediaType.TEXT_PLAIN_VALUE)
-	@ResponseBody
-	public String login(credentials2 md, Model m) throws MessagingException {
-		System.out.println("hello");
-		System.out.println(x.getAuthent(md));
-		return x.getAuthent(md);
-
-	}
-
-	@Scheduled(fixedDelay = 100)
-	public void removeExpiredAttributes() {
-		LocalDateTime currentTime = LocalDateTime.now();
-
-		for (String attributeName : modelattr.keySet()) {
-			ModelData attributeData = modelattr.get(attributeName);
-			if (currentTime.isAfter(attributeData.getExpire())) {
-				modelattr.remove(attributeName);
-				System.out.println(attributeName + "deleted");
-			}
-		}
-	}
 }

@@ -14,6 +14,7 @@ import main.dao.procurement.ProcurementDAO;
 import main.models.loginModel.inputModels.MailDetails;
 import main.models.loginModel.inputModels.credentials2;
 import main.models.loginModel.inputModels.password;
+import main.models.loginModel.outputmodels.AuthOutput;
 import main.models.procurementModels.dtomodels.PurchaseJoinClass;
 import main.models.procurementModels.dtomodels.PurchaseReturnJoinClass;
 import main.models.procurementModels.inputmodels.ProductInputMapping;
@@ -50,6 +51,8 @@ public class ProcurementService {
 	TotalWarehouseVal twv;
 	@Autowired
 	TotalOverallStock tsc;
+	@Autowired
+	AuthOutput ao;
 
 	@Autowired
 	public ProcurementService(@Qualifier("ProcurementDAO") ProcurementDAO sd) {
@@ -151,27 +154,31 @@ public class ProcurementService {
 		return sd.getAllData();
 	}
 
-	public boolean check(MailDetails m) {
+	public AuthOutput check(MailDetails m) {
 		try {
 			UserOutput s = sd.check(m);
 		} catch (NoResultException e) {
 			// No entity found, return false
-			return false;
+			ao.setAuthent("false");
+			return ao;
 		}
 
-		return true;
+		ao.setAuthent("true");
+		return ao;
 
 	}
 
-	public String getAuthent(credentials2 c) {
+	public AuthOutput getAuthent(credentials2 c) {
 		try {
 			UserOutput s = sd.getAuthent(c);
 		} catch (NoResultException e) {
 			// No entity found, return false
-			return "login failed";
+		     ao.setAuthent("login failed");
+			return ao;
 		}
+		ao.setAuthent("login success");
 
-		return "login success";
+		return ao;
 	}
 
 	public void getDat(MailDetails m, String num) {

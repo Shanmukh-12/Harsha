@@ -212,11 +212,11 @@ function changepass()
 	$.ajax({
 		  url: "changepass?pass="+encodedPassword+"&otp="+encodedotp+"&mail=${mail}",
 		  type: "GET",
-		  dataType: "text",
+		  dataType: "json",
 		  success: function(response) {
 		    // Handle the response from the servlet if needed
-		    console.log(response);
-		    if(response==="success")
+		    console.log(response.authent);
+		    if(response.authent==="success")
 		    	{
 		    	console.log("success");
 		    	$('#emailError').css('color', 'black');
