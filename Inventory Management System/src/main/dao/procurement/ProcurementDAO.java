@@ -18,9 +18,13 @@ import main.models.procurementModels.outputmodels.PurchaseReturnOutput;
 import main.models.purchaseOrder.entityModels.Im_Purchase_Order;
 import main.models.purchaseReturns.entityModels.ImPurchaseReturn;
 import main.models.userModels.entities.User;
+import main.models.userModels.outputModels.UserOutput;
 import main.models.warehouseModels.dtomodels.JoinClass2;
 import main.models.warehouseModels.dtomodels.joinclass;
+import main.models.warehouseModels.outputmodels.ProductCategoryCount;
 import main.models.warehouseModels.outputmodels.TotalStock;
+import main.models.warehouseModels.outputmodels.TotalWarehouseVal;
+import main.models.warehouseModels.outputmodels.VendorCount;
 
 public interface ProcurementDAO {
 
@@ -44,21 +48,21 @@ public interface ProcurementDAO {
 
 	public ArrayList<TotalStock> getTotalStock();
 
-	public int getCategoriesCount();
+	public ProductCategoryCount getCategoriesCount();
 
-	public double getWarehouseValue();
+	public TotalWarehouseVal getWarehouseValue();
 
-	public int getVendorsCount();
+	public VendorCount getVendorsCount();
 
-	public User check(MailDetails m);
+	public UserOutput check(MailDetails m);
 
 	public void getData(MailDetails m, String num);
 
-	public User getRow(password p);
+	public UserOutput getRow(password p);
 
 	public void getRow2(password p);
 
-	public User getAuthent(credentials2 s);
+	public UserOutput getAuthent(credentials2 s);
 
 	public List<ImPurchaseOrderOutput> getPurchaseId2(PurchasesFilter p);
 

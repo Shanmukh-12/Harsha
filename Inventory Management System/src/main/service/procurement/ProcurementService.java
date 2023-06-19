@@ -26,6 +26,7 @@ import main.models.procurementModels.outputmodels.PurchaseReturnOutput;
 import main.models.purchaseOrder.entityModels.Im_Purchase_Order;
 import main.models.purchaseReturns.entityModels.ImPurchaseReturn;
 import main.models.userModels.entities.User;
+import main.models.userModels.outputModels.UserOutput;
 import main.models.warehouseModels.dtomodels.JoinClass2;
 import main.models.warehouseModels.dtomodels.joinclass;
 import main.models.warehouseModels.outputmodels.ProductCategoryCount;
@@ -123,22 +124,21 @@ public class ProcurementService {
 	}
 
 	public TotalWarehouseVal getWarehouseValue() {
-		double val = sd.getWarehouseValue();
-		twv.setTotal_warehouse_value(val);
+		twv = sd.getWarehouseValue();
 		return twv;
 
 	}
 
 	public ProductCategoryCount getCategoriesCount() {
-		pcc.setTotal_product_category_count(sd.getCategoriesCount());
+		pcc=sd.getCategoriesCount();
 		System.out.println(pcc.toString());
 		return pcc;
 
 	}
 
 	public VendorCount getVendorsCount() {
-
-		vc.setVendorcount(sd.getVendorsCount());
+        VendorCount vc=sd.getVendorsCount();
+	
 		return vc;
 
 	}
@@ -153,7 +153,7 @@ public class ProcurementService {
 
 	public boolean check(MailDetails m) {
 		try {
-			User s = sd.check(m);
+			UserOutput s = sd.check(m);
 		} catch (NoResultException e) {
 			// No entity found, return false
 			return false;
@@ -165,7 +165,7 @@ public class ProcurementService {
 
 	public String getAuthent(credentials2 c) {
 		try {
-			User s = sd.getAuthent(c);
+			UserOutput s = sd.getAuthent(c);
 		} catch (NoResultException e) {
 			// No entity found, return false
 			return "login failed";
@@ -180,7 +180,7 @@ public class ProcurementService {
 		System.out.println("hello");
 	}
 
-	public User getRow(password m) {
+	public UserOutput getRow(password m) {
 		return sd.getRow(m);
 	}
 

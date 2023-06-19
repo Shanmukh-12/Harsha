@@ -14,9 +14,9 @@ public class ProductCategoryCount {
 			this.total_product_category_count = total_product_category_count;
 		}
 
-		public ProductCategoryCount(int total_product_category_count) {
+		public ProductCategoryCount(Long total_product_category_count) {
 			super();
-			this.total_product_category_count = total_product_category_count;
+			this.total_product_category_count = total_product_category_count.intValue();
 		}
 
 		public ProductCategoryCount() {

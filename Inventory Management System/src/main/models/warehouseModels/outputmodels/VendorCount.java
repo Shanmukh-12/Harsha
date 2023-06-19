@@ -14,9 +14,9 @@ public void setVendorcount(int vendorcount) {
 	this.vendorcount = vendorcount;
 }
 
-public VendorCount(int vendorcount) {
+public VendorCount(Long vendorcount) {
 	super();
-	this.vendorcount = vendorcount;
+	this.vendorcount = vendorcount.intValue();
 }
 
 public VendorCount() {

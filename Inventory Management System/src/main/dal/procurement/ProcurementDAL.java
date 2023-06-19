@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,10 +36,14 @@ import main.models.purchaseOrder.entityModels.Im_Purchase_Order_Products;
 import main.models.purchaseReturns.entityModels.ImPurchaseReturn;
 import main.models.purchaseReturns.entityModels.ImPurchaseReturnProduct;
 import main.models.userModels.entities.User;
+import main.models.userModels.outputModels.UserOutput;
 import main.models.warehouseModels.dtomodels.JoinClass2;
 import main.models.warehouseModels.dtomodels.joinclass;
+import main.models.warehouseModels.outputmodels.ProductCategoryCount;
 import main.models.warehouseModels.outputmodels.ProductName;
 import main.models.warehouseModels.outputmodels.TotalStock;
+import main.models.warehouseModels.outputmodels.TotalWarehouseVal;
+import main.models.warehouseModels.outputmodels.VendorCount;
 import main.models.warehouseModels.outputmodels.productquant;
 
 public class ProcurementDAL implements ProcurementDAO {
@@ -497,7 +502,10 @@ public class ProcurementDAL implements ProcurementDAO {
 					System.out.println(t.toString());
 				}
 			}
-			l.add(new joinclass(t, r));
+			joinclass jc2=applicationContext.getBean(joinclass.class);
+			jc2.setProduct(r);
+			jc2.setStock(t);
+			l.add(jc2);
 		}
 
 		return l;
@@ -529,7 +537,10 @@ public class ProcurementDAL implements ProcurementDAO {
 					System.out.println(t1.toString());
 				}
 			}
-			l.add(new JoinClass2(t1, r1));
+			JoinClass2 jc2=applicationContext.getBean(JoinClass2.class);
+			jc2.setProduct(r1);
+			jc2.setStock(t1);
+			l.add(jc2);
 		}
 
 		return l;
@@ -545,40 +556,41 @@ public class ProcurementDAL implements ProcurementDAO {
 	}
 
 	@Transactional
-	public int getCategoriesCount() {
-		Long val = (Long) em.createQuery("select count(*) from  ProductCategories s").getSingleResult();
-		return val.intValue();
+	public ProductCategoryCount getCategoriesCount() {
+		ProductCategoryCount val = (ProductCategoryCount) em.createQuery("select new main.models.warehouseModels.outputmodels.ProductCategoryCount(count(*)) from  ProductCategories s").getSingleResult();
+		return val;
 
 	}
 
 	@Transactional
-	public double getWarehouseValue() {
-		Long val = (Long) em.createQuery("select sum(s.product_cost) from im_products_stock  s").getSingleResult();
-		return val.doubleValue();
+	public TotalWarehouseVal getWarehouseValue() {
+		TotalWarehouseVal val = (TotalWarehouseVal) em.createQuery("select new main.models.warehouseModels.outputmodels.TotalWarehouseVal(sum(s.product_cost)) from im_products_stock  s").getSingleResult();
+		return val;
 
 	}
 
 	@Transactional
-	public int getVendorsCount() {
-		Long val = (Long) em.createQuery("select count(*) from Im_vendor  s").getSingleResult();
-		return val.intValue();
+	public VendorCount getVendorsCount() {
+		VendorCount v =  (VendorCount) em.createQuery("select new main.models.warehouseModels.outputmodels.VendorCount(count(*)) from Vendor  s",VendorCount.class).getSingleResult();
+		return v;
 
 	}
 
 	@Transactional
-	public User check(MailDetails m) {
-		Query q = em.createQuery("select s from User s where s.user_name=:email", User.class).setParameter("email",
+	public UserOutput check(MailDetails m) {
+		Query q = em.createQuery("select s from User s where s.userName=:email", User.class).setParameter("email",
 				m.getMail());
 		System.out.println(m.getMail());
 		User s = (User) q.getSingleResult();
-
+		ModelMapper mp=new ModelMapper();
+		UserOutput s1=mp.map(s, UserOutput.class);
 		System.out.println(s.toString());
-		return s;
+		return s1;
 	}
 
 	@Transactional
 	public void getData(MailDetails m, String num) {
-		Query q = em.createQuery("select s from User s where s.user_name=:email", User.class).setParameter("email",
+		Query q = em.createQuery("select s from User s where s.userName=:email", User.class).setParameter("email",
 				m.getMail());
 		User s = (User) q.getSingleResult();
 		s.setOtp(num);
@@ -588,19 +600,21 @@ public class ProcurementDAL implements ProcurementDAO {
 	}
 
 	@Transactional
-	public User getRow(password p) {
-		Query q = em.createQuery("select s from User s where s.user_name=:email", User.class).setParameter("email",
+	public UserOutput getRow(password p) {
+		Query q = em.createQuery("select s from User s where s.userName=:email", User.class).setParameter("email",
 				p.getMail());
 		User s = (User) q.getSingleResult();
+		ModelMapper mp=new ModelMapper();
+		UserOutput s1=mp.map(s, UserOutput.class);
 
 		System.out.println(s.toString());
-		return s;
+		return s1;
 
 	}
 
 	@Transactional
 	public void getRow2(password p) {
-		Query q = em.createQuery("select s from User s where s.user_name=:email", User.class).setParameter("email",
+		Query q = em.createQuery("select s from User s where s.userName=:email", User.class).setParameter("email",
 				p.getMail());
 		User s = (User) q.getSingleResult();
 		s.setUserPassword(p.getPass());
@@ -610,14 +624,16 @@ public class ProcurementDAL implements ProcurementDAO {
 	}
 
 	@Transactional
-	public User getAuthent(credentials2 s) {
+	public UserOutput getAuthent(credentials2 s) {
 		Query q = em.createQuery(
-				"select s from User s where s.user_name=:email and s.user_password=:password and s.user_type=:usertype",
+				"select s from User s where s.userName=:email and s.userPassword=:password and s.userType=:usertype",
 				User.class).setParameter("email", s.getUsername()).setParameter("password", s.getPassword())
 				.setParameter("usertype", s.getUser_type());
 		User ud = (User) q.getSingleResult();
+		ModelMapper mp=new ModelMapper();
+		UserOutput s1=mp.map(ud, UserOutput.class);
 		System.out.println(ud.toString());
-		return ud;
+		return s1;
 
 	}
 

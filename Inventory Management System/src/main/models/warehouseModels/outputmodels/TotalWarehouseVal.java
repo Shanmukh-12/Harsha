@@ -11,13 +11,13 @@ public class TotalWarehouseVal {
 		return total_warehouse_value;
 	}
 
-	public void setTotal_warehouse_value(double total_warehouse_value) {
-		this.total_warehouse_value = total_warehouse_value;
+	public void setTotal_warehouse_value(Long total_warehouse_value) {
+		this.total_warehouse_value = total_warehouse_value.doubleValue();
 	}
 
-	public TotalWarehouseVal(double total_warehouse_value) {
+	public TotalWarehouseVal(Long total_warehouse_value) {
 		super();
-		this.total_warehouse_value = total_warehouse_value;
+		this.total_warehouse_value = total_warehouse_value.doubleValue();
 	}
 
 	public TotalWarehouseVal() {

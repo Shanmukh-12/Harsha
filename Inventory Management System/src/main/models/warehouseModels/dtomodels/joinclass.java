@@ -1,8 +1,13 @@
 package main.models.warehouseModels.dtomodels;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import main.models.productModels.entities.im_products;
 import main.models.productModels.entities.im_products_stock;
 
+@Component
+@Scope("prototype")
 public class joinclass {
 	private im_products_stock stock;
 	private im_products product;

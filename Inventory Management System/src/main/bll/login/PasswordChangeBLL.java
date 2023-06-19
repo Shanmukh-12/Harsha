@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import main.models.loginModel.inputModels.password;
 import main.models.userModels.entities.User;
+import main.models.userModels.outputModels.UserOutput;
 import main.service.procurement.ProcurementService;
 
 @Component
@@ -15,7 +16,7 @@ public class PasswordChangeBLL {
 	ProcurementService x;
 
 	public String changePassword(password p) {
-		User s = x.getRow(p);
+		UserOutput s = x.getRow(p);
 		System.out.println(s.toString());
 		if (!s.getOtpExpiryTime().isAfter(LocalDateTime.now())) {
 			System.out.println(s.getOtpExpiryTime());

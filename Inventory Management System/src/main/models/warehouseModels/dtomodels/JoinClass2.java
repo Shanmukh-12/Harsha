@@ -1,7 +1,14 @@
 package main.models.warehouseModels.dtomodels;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import main.models.warehouseModels.dtomodels.*;
+
 import main.models.warehouseModels.outputmodels.*;
+@Component
+@Scope("prototype")
+
 public class JoinClass2 {
 	private productquant stock;
 	private ProductName product;
