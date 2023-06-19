@@ -252,6 +252,79 @@
         var row = button.parentNode.parentNode;
         row.parentNode.removeChild(row);
       }
+      
+      $(document).ready(function(){
+        	$.ajax({
+        	     url :"getProductCategories",
+        	     method :"post",
+        	   success : function(data) {
+                 $.each(data, function(index, category) {
+                     var option = '<option value="' + category.productCategoryId + '">' + category.productCategoryName + '</option>';
+                     $('#productcategoryid').append(option);
+                 });
+             },
+             error: function() {
+                 alert('Error occurred while retrieving categories.');
+             }
+        	    	  
+        	});
+        	    	 
+    
+          $("#productcategoryid").change(function() {
+              $.ajax({
+                  url : "getProductNames",
+                  method : "post",
+                  data : {
+                      "categoryId": $('#productcategoryid').val()
+                  },
+                  success: function(data) {
+                      $('#productnameid').empty();
+                      $.each(data, function(index, product) {
+                          var option = '<option value="' + product.id + '">' + product.name + '</option>';
+                          $('#productnameid').append(option);
+                      });
+                  },
+                  error: function() {
+                      alert('Error occurred while retrieving products.');
+                  }
+              });
+          });
+
+          $("#productnameid").change(function() {
+              $.ajax({
+                  url : "getProductBatchNo",
+                  method : "post",
+                  data : {
+                      "productId": $('#productId').val()
+                  },
+                  success: function(data) {
+                      $('#batchnoid').empty();
+                      $.each(data, function(index, product) {
+                          var option = '<option value="' + product.id + '">' + product.name + '</option>';
+                          $('#batchnoid').append(option);
+                      });
+                  },
+                  error: function() {
+                      alert('Error occurred while retrieving batchnos.');
+                  }
+              });
+          });
+
+          $("#batchnoid").change(function() {
+              $.ajax({
+                  url : "getOriginalCost",
+                  method : "post",
+                  success : function(name) {
+                      var textField = document.getElementById('originalcostid');
+                      textField.value = "10";
+                  },
+                  error: function(error) {
+                      // Handle error
+                  }
+              });
+          });
+          
+        });     
     
   </script>
   
