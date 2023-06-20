@@ -1,7 +1,5 @@
 package main.models.productModels.entities;
 
-import java.sql.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,6 +16,7 @@ public class im_products {
 	@Column(name = "Product_ID")
 	private int product_id;
 	private String product_name;
+	private String product_image;
 	private String product_description;
 	private int product_category_id;
 	private int product_hsn_code;
@@ -25,8 +24,6 @@ public class im_products {
 	private int product_reorder_level;
 	private int ecommerce_reorder_level;
 	private String product_status;
-	private String last_updated_user;
-	private Date last_updated_date;
 	@OneToOne(mappedBy = "product")
 	private im_products_stock ps;
 
@@ -106,20 +103,20 @@ public class im_products {
 		this.product_status = product_status;
 	}
 
-	public String getLast_updated_user() {
-		return last_updated_user;
+	public String getProduct_image() {
+		return product_image;
 	}
 
-	public void setLast_updated_user(String last_updated_user) {
-		this.last_updated_user = last_updated_user;
+	public void setProduct_image(String product_image) {
+		this.product_image = product_image;
 	}
 
-	public Date getLast_updated_date() {
-		return last_updated_date;
+	public im_products_stock getPs() {
+		return ps;
 	}
 
-	public void setLast_updated_date(Date last_updated_date) {
-		this.last_updated_date = last_updated_date;
+	public void setPs(im_products_stock ps) {
+		this.ps = ps;
 	}
 
 }

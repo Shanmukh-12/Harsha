@@ -65,6 +65,8 @@
       <thead>
         <tr>
           <th>Product ID</th>
+          <th>Product Name</th>
+          <th>Product Category</th>
           <th>Quantity</th>
         </tr>
       </thead>
@@ -72,6 +74,8 @@
       	<c:forEach var="item" items="${productsList}">
             <tr>
                 <td>${item.productId}</td>
+                <td>${item.productName}</td>
+                <td>${item.productCategoryName}</td>
                 <td>${item.quantity}</td>
             </tr>
         </c:forEach>
