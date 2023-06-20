@@ -25,7 +25,7 @@ public class AdminControllers {
 	WarehouseUsersDAO userDAO;
 	@Autowired
 	VendorsDAO vendorDAO;
-	@Autowired 
+	@Autowired
 	StoreUsersDAO storeDAO;
 
 	// Warehouse and Home page
@@ -98,6 +98,7 @@ public class AdminControllers {
 		vendorDAO.deleteVendor(vendor);
 		return "admin/success";
 	}
+
 	@GetMapping("/deleteStores")
 	public String deleteStore(Model model) {
 		List<Store> stores = storeDAO.getAllActiveStores();
@@ -105,6 +106,7 @@ public class AdminControllers {
 		System.out.println("\n\n\nThis");
 		return "admin/deleteStore";
 	}
+
 	@PostMapping("/deleteStore")
 	@ResponseBody
 	public String deleteStore(@RequestBody Store store) {
@@ -141,6 +143,11 @@ public class AdminControllers {
 	@GetMapping("/reports")
 	public String getReports() {
 		return "admin/reports";
+	}
+
+	@GetMapping("/logout")
+	public String logout() {
+		return "login/login";
 	}
 
 }

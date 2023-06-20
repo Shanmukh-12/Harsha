@@ -415,56 +415,47 @@ function forgotrequest()
 	
 	
 }
-function login()
-{
-	var x=$('#username').val();
-	var y=$('#password').val();
-	var z=document.getElementById("userType").value;
-	$.ajax({
-		  url: "login",
-		  type: "POST",
-		  data:{
-	            username: x,
-	            password: y,
-	            user_type:z
-	        },
-	        dataType: "json",
-		  success: function(response) {
-			  console.log(response.authent);
-		    // Handle the response from the servlet if needed
-		    if(response.authent==="login success"){
-			  $.ajax({
-				  url: "HomeProcurement",
-				  type: "GET",
-				  
-				  success: function(response) {
-				    // Handle the response from the servlet if needed
-				    $("body").html(response);
-				    
-				  },
-				  error: function() {
-				    // Handle errors
-				    console.error("AJAX request failed.");
-				  }
-				});
-		    }
-		    else
-		    	{
-		    	$('#emailError').css('color', 'red');
-		    	$('#emailError').css('font-weight', 'bold');
-		    	$('#emailError').css('text-align', 'center');
-
-	            $('#emailError').text("Invalid credentials");
-
-		    	}
-		    
-		  },
-		  error: function() {
-		    // Handle errors
-		    console.error("AJAX request failed.");
-		  }
-		});
-}
+function login() {
+	  var x = $('#username').val();
+	  var y = $('#password').val();
+	  var z = document.getElementById("userType").value;
+	  
+	  $.ajax({
+	    url: "login",
+	    type: "POST",
+	    data: {
+	      username: x,
+	      password: y,
+	      user_type: z
+	    },
+	    dataType: "json",
+	    success: function(response) {
+	      console.log(response.authent);
+	      // Handle the response from the servlet if needed
+	      if (response.authent === "login success") {
+	        if (z === "procurement") {
+	          // Redirect to procurement dashboard
+	          window.location.href = "HomeProcurement";
+	        } else if (z === "inventory") {
+	          // Redirect to inventory dashboard
+	          window.location.href = "inventoryHome";
+	        } else if (z === "admin") {
+	          // Redirect to admin dashboard
+	          window.location.href = "adminHome";
+	        }
+	      } else {
+	        $('#emailError').css('color', 'red');
+	        $('#emailError').css('font-weight', 'bold');
+	        $('#emailError').css('text-align', 'center');
+	        $('#emailError').text("Invalid credentials");
+	      }
+	    },
+	    error: function() {
+	      // Handle errors
+	      console.error("AJAX request failed.");
+	    }
+	  });
+	}
 
 </script>
 </html>
