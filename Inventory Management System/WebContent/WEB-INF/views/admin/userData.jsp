@@ -59,16 +59,34 @@ tr:nth-child(even) {
 					<th>User Status</th>
 				</tr>
 			</thead>
-			<tbody>
-				<c:forEach var="user" items="${users}">
-					<tr>
-						<td>${user.userId}</td>
-						<td>${user.userName}</td>
-						<td>${user.userType}</td>
-						<td>${user.status}</td>
-					</tr>
-				</c:forEach>
+			<tbody id="userTableBody">
 			</tbody>
 		</table>
 	</div>
 </div>
+
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "showUsers",
+        method: "GET",
+        dataType: "json",
+        success: function(data) {
+            console.log(data);
+            var userTableBody = $("#userTableBody");
+
+            data.forEach(function(user) {
+                var row = $("<tr>");
+                row.append($("<td>").text(user.userId));
+                row.append($("<td>").text(user.userName));
+                row.append($("<td>").text(user.userType));
+                row.append($("<td>").text(user.status));
+                userTableBody.append(row);
+            });
+        },
+        error: function() {
+            console.log("Error");
+        }
+    });
+});
+</script>

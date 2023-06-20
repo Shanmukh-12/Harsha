@@ -6,6 +6,8 @@
 	height: 100vh;
 }
 </style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
 	$(document)
 			.ready(
@@ -32,26 +34,26 @@
 									.confirm(confirmationMessage);
 							if (userConfirmed) {
 								// Send the data to the backend using AJAX
-								$
-										.ajax({
-											url : "saveUser",
-											type : "POST",
-											data : {"data":JSON.stringify({
-												"userId" : userId,
-												"userPassword" : userPassword,
-												"userName" : userName,
-												"userType" : userType,
-												"status" : status
-											})
-											},
-											success : function(response) {
-												alert("User added successfully.");
-												// Perform any additional actions after insertion
-											},
-											error : function() {
-												alert("An error occurred while saving the store.");
-											}
-										});
+								$.ajax({
+									  url: "saveUser",
+									  type: "POST",
+									  data: JSON.stringify({
+									    "userId": userId,
+									    "userPassword": userPassword,
+									    "userName": userName,
+									    "userType": userType,
+									    "status": status
+									  }),
+									  contentType: "application/json", // Set the content type to JSON
+									  success: function(response) {
+									    alert("User added successfully.");
+									    // Perform any additional actions after insertion
+									  },
+									  error: function() {
+									    alert("An error occurred while saving the user.");
+									  }
+									});
+
 							}
 						}
 

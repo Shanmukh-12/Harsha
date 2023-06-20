@@ -122,6 +122,20 @@
             });  
         
     }
+    function logout() {
+        $.ajax({
+            url: "logout",
+            method: "GET",
+            success: function(response) {
+                console.log("Logout successful");
+                console.log(response);
+                location.href= "/inventory/";
+            },
+            error: function() {
+                console.log("Logout error");
+            }
+        });
+    }
    
    </script>
     
@@ -179,7 +193,7 @@
                 </ul>
             </div>
 
-            <button class="list-group-item list-group-item-action bg-transparent text-danger fw-bold"><i
+            <button class="list-group-item list-group-item-action bg-transparent text-danger fw-bold" onclick="logout()"><i
                     class="fas fa-power-off me-2"></i>Logout
             </button>
         </div>
@@ -202,7 +216,7 @@
                     <li class="nav-item dropdown">
                         <button class="nav-link dropdown-toggle second-text fw-bold" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-user me-2"></i>John Doe
+                            <i class="fas fa-user me-2"></i>Inventory
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><button class="dropdown-item">Profile</button></li>

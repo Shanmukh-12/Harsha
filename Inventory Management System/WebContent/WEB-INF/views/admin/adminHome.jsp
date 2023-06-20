@@ -123,6 +123,20 @@
 			}
 		});
 	}
+	function logout() {
+	    $.ajax({
+	        url: "logout",
+	        method: "GET",
+	        success: function(response) {
+	            console.log("Logout successful");
+	            console.log(response);
+	            location.href= "/inventory/";
+	        },
+	        error: function() {
+	            console.log("Logout error");
+	        }
+	    });
+	}
 </script>
 
 <body>
@@ -149,12 +163,12 @@
 					<ul class="dropdown-menu" aria-labelledby="grnDropdown">
 						<li><button class="dropdown-item"
 								onclick="clicked('addVendor')">New Vendor</button></li>
-						<li><button class="dropdown-item" onclick="clicked('update')">Update
+						<li><button class="dropdown-item" onclick="clicked('updateVendor')">Update
 								Vendor</button></li>
 						<li><button class="dropdown-item"
-								onclick="clicked('deleteVendor')">Delete Vendor</button></li>
+								onclick="clicked('deleteVendorPage')">Delete Vendor</button></li>
 						<li><button class="dropdown-item"
-								onclick="clicked('showVendors')">Get Vendors</button></li>
+								onclick="clicked('displayVendors')">Get Vendors</button></li>
 
 					</ul>
 				</div>
@@ -168,11 +182,11 @@
 					</button>
 					<ul class="dropdown-menu" aria-labelledby="usersDropdown">
 						<li><button class="dropdown-item"
-								onclick="clicked('addUser')">New User</button></li>
+								onclick="clicked('addUserPage')">New User</button></li>
 						<li><button class="dropdown-item"
-								onclick="clicked('deleteUser')">Delete User</button></li>
+								onclick="clicked('deleteUserPage')">Delete User</button></li>
 						<li><button class="dropdown-item"
-								onclick="clicked('showUsers')">Get User</button></li>
+								onclick="clicked('displayUserPage')">Get User</button></li>
 					</ul>
 				</div>
 				<div class="dropdown">
@@ -184,11 +198,11 @@
 					</button>
 					<ul class="dropdown-menu" aria-labelledby="usersDropdown">
 						<li><button class="dropdown-item"
-								onclick="clicked('addStore')">Add Store</button></li>
+								onclick="clicked('addStorePage')">Add Store</button></li>
 						<li><button class="dropdown-item"
-								onclick="clicked('deleteStores')">Delete Store</button></li>
+								onclick="clicked('deleteStorePage')">Delete Store</button></li>
 						<li><button class="dropdown-item"
-								onclick="clicked('showStores')">Get Store</button></li>
+								onclick="clicked('displayStorePage')">Get Store</button></li>
 					</ul>
 				</div>
 
@@ -203,7 +217,7 @@
 					<i class="fas fa-shopping-cart me-2"></i>Reports
 				</button>
 				<button
-					class="list-group-item list-group-item-action bg-transparent text-danger fw-bold">
+					class="list-group-item list-group-item-action bg-transparent text-danger fw-bold" onclick="logout()">
 					<i class="fas fa-power-off me-2"></i>Logout
 				</button>
 			</div>

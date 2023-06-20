@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import main.dao.products.ProductCategoryDAO;
 import main.dao.products.ProductsDAO;
 import main.models.productModels.entities.HSNEntityModel;
@@ -35,6 +37,22 @@ public class ProductControllers {
 		System.out.println(productCategory);
 		return productCategory;
 	}
+	@PostMapping("/getProducts")
+    public @ResponseBody List<ProductStockData> getProducts(String categoryId, Model model) {
+	 ObjectMapper objectMapper = new ObjectMapper();
+	 CategoryRequest categoryRequest = null;
+	try {
+		categoryRequest = objectMapper.readValue(categoryId,CategoryRequest.class);
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} 
+	 System.out.println(categoryRequest.getCategoryId());
+
+        int selectedCategoryId = categoryRequest.getCategoryId();
+        List<ProductStockData> products = productsDAO.getProductsByCategory(selectedCategoryId);
+        return products;
+    }
 
 	@PostMapping("/getProductStockData")
 	public @ResponseBody List<ProductStockData> getProducts(

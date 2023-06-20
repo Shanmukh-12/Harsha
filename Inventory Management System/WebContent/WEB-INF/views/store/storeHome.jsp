@@ -125,7 +125,20 @@
             }
         });
  	}
-	
+ 	function logout() {
+ 	    $.ajax({
+ 	        url: "logout",
+ 	        method: "GET",
+ 	        success: function(response) {
+ 	            console.log("Logout successful");
+ 	            console.log(response);
+ 	            location.href= "/inventory/";
+ 	        },
+ 	        error: function() {
+ 	            console.log("Logout error");
+ 	        }
+ 	    });
+ 	}
 
 </script>
 
@@ -158,7 +171,7 @@
             <li><button class="dropdown-item"  onclick="clicked('createStoreReturn')">Create Store Retrun</button></li>
           </ul>
         </div>
-                <button class="list-group-item list-group-item-action bg-transparent text-danger fw-bold"><i
+                <button class="list-group-item list-group-item-action bg-transparent text-danger fw-bold" onclick="logout()"><i
                         class="fas fa-power-off me-2"></i>Logout</button>
             </div>
         </div>
@@ -169,7 +182,7 @@
             <nav class="navbar navbar-expand-lg navbar-light bg-transparent py-4 px-4">
                 <div class="d-flex align-items-center">
                     <i class="fas fa-align-left primary-text fs-4 me-3" id="menu-toggle"></i>
-                    <h2 class="fs-2 m-0">Dashboard</h2>
+                    <h2 class="fs-2 m-0">StoreHome</h2>
                 </div>
 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -183,7 +196,7 @@
                         <li class="nav-item dropdown">
                             <button class="nav-link dropdown-toggle second-text fw-bold"  id="navbarDropdown"
                                 role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fas fa-user me-2"></i>John Doe
+                                <i class="fas fa-user me-2"></i>Store
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><button class="dropdown-item" >Profile</button></li>

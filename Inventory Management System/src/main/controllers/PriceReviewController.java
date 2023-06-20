@@ -21,7 +21,7 @@ public class PriceReviewController {
 	@Autowired
 	PriceReviewDAO priceReviewDAL;
 
-	@GetMapping("/priceReview")
+	@PostMapping("/priceReview")
 	public String showDataPage(Model model) {
 
 		List<PriceReviewList> priceReview = priceReviewDAL.getPriceReview();

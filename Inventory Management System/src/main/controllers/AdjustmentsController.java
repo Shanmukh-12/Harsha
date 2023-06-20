@@ -21,7 +21,7 @@ public class AdjustmentsController {
 	@Autowired
 	AdjustmentsDAO adjustmentsDAL;
 
-	@GetMapping("/adjustments")
+	@PostMapping("/adjustments")
 	public String showDataPage(Model model) {
 
 		List<AdjustmentsList> adjustments = adjustmentsDAL.getAdjustments();

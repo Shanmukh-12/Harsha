@@ -10,11 +10,11 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Component;
 
 import main.dao.vendor.VendorsDAO;
-import main.dto.vendor.VendorDto;
-import main.models.vendorModels.Vendor;
+import main.models.vendorModels.entities.Vendor;
+import main.models.vendorModels.inputModels.VendorId;
 
 @Component
-public class VendorsDAL implements VendorsDAO{
+public class VendorsDAL implements VendorsDAO {
 
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -33,14 +33,14 @@ public class VendorsDAL implements VendorsDAO{
 	@Transactional
 	public List<Vendor> getAllVendors() {
 		List<Vendor> l = entityManager.createQuery("SELECT v FROM Vendor v").getResultList();
-//		for (Vendor v : l) {
-//			System.out.println(v.toString());
-//		}
+		// for (Vendor v : l) {
+		// System.out.println(v.toString());
+		// }
 		return l;
 	}
 
 	@Transactional
-	public Vendor getVendorData(VendorDto v) {
+	public Vendor getVendorData(VendorId v) {
 		Vendor getVendor = entityManager.find(Vendor.class, v.getVendorId());
 		return getVendor;
 	}
@@ -59,14 +59,14 @@ public class VendorsDAL implements VendorsDAO{
 		}
 	}
 
-	 @Transactional
-	 public Vendor deleteVendor(Vendor vendor) {
-		 System.out.println("Inside delete vendoe dao");
-		 Vendor existingVendor = entityManager.find(Vendor.class, vendor.getVendorId());
-	     existingVendor.setStatus("Inactive");
-	     entityManager.merge(existingVendor);
-		 return  existingVendor;
-	
-	 }
+	@Transactional
+	public Vendor deleteVendor(VendorId vendor) {
+		System.out.println("Inside delete vendoe dao");
+		Vendor existingVendor = entityManager.find(Vendor.class, vendor.getVendorId());
+		existingVendor.setStatus("Inactive");
+		entityManager.merge(existingVendor);
+		return existingVendor;
+
+	}
 
 }

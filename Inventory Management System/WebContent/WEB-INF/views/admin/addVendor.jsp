@@ -15,15 +15,15 @@
 						function showSuccessMessage(event) {
 							event.preventDefault();
 
-							  var vendorName = document.getElementById("vendorName").value;
+							    var vendorName = document.getElementById("vendorName").value;
 						        var vendorAddress = document.getElementById("vendorAddress").value;
-						        var vendorContact = document.getElementById("vendorContact").value;
+						        var vendorPhone = document.getElementById("vendorPhone").value;
 						        var vendorStatus = document.getElementById("vendorStatus").value;
 
 						        var confirmationMessage =
 						            "Vendor Name: " + vendorName +
 						            "\nVendor Address: " + vendorAddress +
-						            "\nVendor Contact: " + vendorContact +
+						            "\nVendor Phone: " + vendorPhone +
 						            "\nVendor Status: " + vendorStatus +
 						            "\n\nAre you sure to add this vendor?";
 							var userConfirmed = window
@@ -39,7 +39,7 @@
 													.stringify({
 														"vendorName" : vendorName,
 														"vendorAddress" : vendorAddress,
-														"vendorPhone" : vendorContact,
+														"vendorPhone" : vendorPhone,
 														"status" : vendorStatus
 													}),
 											success : function(response) {
@@ -71,7 +71,7 @@
                 </div>
                 <div>
                     <label for="vendorContact">Vendor Contact Number:</label>
-                    <input type="text" class="form-control" id="vendorContact" name="vendorPhone" pattern="[6-9]\d{9}" title="Contact number must start with 6 - 9 and have 10 digits" placeholder="Enter Vendor Contact Number" required>
+                    <input type="text" class="form-control" id="vendorPhone" name="vendorPhone" pattern="[6-9]\d{9}" title="Contact number must start with 6 - 9 and have 10 digits" placeholder="Enter Vendor Contact Number" required>
                 </div>
                 <div class="form-group">
                     <label for="vendorStatus">Vendor Status:</label>
