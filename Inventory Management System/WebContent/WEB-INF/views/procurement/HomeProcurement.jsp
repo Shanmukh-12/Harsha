@@ -114,6 +114,20 @@
 </head>
 
 <script>
+function logout() {
+    $.ajax({
+        url: "logout",
+        method: "GET",
+        success: function(response) {
+            console.log("Logout successful");
+            console.log(response);
+            location.href= "/inventory/";
+        },
+        error: function() {
+            console.log("Logout error");
+        }
+    });
+}
 function ButtonAction(button) {
 	console.log("hello");
     var row = button.parentNode.parentNode;
@@ -377,7 +391,7 @@ $("document").ready(
                                 onclick="Myfunction('del')">del</button></li>
                     </ul>
                 </div>
-                <button class="list-group-item list-group-item-action bg-transparent text-danger fw-bold"><i
+                <button class="list-group-item list-group-item-action bg-transparent text-danger fw-bold" onclick="logout()"><i
                         class="fas fa-power-off me-2"></i>Logout</button>
             </div>
         </div>
