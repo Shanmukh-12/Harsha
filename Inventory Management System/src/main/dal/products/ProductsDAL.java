@@ -22,7 +22,7 @@ public class ProductsDAL implements ProductsDAO {
 
 	@Transactional
 	public List<ProductStockData> getProductsByCategory(int categoryId) {
-		String queryString = "SELECT new main.models.productsModels.ProductStockData(p.productId,p.productName,ps.batchNo,ps.productStock,p.productReOrderLevel,p.productHsnCode,ps.productSalePrice,ps.productMrp,ps.productCost) FROM Products p JOIN  p.productStocks ps  WHERE p.category = :categoryId";
+		String queryString = "SELECT new main.models.productModels.outputModels.ProductStockData(p.productId,p.productName,ps.batchNo,ps.productStock,p.productReorderLevel,p.productHsnCode,ps.productSalePrice,ps.productMrp,ps.productCost) FROM Products p JOIN  p.productStocks ps  WHERE p.category = :categoryId";
 		TypedQuery<ProductStockData> query = entityManager.createQuery(queryString, ProductStockData.class);
 		query.setParameter("categoryId", categoryId);
 		List<ProductStockData> productsList = query.getResultList();
@@ -33,7 +33,7 @@ public class ProductsDAL implements ProductsDAO {
 	@Override
 	public List<ProductStockData> getProductsByProductId(int selectedProductId) {
 
-		String queryString = "SELECT new main.models.productsModels.ProductStockData(p.productId, p.productName, ps.batchNo, p.productReOrderLevel,p.productHsnCode,ps.productStock, ps.productSalePrice, ps.productMrp, ps.productCost) FROM Products p JOIN p.productStocks ps WHERE  p.productId = :productId";
+		String queryString = "SELECT new main.models.productModels.outputModels.ProductStockData(p.productId, p.productName, ps.batchNo, p.productReorderLevel,p.productHsnCode,ps.productStock, ps.productSalePrice, ps.productMrp, ps.productCost) FROM Products p JOIN p.productStocks ps WHERE  p.productId = :productId";
 		TypedQuery<ProductStockData> query = entityManager.createQuery(queryString, ProductStockData.class);
 		query.setParameter("productId", selectedProductId);
 
@@ -43,17 +43,16 @@ public class ProductsDAL implements ProductsDAO {
 
 	@Override
 	public ProductStockData getQuantityandpriceByProductIdOrBatchNo(int selectedProductId, int selectedBatchNo) {
-		String queryString = "SELECT new main.models.productsModels.ProductStockData(p.productId, p.productName, ps.batchNo, ps.productStock,p.productReOrderLevel,p.productHsnCode, ps.productSalePrice, ps.productMrp, ps.productCost) FROM Products p JOIN p.productStocks ps WHERE  p.productId = :productId AND ps.batchNo=:batchNo";
+		String queryString = "SELECT new main.models.productModels.outputModels.ProductStockData(p.productId, p.productName, ps.batchNo, ps.productStock,p.productReorderLevel,p.productHsnCode, ps.productSalePrice, ps.productMrp, ps.productCost) FROM Products p JOIN p.productStocks ps WHERE  p.productId = :productId AND ps.batchNo=:batchNo";
 		TypedQuery<ProductStockData> query = entityManager.createQuery(queryString, ProductStockData.class);
 		query.setParameter("productId", selectedProductId);
 		query.setParameter("batchNo", selectedBatchNo);
-
 		return query.getSingleResult();
 	}
 
 	@Override
 	public List<ProductStockData> getReOrderLevelProducts() {
-		String queryString = "SELECT new main.models.productsModels.ProductStockData(p.productId, p.productName, ps.batchNo, p.productReOrderLevel,p.productHsnCode,ps.productStock, ps.productSalePrice, ps.productMrp, ps.productCost) FROM Products p JOIN p.productStocks ps WHERE  p.productId = :productId";
+		String queryString = "SELECT new main.models.productModels.outputModels.ProductStockData(p.productId, p.productName, ps.batchNo, p.productReorderLevel,p.productHsnCode,ps.productStock, ps.productSalePrice, ps.productMrp, ps.productCost) FROM Products p JOIN p.productStocks ps WHERE  p.productId = :productId";
 		TypedQuery<ProductStockData> query = entityManager.createQuery(queryString, ProductStockData.class);
 		return query.getResultList();
 	}

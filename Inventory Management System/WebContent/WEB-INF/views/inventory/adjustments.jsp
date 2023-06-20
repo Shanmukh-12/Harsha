@@ -5,11 +5,21 @@
 <head>
   <title>Adjustments</title>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>  
-  <style>
+   <style>
+  #htag{
+  position: relative;
+  top: 10px;
+  margin-left: 450px;
+
+  }
+
+ 
+
     #adjustmenttable
     {
      display:flex;
     }
+
     #products-table {
       background-color: white;
       height: 50px;
@@ -18,11 +28,12 @@
      margin-left:0px;
      margin-right:500px;
     }
-    #addedproducts
+  #addedproducts
     {
       position:relative;
+
+      margin-top:62px;
       margin-left:150px;
-      margin-top:55px;
     }
      #headingtag
     {
@@ -39,11 +50,8 @@
     text-align:center;
       border: 1px solid black;
       padding: 8px;
-      
-    vertical-align: middle; /* Adjust the alignment as needed (top, middle, bottom) */
-  
+      vertical-align: middle;
     }
-    
     .delete-button {
       background-color: #f44336;
       border: none;
@@ -59,7 +67,6 @@
       border-radius:6px;
     }
     
-
 
     form {
       max-width: 400px;
@@ -105,6 +112,43 @@
       font-size: 12px;
       margin-top: 5px;
     }
+    
+     .single-line-heading {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    #updateButton
+    {
+       margin-left: 160px;
+        border-radius:6px;
+       width:80px;
+      height:40px;
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    
+    #addButton
+    {
+        margin-left: 120px;
+        border-radius:6px;
+       width:120px;
+      height:40px;
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+      
+    }
+    
+    
   </style>
   <script>
     function validateProductCategory() {
@@ -201,6 +245,7 @@
 
         // Get input values
         var productname = document.getElementById("productnameid").value;
+        var batchno = document.getElementById("batchnoid").value;
         var originalstock = document.getElementById("originalstockid").value;
         var currentstock = document.getElementById("currentstockid").value;
         var reason =  document.getElementById("reasonid").value;
@@ -213,6 +258,9 @@
         // Insert cells with product details
         var productnameCell = newRow.insertCell();
         productnameCell.innerHTML = productname;
+        
+        var batchnoCell = newRow.insertCell();
+        batchnoCell.innerHTML = batchno;
 
         var originalstockCell = newRow.insertCell();
         originalstockCell.innerHTML = originalstock;
@@ -243,7 +291,7 @@
       $(document).ready(function(){
       	$.ajax({
       	     url :"getProductCategories",
-      	     method :"get",
+      	     method :"post",
       	   success : function(data) {
                $.each(data, function(index, category) {
                    var option = '<option value="' + category.productCategoryId + '">' + category.productCategoryName + '</option>';
@@ -324,32 +372,83 @@
             });
         });
         
+        
+        
+        function getTableData() {
+        	  const table = document.getElementById('products-table');
+        	  const tableData = [];
+        	  
+        	  for (let i = 1; i < table.rows.length; i++) {
+        	    const row = table.rows[i];
+        	    const rowData = {};
+
+        	    rowData["product_id"] = row.cells[0].innerText;
+        	    rowData["batch_no"] = row.cells[1].innerText;
+        	    rowData["current_stock"] = row.cells[2].innerText;
+        	    rowData["updated_stock"] = row.cells[3].innerText;
+        	    rowData["adjs_desc"] = row.cells[4].innerText;
+        	    
+
+        	    tableData.push(rowData);
+        	  }
+
+        	  const jsonData = {
+        			  
+        	    "productsList": tableData
+        	  };
+
+        	  return jsonData;
+        	}
+        
+        
+        
+        
+        $("#updateButton").click(function() {
+         	var data = getTableData();
+           	const jsonData = JSON.stringify(data);
+          		console.log(jsonData);
+            $.ajax({
+                url : "createAdjustments",
+                method : "post",
+                data:{"jsonData":jsonData},
+                success : function(data) {
+                	alert(' Adjustments updated successfully');
+                	
+                },
+                error: function(error) {
+                	 alert('Error occurred while saving adjustments');
+                }
+            });
+        });
+        
+        
+        
       });
     </script>
 </head>
- <body> 
-<h1 style="margin-left:450px ; margin-top:10px">Adjustments</h1>
+<body>
+<h1 id ="htag" class="single-line-heading" >Adjustments</h1>
 <div id="adjustmenttable">
+<div style="margin-left:70px; margin-top:50px">
 
-<div style="margin-left:70px; margin-top:40px">
-
-   <form onsubmit="return validateForm()" method="post" >
+   <form onsubmit="return validateForm()">
     <label for="productcategoryid">Product Category:</label>
     <select id="productcategoryid" name="ProductCategory" onblur="validateProductCategory()">
       <option value="">Select Category</option>
- 
+
     </select>
     <span id="productcategory-error" class="error-message"></span>
     
     <label for="productnameid">Product Name:</label>
     <select id="productnameid" name="ProductName" onblur="validateProductName()">
-    <option value="">Select Product</option>
+   
+    
     </select>
     <span id="productname-error" class="error-message"></span>
     
     <label for="batchnoid">Batch No:</label>
     <select id="batchnoid" name="BatchNo" onblur="validateBatchNo()">
-    <option value="">Select BatchNo</option>
+   
     </select>
     <span id="batchno-error" class="error-message"></span>
     
@@ -365,18 +464,17 @@
     <textarea id="reasonid" name="Reason" rows="4" cols="42" onblur="validateReason()"></textarea>
     <span id="reason-error" class="error-message"></span>
     
-    <button type="button" style="margin-left: 120px;  background-color: #4CAF50; color:white; border: none; border-radius: 5px; width: 120px; height: 40px;" onclick="addProduct()">Update Stock</button>
-  </form>
-  </div>
+    <button type="button" id="addButton" onclick="addProduct()">Add Stock</button>
+   </div>
    
    <div id="addedproducts">
-
-         <h4 style="margin-left:100px; margin-bottom:20px; font-weight:bold">Adjustments List</h4>
+    <h4 style="margin-left:100px; margin-bottom:20px;  font-weight:bold;">Adjustments List</h4>
      <form>
   <table class="table bg-white rounded shadow-sm  table-hover" id="products-table">
     <thead>
       <tr>
-        <th>Product Name</th>
+        <th>Product ID</th>
+        <th>Batch No</th>
         <th>Original Stock</th>
         <th>Current Stock</th>
         <th>Reason</th>
@@ -386,10 +484,13 @@
     <tbody id="products-table-body">
     </tbody>
   </table>
+  <button type="button" id="updateButton">Update</button>
 </form>
    </div> 
+    
+
+
 
  </div>
- 
- </body>
+  </body>
  </html>
