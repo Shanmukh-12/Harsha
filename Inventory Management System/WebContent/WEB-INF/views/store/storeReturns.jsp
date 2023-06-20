@@ -93,12 +93,6 @@ select, button, #searchInput, input {
 	justify-content: space-around;
 }
 </style>
-<!-- Add the following CSS link in the head section of your HTML -->
-
-<!-- Add the following script tags before your JavaScript code -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-
 <script>
 
 	function filterData()

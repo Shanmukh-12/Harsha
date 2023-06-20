@@ -112,7 +112,7 @@
     function Myfunction(controllerUrl) {
             $.ajax({
                 url: controllerUrl,
-                method: "GET",
+                method: "POST",
                 success: function(response) {
                     $("#content").html(response);
                 },
@@ -172,8 +172,8 @@
                     <i class="fas fa-shopping-cart me-2"></i>Store
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="storeDropDownId">
+                    <li><button class="dropdown-item" onclick="Myfunction('getStoreIndents')">Store Indents</button></li>
                     <li><button class="dropdown-item" onclick="Myfunction('stockIssuesButton')">Stock Issues</button></li>
-                    <li><button class="dropdown-item" onclick="Myfunction('storeIndentsButton')">Store Indents</button></li>
                     <li><button class="dropdown-item" onclick="Myfunction('createStockIssueButton')">Create Stock Issue</button></li>
                     <li><button class="dropdown-item" onclick="Myfunction('storeReturnsButton')">Store Returns</button></li>
                 </ul>

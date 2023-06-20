@@ -1,9 +1,8 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Product Details</title>
+  <title>Create Indent</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <style>
     #htag{
   position: relative;
@@ -38,12 +37,14 @@
     .table-container {
       display: flex;
       padding-bottom: 60px;
+      
     }
 
     .table-container table {
       flex: 1;
       margin-right: 10px;
       float:right;
+      
     }
 
     #product-form {
@@ -111,7 +112,6 @@
     
 #addedproducts{
 
-      display: flex;
       justify-content: center;
       align-items: center;
       margin-left:70px;
@@ -202,253 +202,260 @@
   </style>
 </head>
 <body>
-<div id="htag">
-  <h2 align="center" style="padding-left: 110px; margin-bottom: 50px">Create Indent</h2>
+  <div id="htag">
+    <h2 align="center" style="margin-bottom: 50px; margin-right:160px;">Create Indent</h2>
   </div>
-    <div id="products-dropdown">
+
+  <div id="products-dropdown">
     <label for="product-category" style="padding-right:10px; font-size:16px">Product Category </label>
     <select id="product-category" style="width:100px">
-      <option value="category1">Soaps & Lotions</option>
-      <option value="category2">Category 2</option>
-      <option value="category3">Category 3</option>
-      <!-- Add more options as needed -->
+      <option>select category</option>
     </select>
   </div>
-  <div class="table-container">
-  <div style="margin-right:50px; margin-left:150px ">
-   <h3 align="center">Reorder Level Details</h3>
-    <div  id="first_table">
-   
-    <table id="reorder-level-table">
-     
-      <thead>
-        <tr>
-          <th>Product ID</th>
-          <th>Product Name</th>
-          <th>Batch No.</th>
-          <th>Stock</th>
-          <th>Add</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>101</td>
-          <td>Pears Soap</td>
-          <td>14268</td>
-          <td>50</td>
-          <td><button class="add-btn">Add</button></td>
-          
-        </tr>
-        
-        <tr>
-          <td>102</td>
-          <td>Santoor Soap</td>
-          <td>14267</td>
-          <td>50</td>
-          <td><button class="add-btn">Add</button></td>
-        </tr>
-        <tr>
-         <td>103</td>
-          <td>Rexona Soap</td>
-          <td>14266</td>
-          <td>50</td>
-          <td><button class="add-btn">Add</button></td>
-        </tr>
-        <tr>
-       <td>104</td>
-          <td>Lifebuoy Soap</td>
-          <td>14269</td>
-          <td>50</td>
-          <td><button class="add-btn">Add</button></td>
-        </tr>
-        <!-- Add more rows -->
-        <tr>
-          <td>101</td>
-          <td>Pears Soap</td>
-          <td>14268</td>
-          <td>50</td>
-          <td><button class="add-btn">Add</button></td>
-        </tr>
-        <tr>
-           <td>101</td>
-          <td>Pears Soap</td>
-          <td>14268</td>
-          <td>50</td>
-          <td><button class="add-btn">Add</button></td>
-        </tr>
-       
-      </tbody>
-    </table>
-</div>
-</div>
-<div style="margin-left:50px;">
 
- <h3 align="center">Products Details</h3>
- <div id="second_table">
-    <table id="Product-details-table">
-    
-      <thead>
-        <tr>
-          <th>Product ID</th>
-          <th>Product Name</th>
-          <th>Batch No.</th>
-          <th>Stock</th>
-          <th>Add</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-         
-          <td>101</td>
-          <td>Pears Soap</td>
-          <td>14268</td>
-          <td>50</td>
-           <td><button class="add-btn1">Add</button></td>
-        </tr>
-        <tr>
-         
-          <td>102</td>
-          <td>Santoor Soap</td>
-          <td>14267</td>
-          <td>50</td>
-          <td><button class="add-btn1">Add</button></td>
-        </tr>
-        <tr>
-        
-         <td>103</td>
-          <td>Rexona Soap</td>
-          <td>14266</td>
-          <td>50</td>
-          <td><button class="add-btn1">Add</button></td>
-        </tr>
-        <tr>
-         
-       <td>104</td>
-          <td>Lifebuoy Soap</td>
-          <td>14269</td>
-          <td>50</td>
-          <td><button class="add-btn1">Add</button></td>
-        </tr>
-        <!-- Add more rows -->
-        <tr>
-        
-          <td>101</td>
-          <td>Pears Soap</td>
-          <td>14268</td>
-          <td>50</td>
-          <td><button class="add-btn1">Add</button></td>
-        </tr>
-        <tr>
-         
-           <td>101</td>
-          <td>Pears Soap</td>
-          <td>14268</td>
-          <td>50</td>
-          <td><button class="add-btn1">Add</button></td>
-        </tr>
-       
-      </tbody>
-    </table>
+  <div class="table-container">
+    <div style="margin-right:50px; margin-left:150px">
+      <h3 align="center">Reorder Level Details</h3>
+      <div id="first_table">
+        <table id="reorder-level-table">
+          <thead>
+            <tr>
+              <th>Product ID</th>
+              <th>Product Name</th>
+              <th>Batch No.</th>
+              <th>Stock</th>
+              <th>Add</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+
+    <div style="margin-left:50px;">
+      <h3 align="center">Products Details</h3>
+      <div id="second_table">
+        <table id="Product-details-table">
+          <thead>
+            <tr>
+              <th>Product ID</th>
+              <th>Product Name</th>
+              <th>Batch No.</th>
+              <th>Stock</th>
+              <th>Add</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
     </div>
   </div>
-</div>
 
-   <h2 align="center" style="margin-bottom:20px">Indents List</h2>
-   <div id="addedproducts" >
-       <form>
+  <h2 align="center" style="margin-bottom:20px">Indents List</h2>
+     <div id="addedproducts" >
+       <form id="indentForm" onsubmit="createIndent();return false" method="post" >
           <table class="table bg-white rounded shadow-sm  table-hover" id="products-table">
            <thead>
               <tr>
-                 <th>Product ID</th>
+                 <th id="productId">Product ID</th>
                  <th>Product Name</th>
-                 <th>Batch No.</th>
-                 <th>Stock</th>
-                 <th>Required Stock</th>
+                 <th id="batchId">Batch No.</th>
+                 <th >Stock</th>
+                 <th id="quantity">Required Stock</th>
                  <th>Action</th>
              </tr>
            </thead>
-           <tbody >
-           </tbody>
+           <tbody></tbody>
           </table>
-          <button type="button" id="createIndentButtonId">Create</button>
+          <button type="submit" id="createIndentButtonId">Create</button>
   </form>
 </div>
- <script>
- var firstTable = document.getElementById('reorder-level-table');
- var secondTable = document.getElementById('Product-details-table');
- var selectedTable = document.getElementById('products-table');
- var addButtons = firstTable.getElementsByClassName('add-btn');
- var addButtons1 = secondTable.getElementsByClassName('add-btn1');
- 
-          // Function to add a row to the selected table
-    function addRowToSelectedTable(row) {
+
+  <script>
+  var addButtons;
+    $(document).ready(function() {
     
-   
-      var cells = row.cells;
-      var field1 = cells[0].textContent;
-      var field2 = cells[1].textContent;
-      var field3 = cells[2].textContent;
-      var field4 = cells[3].textContent;
+    	 $.ajax({
+     	     url :"getProductCategories",
+     	     method :"get",
+     	   success : function(data) {
+              $.each(data, function(index, category) {
+                  var option = '<option value="' + category.productCategoryId + '">' + category.productCategoryName + '</option>';
+                  $('#product-category').append(option);
+              });
+          },
+          error: function() {
+              alert('Error occurred while retrieving categories.');
+          }
+     	    	  
+     	});	
+    	
+    	
+      $.ajax({
+        url: "getProductStockData",
+        method: "post",
+        data: {
+          categoryId: "101"
+        },
+        success: function(reorderlist) {
+          // Create a new row with the received data
+          $.each(reorderlist, function(index, data) {
+            var newRow = '<tr>' +
+              '<td>' + data.productId + '</td>' +
+              '<td>' + data.productName + '</td>' +
+              '<td>' + data.batchNo + '</td>' +
+              '<td>' + data.stock + '</td>' +
+              '<td><button class="add-btn">Add</button></td>' +
+              '</tr>';
 
-      var newRow = document.createElement('tr');
+            // Append the new row to the table body
+            $('#Product-details-table tbody').append(newRow); 
+          });
+          // Add event listeners to the dynamically created buttons
+          var addButtons = $('#Product-details-table .add-btn');
+          addButtons.click(function() {
+            var row = $(this).closest('tr');
+            addRowToSelectedTable(row);
+          });
+          
+          // Place your code here that needs to be executed after the data is loaded in the table
+          // ...
+          console.log("Data loaded successfully!");
 
-      var field1Cell = document.createElement('td');
-      field1Cell.textContent = field1;
-
-      var field2Cell = document.createElement('td');
-      field2Cell.textContent = field2;
-
-      var field3Cell = document.createElement('td');
-      field3Cell.textContent = field3;
-
-      var field4Cell = document.createElement('td');
-      field4Cell.textContent = field4;
-
-      var quantityCell = document.createElement('td');
-      var quantityInput = document.createElement('input');
-      quantityInput.type = 'number';
-      quantityInput.value = 1;
-      quantityCell.appendChild(quantityInput);
-
-      var actionCell = document.createElement('td');
-      var deleteButton = document.createElement('button');
-      deleteButton.classList.add('delete-btn');
-      deleteButton.textContent = 'Delete';
-      deleteButton.addEventListener('click', function() {
-        deleteRowFromSelectedTable(newRow);
+        },
+        error: function() {
+          alert('Error occurred while retrieving Products by categoryId.');
+        }
       });
-      actionCell.appendChild(deleteButton);
+      
+      
+      $("#product-category").change(function(){
+			
+			
+		   	$.ajax({
+		   	     url :"getProductStockData",
+		   	     method :"post",
+		   	  data:{
+		   	    	
+		   	    categoryId : $("#product-category").val()
+		   	     },
+		   	   success : function(reorderlist) {
+		   		// Create a new row with the received data
+		   		$('#Product-details-table tbody').empty();
+		   		$.each(reorderlist, function(index, data) {
+		   			
+		   		  var newRow = '<tr>' +
+		   		    '<td>' + data.productId + '</td>' +
+		   		    '<td>' + data.productName + '</td>' +
+		   		    '<td>' + data.batchNo + '</td>' +
+		   		    '<td>' + data.stock + '</td>' +
+		   		    '<td><button class="add-btn">Add</button></td>' +
+		   		    '</tr>';
 
-      newRow.appendChild(field1Cell);
-      newRow.appendChild(field2Cell);
-      newRow.appendChild(field3Cell);
-      newRow.appendChild(field4Cell);
-      newRow.appendChild(quantityCell);
-      newRow.appendChild(actionCell);
+		   		  // Append the new row to the table body
+		   		  $('#Product-details-table tbody').append(newRow); 
+		   		});
+		
+		   	 // Add event listeners to the dynamically created buttons
+		          var addButtons = $('#Product-details-table .add-btn');
+		          addButtons.click(function() {
+		            var row = $(this).closest('tr');
+		            addRowToSelectedTable(row);
+		          });
 
-      selectedTable.querySelector('tbody').appendChild(newRow);
-    }
-
-    // Function to delete a row from the selected table
-    function deleteRowFromSelectedTable(row) {
-      selectedTable.querySelector('tbody').removeChild(row);
-    }
-
-    // Attach click event listeners to the add buttons
-    for (let i = 0; i < addButtons.length; i++) {
-      var addButton = addButtons[i];
-      addButton.addEventListener('click', function() {
-    	  var row = this.parentNode.parentNode;
-        addRowToSelectedTable(row);
-      });
-    }
-    for (let i = 0; i < addButtons1.length; i++) {
-        var addButton1 = addButtons1[i];
-        addButton1.addEventListener('click', function() {
-        	var row1 = this.parentNode.parentNode;
-            addRowToSelectedTable(row1);
+		          // Place your code here that needs to be executed after the data is loaded in the table
+		          // ...
+		          console.log("Data loaded successfully!");
+		        },
+		        error: function() {
+		            alert('Error occurred while retrieving categories.');
+		        
+		   	   }
+		   	    	  
+		   	});
+			});
+      
+      
+      $(document).on('click', '#products-table .delete-btn', function() {
+          var row = $(this).closest('tr');
+          deleteRowFromSelectedTable(row);
         });
+
+      // Function to add a row to the selected table
+  function addRowToSelectedTable(row) {
+  console.log(addButtons);
+  var selectedTable = $('#products-table');
+  var cells = row[0].cells;
+  var field1 = cells[0].textContent;
+  var field2 = cells[1].textContent;
+  var field3 = cells[2].textContent;
+  var field4 = cells[3].textContent;
+
+  var newRow = '<tr>' +
+    '<td>' + field1 + '</td>' +
+    '<td>' + field2 + '</td>' +
+    '<td>' + field3 + '</td>' +
+    '<td>' + field4 + '</td>' +
+    '<td><input type="number" value="1"></td>' +
+    '<td><button class="delete-btn">Delete</button></td>' +
+    '</tr>';
+
+  selectedTable.find('tbody').append(newRow);
+
       }
+      // Function to delete a row from the selected table
+      function deleteRowFromSelectedTable(row) {
+    	  row.remove();
+    	  
+      }
+
+      
+     
+    });
+    
+    function getTableData() {
+    	  const table = document.getElementById('products-table');
+    	  const tableData = [];
+    	  
+    	  for (let i = 1; i < table.rows.length; i++) {
+    	    const row = table.rows[i];
+    	    const rowData = {};
+
+    	    rowData["productId"] = row.cells[0].innerText;
+    	    rowData["quantity"] = row.cells[4].querySelector('input').value;
+
+    	    tableData.push(rowData);
+    	  }
+
+    	  const jsonData = {
+    	    "productsList": tableData
+    	  };
+
+    	  return jsonData;
+    	}
+
+     
+     function createIndent()
+     {
+     	var data = getTableData();
+     	const jsonData = JSON.stringify(data);
+    		console.log(jsonData);
+     	$.ajax({
+     		url:"createProcurementIndent",
+     		method:"post",
+     		data:{"jsonData":jsonData},
+     		success:function(page)
+     		{
+     			console.log("Success");
+     			$('#products-table tbody').empty();
+     			 alert('Succesfully created Indents to the Procurement');
+     			 
+     			
+     		}
+     	
+     	});
+     }
+    
+    
   </script>
 </body>
 </html>

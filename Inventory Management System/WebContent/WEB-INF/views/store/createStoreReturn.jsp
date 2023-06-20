@@ -1,9 +1,3 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Product Inventory</title>
     <style>
         .container {
             font-family: Arial, sans-serif;
@@ -79,75 +73,150 @@
         }
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            var productIds = [];
+<script>
+  function getTableData() {
+    const table = document.getElementById('returnsTable');
+    console.log(table.rows[1]);
 
-            $('#addButton').click(function () {
-                var productId = $('#productId').val();
-                var quantity = $('#quantity').val();
+    // Create an array to store the table data
+    const tableData = [];
 
-                if (!productId || productIds.includes(productId)) {
-                    $('#productId').addClass('error');
-                    return;
-                } else {
-                    $('#productId').removeClass('error');
-                }
+    const headerRow = table.rows[0];
 
-                var row = '<tr><td>' + productId + '</td><td>' + quantity + '</td><td><button class="deleteButton">Delete</button></td></tr>';
-                $('#inventoryTable tbody').append(row);
+    // Iterate through each row of the table
+    for (let i = 1; i < table.rows.length; i++) {
+      const row = table.rows[i];
+      const rowData = {};
 
-                productIds.push(productId);
-                $('#inventoryTable tbody tr.no-data').remove(); // Remove "No data" row if it exists
-            });
+      // Iterate through each cell of the row excluding the "product_name" column
+      for (let j = 0; j < row.cells.length - 1; j++) {
+        const cell = row.cells[j];
+        const cellHeader = headerRow.cells[j].id; // Use textContent to get the header
 
-            $(document).on('click', '.deleteButton', function () {
-                var productId = $(this).closest('tr').find('td:first').text();
-                productIds = productIds.filter(function (id) {
-                    return id !== productId;
-                });
-                $(this).closest('tr').remove();
+        // Assign the cell text content
+        rowData[cellHeader] = cell.textContent;
+      }
 
-                if ($('#inventoryTable tbody tr').length === 0) {
-                    $('#inventoryTable tbody').append('<tr class="no-data"><td colspan="3">No data</td></tr>');
-                }
-            });
-        });
-    </script>
-</head>
-<body>
-    <div class="container" align="center">
-        <h1>Store Returns</h1><br><br>
+      // Add row data to the tableData array
+      tableData.push(rowData);
+    }
 
-        <form id="indentForm">
-            <div>
-                <label for="storeId">Store ID:</label>
-                <input type="text" id="storeId" name="storeId" required><br><br>
-            </div>
-            <table id="inventoryTable" border="1">
-                <thead>
-                    <tr>
-                        <th>Product ID</th>
-                        <th>Quantity</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="no-data">
-                        <td colspan="3">No data</td>
-                    </tr>
-                </tbody>
-            </table>
-            <div>
-                <label for="productId">Product ID:</label>
-                <input type="text" id="productId" name="productId" required><br><br>
-            </div>
-            <div>
-                <label for="quantity">Quantity:</label>
-                <input type="text" id="quantity" name="quantity" required><br><br>
-            </div>
-            <button type="button" id="addButton">Add</button>
-        </form>
+    const jsonData = {};
+    jsonData['storeID'] = document.getElementById('storeId').value;
+    jsonData['productsList'] = tableData;
+    return jsonData;
+  }
+
+  function createReturn() {
+    var table = document.getElementById('returnsTable');
+    var tbody = table.getElementsByTagName('tbody')[0];
+    var rowCount = tbody.rows.length;
+    console.log(tbody);
+    console.log(rowCount);
+    // Check if the table has data
+    if (rowCount <= 1) {
+      alert('Table is empty. Add data to proceed.');
+      return;
+    }
+
+    var data = getTableData();
+    const jsonData = JSON.stringify(data);
+    console.log(jsonData);
+    $.ajax({
+      url: 'newCreateStoreReturn',
+      method: 'post',
+      data: { jsonData: jsonData },
+      success: function (page) {
+        console.log('Success');
+        alert('Return successful!'); // Display alert message
+
+        // Remove table data
+        const table = document.getElementById('returnsTable');
+        const tbody = table.getElementsByTagName('tbody')[0];
+        tbody.innerHTML = '<tr class="no-data"><td colspan="3">No data</td></tr>';
+        $('#storeId').val('');
+      },
+      error: function (page) {
+        alert('Invalid Data');
+      },
+    });
+  }
+
+  $(document).ready(function () {
+    var productIds = [];
+
+    $('#addButton').click(function () {
+      var productId = $('#productId').val();
+      var quantity = $('#quantity').val();
+
+      if (!productId || productIds.includes(productId)) {
+        $('#productId').addClass('error');
+        return;
+      } else {
+        $('#productId').removeClass('error');
+      }
+
+      var row =
+        '<tr><td>' +
+        productId +
+        '</td><td>' +
+        quantity +
+        '</td><td><button class="deleteButton">Delete</button></td></tr>';
+      $('#returnsTable tbody').append(row);
+
+      productIds.push(productId);
+      $('#returnsTable tbody tr.no-data').remove(); // Remove "No data" row if it exists
+      $('#productId').val('');
+      $('#quantity').val('');
+    });
+
+    $(document).on('click', '.deleteButton', function () {
+      var productId = $(this).closest('tr').find('td:first').text();
+      productIds = productIds.filter(function (id) {
+        return id !== productId;
+      });
+      $(this).closest('tr').remove();
+
+      if ($('#returnsTable tbody tr').length === 0) {
+        $('#returnsTable tbody').append(
+          '<tr class="no-data"><td colspan="3">No data</td></tr>'
+        );
+      }
+    });
+  });
+</script>
+<div class="container" align="center">
+  <h1>Store Returns</h1><br /><br />
+
+  <form id="storeReturnsForm" onsubmit="createReturn(); return false;">
+    <div>
+      <label for="storeId">Store ID:</label>
+      <input type="text" id="storeId" name="storeId" required /><br /><br />
     </div>
-</body>
-</html>
+    <div>
+      <label for="productId">Product ID:</label>
+      <input type="text" id="productId" name="productId"  /><br /><br />
+    </div>
+    <div>
+      <label for="quantity">Quantity:</label>
+      <input type="text" id="quantity" name="quantity" /><br /><br />
+    </div>
+    <button type="button" id="addButton">Add</button><br /><br />
+    <table id="returnsTable" border="1">
+      <thead>
+        <tr>
+          <th id="productId">Product ID</th>
+          <th id="quantity">Quantity</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="no-data">
+          <td colspan="3">No data</td>
+        </tr>
+      </tbody>
+    </table>
+    <input type="submit" />
+  </form>
+</div>
+    

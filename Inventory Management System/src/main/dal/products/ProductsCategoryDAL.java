@@ -12,13 +12,17 @@ import main.dao.products.ProductCategoryDAO;
 import main.models.productModels.entities.ProductsCategory;
 
 @Component
-public class ProductsCategoryDal implements ProductCategoryDAO {
+public class ProductsCategoryDAL implements ProductCategoryDAO {
 
 	@PersistenceContext
 	private EntityManager entityManager;
 
 	@Transactional
 	public List<ProductsCategory> getProductCategories() {
-		return entityManager.createQuery("SELECT pc FROM ProductsCategory pc", ProductsCategory.class).getResultList();
+		List<ProductsCategory> l = entityManager.createQuery("SELECT v FROM ProductsCategory v").getResultList();
+		for (ProductsCategory v : l) {
+			System.out.println(v.toString());
+		}
+		return l;
 	}
 }

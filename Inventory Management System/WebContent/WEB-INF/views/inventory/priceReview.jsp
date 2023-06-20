@@ -120,6 +120,7 @@
     
     
   </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
   <script>
     function validateProductCategory() {
       var productCategory = document.getElementById("productcategoryid").value;
@@ -252,6 +253,132 @@
         var row = button.parentNode.parentNode;
         row.parentNode.removeChild(row);
       }
+      
+      
+      
+      $(document).onchange(funtion(){
+      	$.ajax(function({
+      	     url:'getProductCategory',
+      	     method:'POST',
+      	     success:function(category){
+      	    	 
+      	    	   var dropdown = document.getElementById('productcategoryid');
+
+      	    	    // Clear any existing options
+      	    	    dropdown.innerHTML = '';
+
+      	    	    // Iterate over the list of objects
+      	    	    response.forEach(function(obj) {
+      	    	      var option = document.createElement('option');
+      	    	      
+      	    	      // Set the value and display text for the option
+      	    	      option.value = obj.categoryid;
+      	    	      option.textContent = obj.categoryname;
+      	    	      
+      	    	      // Append the option to the dropdown
+      	    	      dropdown.appendChild(option);
+      	    	    });
+      	    	  },
+      	    	  error: function(error) {
+      	    	    // Handle error
+      	    	  }
+      	    	 
+      	     }))
+      	});
+        
+        
+        $document.onchange(function(){
+        	$.ajax(function({
+        		
+        		url:'getProductName',
+        		method:'POST',
+        		success:function(name){
+        			
+        			  var dropdown = document.getElementById('productnameid');
+
+      	    	    // Clear any existing options
+      	    	    dropdown.innerHTML = '';
+
+      	    	    // Iterate over the list of objects
+      	    	    response.forEach(function(obj) {
+      	    	      var option = document.createElement('option');
+      	    	      
+      	    	      // Set the value and display text for the option
+      	    	      option.value = obj.productnameid;
+      	    	      option.textContent = obj.productname;
+      	    	      
+      	    	      // Append the option to the dropdown
+      	    	      dropdown.appendChild(option);
+      	    	    });
+      	    	  },
+      	    	  error: function(error) {
+      	    	    // Handle error
+        			
+        			}
+        		
+        		}))
+        	});
+        	
+        $document.onchange(fucntion(){
+      	  $.ajax(function({
+      		  
+      		  url:'getProductBatchNo',
+      		  method:'POST',
+      		  success:function(name){
+      			  
+      			  
+      			  var dropdown = document.getElementById('batchnoid');
+
+    	    	    // Clear any existing options
+    	    	    dropdown.innerHTML = '';
+
+    	    	    // Iterate over the list of objects
+    	    	    response.forEach(function(obj) {
+    	    	      var option = document.createElement('option');
+    	    	      
+    	    	      // Set the value and display text for the option
+    	    	      option.value = obj.batchnoid;
+    	    	      option.textContent = obj.batchnoname;
+    	    	      
+    	    	      // Append the option to the dropdown
+    	    	      dropdown.appendChild(option);
+    	    	    });
+    	    	  },
+    	    	  error: function(error) {
+    	    	    // Handle error
+      			
+      			}
+      			 	  
+      		  
+      	  }))
+      	  
+      });
+        
+        $document.onchange(fucntion(){
+      	  $.ajax(function({
+      		  url:'getOriginalCost',
+      		  method:'POST',
+      		  success:function(name){
+      			  
+      			  
+   			   var textField = document.getElementById('originalcostid');
+
+   			    // Extract the desired values from the list of objects
+   			    var values = response.map(function(obj) {
+   			      return obj.property; // Replace 'property' with the actual property name
+   			    });
+
+   			    // Set the text field value by joining the extracted values
+   			    textField.value = values.join(', ');
+   			  },
+   			  error: function(error) {
+   			    // Handle error
+   			  }
+   			  
+      			  
+      		  }))
+      	  
+        });
     
   </script>
   
