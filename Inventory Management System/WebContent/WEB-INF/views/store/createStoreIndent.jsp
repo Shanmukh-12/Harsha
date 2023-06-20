@@ -74,7 +74,18 @@
     </style>
     <script>
         $(document).ready(function () {
-            var productIds = [];
+/*         	$.ajax({
+        		url:"getStoreData",
+        		method:"post",
+        		dataType:"json",
+        		success:function(response){
+        			console.log(response);
+        		},
+        		error:function(){
+        			console.log("Unable to load store Data");
+        		}
+        	});
+ */            var productIds = [];
 
             $('#addButton').click(function () {
                 var productId = $('#productId').val();
@@ -92,6 +103,9 @@
 
                 productIds.push(productId);
                 $('#inventoryTable tbody tr.no-data').remove(); // Remove "No data" row if it exists
+                $('#productId').val('');
+                $('#quantity').val('');
+
             });
 
             $(document).on('click', '.deleteButton', function () {
@@ -143,6 +157,17 @@
         
         function createIndent()
         {
+            var table = document.getElementById('inventoryTable');
+            var tbody = table.getElementsByTagName('tbody')[0];
+            var rowCount = tbody.rows.length;
+           	console.log(tbody);
+			console.log(rowCount);
+            // Check if the table has data
+            if (rowCount <= 1) {
+                alert("Table is empty. Add data to proceed.");
+                return;
+            }
+
         	var data = getTableData();
         	const jsonData = JSON.stringify(data);
 			console.log(jsonData);
@@ -153,8 +178,18 @@
         		success:function(page)
         		{
         			console.log("Success");
-        		}
-        	
+                    alert("Insertion is successful!"); // Display alert message
+
+                    // Remove table data
+                    const table = document.getElementById('inventoryTable');
+                    const tbody = table.getElementsByTagName('tbody')[0];
+                    tbody.innerHTML = '<tr class="no-data"><td colspan="3">No data</td></tr>';
+                    $('#storeId').val('');
+                    },
+                    error:function(page)
+                    {
+                    	alert("Invalid Data");
+                    }        	
         	});
         }
         
@@ -170,11 +205,11 @@
             </div>
             <div>
                 <label for="productId">Product ID:</label>
-                <input type="text" id="productId" name="Indents_Products_ID" required><br><br>
+                <input type="text" id="productId" name="Indents_Products_ID"><br><br>
             </div>
             <div>
                 <label for="quantity">Quantity:</label>
-                <input type="text" id="quantity"  name="Indents_Products_Quantity" required><br><br>
+                <input type="text" id="quantity"  name="Indents_Products_Quantity"><br><br>
             </div>
             <button type="button" id="addButton">Add</button><br><br>
             <table id="inventoryTable" border="1">
