@@ -5,7 +5,6 @@ public class StoreIndentInputProductsList {
 	int productId;
 	int quantity;
 
-	StoreIndentsInputList sil;
 
 
 	public int getProductId() {
@@ -24,18 +23,11 @@ public class StoreIndentInputProductsList {
 		this.quantity = quantity;
 	}
 
-	public StoreIndentsInputList getSil() {
-		return sil;
-	}
-
-	public void setSil(StoreIndentsInputList sil) {
-		this.sil = sil;
-	}
 
 	@Override
 	public String toString() {
 		return "StoreIndentInputProductsList [productId=" + productId + ", quantity="
-				+ quantity + ", sil=" + sil + "]";
+				+ quantity + ", sil=" + "]";
 	}
 
 }
