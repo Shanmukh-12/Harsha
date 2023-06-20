@@ -2,24 +2,29 @@ package main.models.productModels.outputModels;
 
 public class ProductStockData {
 
-    private int productId;
-    private String productName;
-    private int batchNo;
-    private int stock;
+	private int productId;
+	private String productName;
+	private int batchNo;
+	private int stock;
+	private int productReOrderLevel;
+	private int productHsnCode;
 	private double purchasePrice;
 	private double mrp;
 	private double costPrice;
-    
-	
-	public ProductStockData(int productId, String productName, int batchNo, int stock, double purchasePrice, double mrp,
-			double costPrice) {
+
+	public ProductStockData(int productId, String productName, int batchNo, int stock, int productReOrderLevel,
+			int productHsnCode, double purchasePrice, double mrp, double costPrice) {
+		super();
 		this.productId = productId;
 		this.productName = productName;
 		this.batchNo = batchNo;
 		this.stock = stock;
+		this.productReOrderLevel = productReOrderLevel;
+		this.productHsnCode = productHsnCode;
 		this.purchasePrice = purchasePrice;
 		this.mrp = mrp;
 		this.costPrice = costPrice;
+
 	}
 
 	public String getProductName() {
@@ -80,7 +85,21 @@ public class ProductStockData {
 	public void setCostPrice(double costPrice) {
 		this.costPrice = costPrice;
 	}
-	
-    
+
+	public int getProductReOrderLevel() {
+		return productReOrderLevel;
+	}
+
+	public void setProductReOrderLevel(int productReOrderLevel) {
+		this.productReOrderLevel = productReOrderLevel;
+	}
+
+	public int getProductHsnCode() {
+		return productHsnCode;
+	}
+
+	public void setProductHsnCode(int productHsnCode) {
+		this.productHsnCode = productHsnCode;
+	}
 
 }

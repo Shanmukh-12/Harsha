@@ -1,3 +1,10 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Adjustments</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>  
   <style>
     #adjustmenttable
     {
@@ -220,6 +227,8 @@
         deleteCell.innerHTML = '<button class="delete-button" onclick="deleteProduct(this)">Delete</button>';
 
         // Clear input fields
+        document.getElementById("productcategoryid").value = "";
+        document.getElementById("batchnoid").value = "";
         document.getElementById("productnameid").value = "";
         document.getElementById("originalstockid").value = "";
         document.getElementById("currentstockid").value = "";
@@ -230,39 +239,117 @@
         var row = button.parentNode.parentNode;
         row.parentNode.removeChild(row);
       }
-    
-  </script>
+      
+      $(document).ready(function(){
+      	$.ajax({
+      	     url :"getProductCategories",
+      	     method :"get",
+      	   success : function(data) {
+               $.each(data, function(index, category) {
+                   var option = '<option value="' + category.productCategoryId + '">' + category.productCategoryName + '</option>';
+                   $('#productcategoryid').append(option);
+               });
+           },
+           error: function() {
+               alert('Error occurred while retrieving categories.');
+           }
+      	    	  
+      	});
+      	    	 
   
+        $("#productcategoryid").change(function() {
+        	
+            $.ajax({
+                url : "getProductStockData",
+                method : "post",
+                data:{
+                	
+                	categoryId : $("#productcategoryid").val()
+                	
+                },
+                success: function(data) {
+                    $('#productnameid').empty();
+                    var option = '<option >' + "select Product" + '</option>';
+                    $('#productnameid').append(option);
+                    $.each(data, function(index, products) {
+                        var option = '<option value="' + products.productId + '">' + products.productName + '</option>';
+                        $('#productnameid').append(option);
+                    });
+                },
+                error: function() {
+                    alert('Error occurred while retrieving products.');
+                }
+            });
+        });
+
+        $("#productnameid").change(function() {
+            $.ajax({
+                url : "getProductBatchNos",
+                method : "post",
+                data : {
+                    "productId": $('#productnameid').val()
+                },
+                success: function(data) {
+                    $('#batchnoid').empty();
+                    var option = '<option >' + "select batchNo" + '</option>';
+                    $('#batchnoid').append(option);
+                    $.each(data, function(index, batches) {
+                    	
+                        var option = '<option value="' + batches.batchNo + '">' + batches.batchNo + '</option>';
+                        $('#batchnoid').append(option);
+                    });
+                },
+                error: function() {
+                    alert('Error occurred while retrieving batchnos.');
+                }
+            });
+        });
+
+        $("#batchnoid").change(function() {
+            $.ajax({
+                url : "getProductQuantityOrPrice",
+                method : "post",
+                data:{
+                	"productId": $('#productnameid').val(),
+                	"batchNo": $('#batchnoid').val()
+                	
+                },
+                success : function(Stock) {
+                	console.log("hi");
+                	$('#originalstockid').val(Stock.stock);
+                },
+                error: function(error) {
+                    // Handle error
+                }
+            });
+        });
+        
+      });
+    </script>
+</head>
+ <body> 
 <h1 style="margin-left:450px ; margin-top:10px">Adjustments</h1>
 <div id="adjustmenttable">
 
 <div style="margin-left:70px; margin-top:40px">
 
-   <form onsubmit="return validateForm()" >
+   <form onsubmit="return validateForm()" method="post" >
     <label for="productcategoryid">Product Category:</label>
     <select id="productcategoryid" name="ProductCategory" onblur="validateProductCategory()">
       <option value="">Select Category</option>
-      <option value="option1">Option 1</option>
-      <option value="option2">Option 2</option>
-      <option value="option3">Option 3</option>
+ 
     </select>
     <span id="productcategory-error" class="error-message"></span>
     
     <label for="productnameid">Product Name:</label>
     <select id="productnameid" name="ProductName" onblur="validateProductName()">
-      <option value="">Select Name</option>
-      <option value="option1">Option 1</option>
-      <option value="option2">Option 2</option>
-      <option value="option3">Option 3</option>
+    <option value="">Select Product</option>
     </select>
     <span id="productname-error" class="error-message"></span>
     
     <label for="batchnoid">Batch No:</label>
     <select id="batchnoid" name="BatchNo" onblur="validateBatchNo()">
-      <option value="">Select Batch No</option>
-      <option value="option1">Option 1</option>
-      <option value="option2">Option 2</option>
-      <option value="option3">Option 3</option>
+    <option value="">Select BatchNo</option>
     </select>
     <span id="batchno-error" class="error-message"></span>
     
@@ -279,6 +366,7 @@
     <span id="reason-error" class="error-message"></span>
     
     <button type="button" style="margin-left: 120px;  background-color: #4CAF50; color:white; border: none; border-radius: 5px; width: 120px; height: 40px;" onclick="addProduct()">Update Stock</button>
+  </form>
   </div>
    
    <div id="addedproducts">
@@ -300,8 +388,8 @@
   </table>
 </form>
    </div> 
-    
-
-
 
  </div>
+ 
+ </body>
+ </html>

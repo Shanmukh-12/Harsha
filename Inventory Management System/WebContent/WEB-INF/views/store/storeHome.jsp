@@ -112,7 +112,6 @@
 <script>
 
  	function clicked(data){
-		console.log("Clicked");
         $.ajax({
             url: data,
             method: "POST",

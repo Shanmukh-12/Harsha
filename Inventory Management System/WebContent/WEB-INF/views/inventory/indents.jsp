@@ -113,10 +113,10 @@
         <h1 class="text-center mb-4">Indents List</h1>
         <c:forEach items="${indents}" var="indent">
             <div class="issues-block">
-                <h4 class="store-indent-id">Status: <span class="bold">${indent.indentStatus}</span></h4>
+                <h4 class="store-indent-id">Status: <span class="bold">${indent.indentsStatus}</span></h4>
                 <div class="issue-details">
-                    <span class="label">Indent ID:</span><span>${indent.indentId}</span>
-                    <span class="label">Indent Date:</span><span>${indent.indentDate}</span>
+                    <span class="label">Indent ID:</span><span>${indent.indentID}</span>
+                    <span class="label">Indent Date:</span><span>${indent.d}</span>
                 </div>
                 <div>
                     <button type="button" class="btn-issues" onclick="loadIndentProducts('indentsProductsButton')">View Products</button>

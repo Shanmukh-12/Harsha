@@ -1,33 +1,52 @@
 package main.controllers;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
-import main.dal.indents.IndentsDal;
-import main.models.indentModels.Indents;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-
+import main.dal.indents.IndentsDAL;
+import main.models.indentModels.entities.ProcurementIndentsList;
+import main.models.indentModels.inputModels.ProcurementIndentsInputList;
 
 @Controller
 public class IndentsController {
 
 	@Autowired
-	public IndentsDal p;
+	IndentsDAL procurementIndentsDAL;
 
+	@PostMapping("/createProcurementIndent")
+	public String createStoreIndent(String jsonData, Model m) {
+		ObjectMapper objectMapper = new ObjectMapper();
+		ModelMapper modelMapper = new ModelMapper();
+		ProcurementIndentsInputList procurementIndentsInputList = null;
 
-	@GetMapping("/createIndent")
-	public String showCreateForm(Model model) {
-		// model.addAttribute("vendor", new Vendor());
+		try {
+			procurementIndentsInputList = objectMapper.readValue(jsonData, ProcurementIndentsInputList.class);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		ProcurementIndentsList procurementIndentsList = modelMapper.map(procurementIndentsInputList,
+				ProcurementIndentsList.class);
+
+		m.addAttribute("data", procurementIndentsList);
+		System.out.println(procurementIndentsList.toString());
+
+		procurementIndentsDAL.saveProcurementIndent(procurementIndentsList);
+
 		return "inventory/createIndent";
 	}
 
-	@GetMapping("/saveIndent")
-	public String saveVendor(Indents indent, Model model) {
-		p.createIndent(indent);
-		return "/addIndent";
+	@GetMapping("/indentsButton")
+	public String createVendor(Model m) {
+		m.addAttribute("indents", procurementIndentsDAL.getAllIndents());
+		return "inventory/indents";
 	}
-
 
 }
