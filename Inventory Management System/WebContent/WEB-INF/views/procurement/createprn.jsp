@@ -71,7 +71,7 @@
                                 <tr>
                                     <th scope="row">1</th>
                                     <td>1</td>
-                                    <td>1</td>
+                                    <td>45</td>
 									<td>60</td>
 									<td>30</td>
 									<td>2</td>
