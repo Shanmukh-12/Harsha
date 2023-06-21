@@ -7,8 +7,6 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import main.models.purchaseOrder.entityModels.Im_Purchase_Order_Products;
-
 public class PurchaseOrderInput {
 
 	private int purchase_order_id;
@@ -30,6 +28,7 @@ public class PurchaseOrderInput {
 
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Kolkata")
 	private Date last_updated_date = Date.valueOf(LocalDate.now());
+	private List<PurchaseOrderProductInput> children;
 
 	public int getPurchase_order_id() {
 		return purchase_order_id;
@@ -103,21 +102,19 @@ public class PurchaseOrderInput {
 		this.last_updated_date = last_updated_date;
 	}
 
-	public List<Im_Purchase_Order_Products> getChildren() {
+	// Getters and Setters
+
+	public List<PurchaseOrderProductInput> getChildren() {
 		return children;
 	}
 
-	public void setChildren(List<Im_Purchase_Order_Products> children) {
+	public void setChildren(List<PurchaseOrderProductInput> children) {
 		this.children = children;
 	}
 
-	private List<Im_Purchase_Order_Products> children;
-
-	// Getters and Setters
-
 	@Override
 	public String toString() {
-		return "Im_Purchase_Order [purchase_order_id=" + purchase_order_id + ", purchase_order_date="
+		return "PurchaseOrderInput [purchase_order_id=" + purchase_order_id + ", purchase_order_date="
 				+ purchase_order_date + ", purchase_order_amount=" + purchase_order_amount + ", vendor_id=" + vendor_id
 				+ ", purchase_order_expected_date=" + purchase_order_expected_date + ", purchase_order_status="
 				+ purchase_order_status + ", user_id=" + user_id + ", last_updated_user=" + last_updated_user
@@ -126,7 +123,7 @@ public class PurchaseOrderInput {
 
 	public PurchaseOrderInput(int purchase_order_id, Date purchase_order_date, BigDecimal purchase_order_amount,
 			int vendor_id, Date purchase_order_expected_date, String purchase_order_status, int user_id,
-			String last_updated_user, Date last_updated_date, List<Im_Purchase_Order_Products> children) {
+			String last_updated_user, Date last_updated_date, List<PurchaseOrderProductInput> children) {
 		super();
 		this.purchase_order_id = purchase_order_id;
 		this.purchase_order_date = purchase_order_date;
