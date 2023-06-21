@@ -1,8 +1,14 @@
 package main.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import main.dao.users.StoreUsersDAO;
+import main.dao.users.WarehouseUsersDAO;
+import main.dao.vendor.VendorsDAO;
+
 
 @Controller
 public class AdminControllers {
@@ -110,9 +116,5 @@ public class AdminControllers {
 		return "admin/reports";
 	}
 
-	@GetMapping("/logout")
-	public String logout() {
-		return "login/login";
-	}
 
 }
