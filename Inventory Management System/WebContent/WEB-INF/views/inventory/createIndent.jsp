@@ -276,7 +276,7 @@
     
     	 $.ajax({
      	     url :"getProductCategories",
-     	     method :"get",
+     	     method :"post",
      	   success : function(data) {
               $.each(data, function(index, category) {
                   var option = '<option value="' + category.productCategoryId + '">' + category.productCategoryName + '</option>';

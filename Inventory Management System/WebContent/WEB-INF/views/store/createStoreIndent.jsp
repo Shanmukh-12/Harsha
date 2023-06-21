@@ -24,7 +24,7 @@
             vertical-align: middle;
         }
 
-        input[type="text"] {
+        input[type="text"],select {
             width: 200px;
             padding: 5px;
             vertical-align: middle;
@@ -74,18 +74,35 @@
     </style>
     <script>
         $(document).ready(function () {
-/*         	$.ajax({
-        		url:"getStoreData",
+         	$.ajax({
+        		url:"getStoreIds",
         		method:"post",
         		dataType:"json",
-        		success:function(response){
-        			console.log(response);
+        		success:function(storeData){
+        		    var select = document.getElementById('storeId');
+        		    
+        		    // Clear any existing options
+        		    select.innerHTML = '';
+
+        	           var nonSelectableOption = document.createElement('option');
+        	            nonSelectableOption.disabled = true;
+        	            nonSelectableOption.selected = true;
+        	            nonSelectableOption.textContent = 'Select a Store';
+        	            select.appendChild(nonSelectableOption);
+
+        	            // Iterate over the store data and create options
+        		    for (var i = 0; i < storeData.length; i++) {
+        		        var option = document.createElement('option');
+        		        option.value = storeData[i].storeId;
+        		        option.textContent = storeData[i].storeName+" ("+storeData[i].storeId+")";
+        		        select.appendChild(option);
+        		    }
         		},
         		error:function(){
         			console.log("Unable to load store Data");
         		}
         	});
- */            var productIds = [];
+             var productIds = [];
 
             $('#addButton').click(function () {
                 var productId = $('#productId').val();
@@ -198,35 +215,40 @@
     <div class="container" align="center">
         <h1>Store Indents</h1><br><br>
 
-        <form id="indentForm" onsubmit="createIndent();return false">
-            <div>
-                <label for="storeId">Store ID:</label>
-                <input type="text" id="storeId" name="StoreID" required><br><br>
-            </div>
-            <div>
-                <label for="productId">Product ID:</label>
-                <input type="text" id="productId" name="Indents_Products_ID"><br><br>
-            </div>
-            <div>
-                <label for="quantity">Quantity:</label>
-                <input type="text" id="quantity"  name="Indents_Products_Quantity"><br><br>
-            </div>
-            <button type="button" id="addButton">Add</button><br><br>
-            <table id="inventoryTable" border="1">
-                <thead>
-                    <tr>
-                        <th id="productId">Product ID</th>
-                        <th id="quantity">Quantity</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="no-data">
-                        <td colspan="3">No data</td>
-                    </tr>
-                </tbody>
-            </table>
-            <input type="submit">
- 
- </form>
-    </div>
+	<form id="indentForm" onsubmit="createIndent();return false">
+		<div>
+			<label for="storeId">Store ID:</label> <select id="storeId"
+				name="StoreID" required></select><br>
+			<br>
+		</div>
+		<div>
+			<label for="productId">Product ID:</label> <input type="text"
+				id="productId" name="Indents_Products_ID"><br>
+			<br>
+		</div>
+		<div>
+			<label for="quantity">Quantity:</label> <input type="text"
+				id="quantity" name="Indents_Products_Quantity"><br>
+			<br>
+		</div>
+		<button type="button" id="addButton">Add</button>
+		<br>
+		<br>
+		<table id="inventoryTable" border="1">
+			<thead>
+				<tr>
+					<th id="productId">Product ID</th>
+					<th id="quantity">Quantity</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="no-data">
+					<td colspan="3">No data</td>
+				</tr>
+			</tbody>
+		</table>
+		<input type="submit">
+
+	</form>
+</div>

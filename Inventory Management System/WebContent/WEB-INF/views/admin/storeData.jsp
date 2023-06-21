@@ -50,30 +50,57 @@ tr:nth-child(even) {
 }
 </style>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "showStores",
+        method: "GET",
+        dataType: "json",
+        success: function(data) {
+            var tableBody = $("<tbody>");
+
+            data.forEach(function(store) {
+                var row = $("<tr>");
+                $("<td>").text(store.storeId).appendTo(row);
+                $("<td>").text(store.storeName).appendTo(row);
+                $("<td>").text(store.storeAddress).appendTo(row);
+                $("<td>").text(store.storeContactNumber).appendTo(row);
+                $("<td>").text(store.status).appendTo(row);
+                row.appendTo(tableBody);
+            });
+
+            // Replace the existing table body with the new one
+            $("#storeTable tbody").replaceWith(tableBody);
+        },
+        error: function() {
+            console.log("Error");
+        }
+    });
+});
+</script>
 <div class="container">
-	<h1>Stores List</h1>
-	<div class="table-container">
-		<table>
-			<thead>
-				<tr>
-					<th>Store ID</th>
-					<th>Store Name</th>
-					<th>Store Address</th>
-					<th>Store Contact Number</th>
-					<th>Store Status</th>
-				</tr>
-			</thead>
-			<tbody>
-				<c:forEach var="store" items="${stores}">
-					<tr>
-						<td>${store.storeId}</td>
-						<td>${store.storeName}</td>
-						<td>${store.storeAddress}</td>
-						<td>${store.storeContactNumber}</td>
-						<td>${store.status}</td>
-					</tr>
-				</c:forEach>
-			</tbody>
-		</table>
-	</div>
+    <h1>Stores List</h1>
+    <div class="table-container">
+        <table id="storeTable">
+            <thead>
+                <tr>
+                    <th>Store ID</th>
+                    <th>Store Name</th>
+                    <th>Store Address</th>
+                    <th>Store Contact Number</th>
+                    <th>Store Status</th>
+                </tr>
+            </thead>
+            <!-- Empty tbody for initial loading -->
+            <tbody></tbody>
+        </table>
+    </div>
 </div>
+
+
+
+
+
+

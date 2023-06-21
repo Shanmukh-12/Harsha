@@ -6,10 +6,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import main.dao.products.ProductCategoryDAO;
 import main.dao.products.ProductsDAO;
@@ -29,13 +30,29 @@ public class ProductControllers {
 	@Autowired
 	ProductCategoryDAO productCategoryDAO;
 
-	@GetMapping("/getProductCategories")
+	@PostMapping("/getProductCategories")
 	public @ResponseBody List<ProductsCategory> getProductCategories(
 			@ModelAttribute("categoryInputModel") CategoryRequest categoryInputModel, Model model) {
 		List<ProductsCategory> productCategory = productCategoryDAO.getProductCategories();
 		System.out.println(productCategory);
 		return productCategory;
 	}
+	@PostMapping("/getProducts")
+    public @ResponseBody List<ProductStockData> getProducts(String categoryId, Model model) {
+	 ObjectMapper objectMapper = new ObjectMapper();
+	 CategoryRequest categoryRequest = null;
+	try {
+		categoryRequest = objectMapper.readValue(categoryId,CategoryRequest.class);
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	} 
+	 System.out.println(categoryRequest.getCategoryId());
+
+        int selectedCategoryId = categoryRequest.getCategoryId();
+        List<ProductStockData> products = productsDAO.getProductsByCategory(selectedCategoryId);
+        return products;
+    }
 
 	@PostMapping("/getProductStockData")
 	public @ResponseBody List<ProductStockData> getProducts(

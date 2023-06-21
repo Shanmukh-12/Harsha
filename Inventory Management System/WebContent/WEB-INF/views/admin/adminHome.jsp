@@ -1,4 +1,3 @@
-
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
@@ -109,6 +108,9 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <script>
+	$(document).ready(function(){
+ 		Myfunction2('warehousestock');
+ 	});
 function logout() {
     $.ajax({
         url: "logout",
@@ -138,6 +140,95 @@ function logout() {
 			}
 		});
 	}
+	function logout() {
+	    $.ajax({
+	        url: "logout",
+	        method: "GET",
+	        success: function(response) {
+	            console.log("Logout successful");
+	            console.log(response);
+	            location.href= "/inventory/";
+	        },
+	        error: function() {
+	            console.log("Logout error");
+	        }
+	    });
+	}
+	function Myfunction2(containerurl) {
+        $.ajax({
+            url: containerurl,
+            method: "GET",
+            success: function (response) {
+                console.log("AJAX call successful");
+              
+                $("#content").html(response);
+                var ctx1 = document.getElementById('myChart');
+                ctx1.width = 300; // Set the width
+                ctx1.height = 130;
+                var ctx = ctx1.getContext('2d');
+
+            	$.ajax({
+            		  url: "getStock",
+            		  type: "GET",
+            		  dataType:"json",
+            		  success: function(response) {
+            		    // Handle the response from the servlet if needed
+            		     console.log(response);
+            		    var name=[];
+            		    var stock=[];
+            		    response.forEach(function(value)
+            		    {
+            		    stock.push(value.stock.product_stock);
+            		    name.push(value.product.product_name);
+            		    	
+            		    })
+            		    
+            		    
+
+            		 // Define chart data
+            		 var data = {
+            		   labels: name,
+            		   datasets: [{
+            		     label: 'stock',
+            		     data: stock,
+            		     
+            		     backgroundColor: 'rgba(54, 162, 235, 0.5)', // Bar color
+            		     borderColor: 'rgba(54, 162, 235, 1)', // Border color
+            		     borderWidth: 1 // Border width
+            		   }]
+            		 };
+            	
+            	var myChart = new Chart(ctx, {
+            		  type: 'bar',
+            		  data: data,
+            		  responsive: true,
+            		    maintainAspectRatio: false,
+            		  width: 100,
+         		     height: 100,
+            		  options: {
+            		    scales: {
+            		    	
+            		      y: {
+            		        beginAtZero: true
+            		      }
+            		    }
+            		  }
+            		});
+            		  },
+            		  error: function() {
+            		    // Handle errors
+            		    console.error("AJAX request failed.");
+            		  }
+            		});
+
+               	
+               
+            },
+            error: function () {
+                console.log("AJAX call error");
+            }
+        });
+    }
 </script>
 
 <body>
@@ -150,7 +241,7 @@ function logout() {
 			<div class="list-group list-group-flush my-3">
 				<button
 					class="list-group-item list-group-item-action bg-transparent second-text active"
-					onclick="clicked('warehouseStock')">
+					onclick="Myfunction2('warehousestock')">
 					<i class="fas fa-tachometer-alt me-2"></i>WareHouse Stock
 				</button>
 				<div class="dropdown">
@@ -163,12 +254,12 @@ function logout() {
 					<ul class="dropdown-menu" aria-labelledby="grnDropdown">
 						<li><button class="dropdown-item"
 								onclick="clicked('addVendor')">New Vendor</button></li>
-						<li><button class="dropdown-item" onclick="clicked('update')">Update
+						<li><button class="dropdown-item" onclick="clicked('updateVendor')">Update
 								Vendor</button></li>
 						<li><button class="dropdown-item"
-								onclick="clicked('deleteVendor')">Delete Vendor</button></li>
+								onclick="clicked('deleteVendorPage')">Delete Vendor</button></li>
 						<li><button class="dropdown-item"
-								onclick="clicked('showVendors')">Get Vendors</button></li>
+								onclick="clicked('displayVendors')">Get Vendors</button></li>
 
 					</ul>
 				</div>
@@ -182,11 +273,11 @@ function logout() {
 					</button>
 					<ul class="dropdown-menu" aria-labelledby="usersDropdown">
 						<li><button class="dropdown-item"
-								onclick="clicked('addUser')">New User</button></li>
+								onclick="clicked('addUserPage')">New User</button></li>
 						<li><button class="dropdown-item"
-								onclick="clicked('deleteUser')">Delete User</button></li>
+								onclick="clicked('deleteUserPage')">Delete User</button></li>
 						<li><button class="dropdown-item"
-								onclick="clicked('showUsers')">Get User</button></li>
+								onclick="clicked('displayUserPage')">Get User</button></li>
 					</ul>
 				</div>
 				<div class="dropdown">
@@ -198,11 +289,11 @@ function logout() {
 					</button>
 					<ul class="dropdown-menu" aria-labelledby="usersDropdown">
 						<li><button class="dropdown-item"
-								onclick="clicked('addStore')">Add Store</button></li>
+								onclick="clicked('addStorePage')">Add Store</button></li>
 						<li><button class="dropdown-item"
-								onclick="clicked('deleteStores')">Delete Store</button></li>
+								onclick="clicked('deleteStorePage')">Delete Store</button></li>
 						<li><button class="dropdown-item"
-								onclick="clicked('showStores')">Get Store</button></li>
+								onclick="clicked('displayStorePage')">Get Store</button></li>
 					</ul>
 				</div>
 

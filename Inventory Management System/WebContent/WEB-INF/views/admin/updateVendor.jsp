@@ -9,6 +9,29 @@
 </style>
 <script>
 $(document).ready(function() {
+    $.ajax({
+        url: "getVendor",
+        method: "POST",
+        dataType: "json",
+        success: function(data) {
+            console.log(data);
+            var dropdown = $("#vendorId");
+            dropdown.empty(); // Clear existing options
+
+            var defaultOption = $("<option>").val("").text("Select Vendor ID");
+            dropdown.append(defaultOption);
+
+            data.forEach(function(vendor) {
+                var option = $("<option>").val(vendor.vendorId).text("{" + vendor.vendorId + "} - " + vendor.vendorName);
+                dropdown.append(option);
+            });
+        },
+        error: function() {
+            console.log("Error");
+        }
+    });
+});
+$(document).ready(function() {
     $("#vendorId").change(function() {
         var vendorId = $(this).val();
         if (vendorId) {
@@ -88,9 +111,6 @@ $(document)
 				<label for="vendorId">Vendor ID:</label> <select
 					class="form-control" id="vendorId" name="vendorId" required>
 					<option value="">Select Vendor ID</option>
-					<c:forEach var="vendor" items="${vendors}">
-						<option value="${vendor.vendorId}">${vendor.vendorId} (${vendor.vendorName})</option>
-					</c:forEach>
 				</select>
 			</div>
 

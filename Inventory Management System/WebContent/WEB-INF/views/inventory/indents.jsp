@@ -92,7 +92,7 @@
         var currentPageUrl = window.location.href;
         $.ajax({
           url: "indentProductsButton",
-          method: "GET",
+          method: "post",
           success: function (response) {
             $("#modalContent").html(response);
             $("#productsModal").modal("show");
@@ -108,7 +108,7 @@
 </head>
 <body>
 
-<form method="GET" action="">
+<form method="post" action="">
     <div class="container">
         <h1 class="text-center mb-4">Indents List</h1>
         <c:forEach items="${indents}" var="indent">

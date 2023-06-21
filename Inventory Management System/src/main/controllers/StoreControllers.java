@@ -1,58 +1,75 @@
 package main.controllers;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import main.dao.users.StoreUsersDAO;
-import main.dto.users.StoreDto;
-import main.models.storeModels.entities.Store;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import main.dao.users.StoreUsersDAO;
+import main.models.storeModels.entities.Store;
+import main.models.storeModels.inputmodels.StoreId;
+import main.models.storeModels.inputmodels.StoreInfo;
+import main.models.storeModels.outputmodels.StoreIds;
 
 @Controller
 public class StoreControllers {
 	@Autowired
 	public StoreUsersDAO storeDAO;
+	@Autowired
+	ModelMapper mapper;
 
-	@GetMapping("/createStore")
-	public String showCreateForm(Model model) {
-		model.addAttribute("store", new Store());
-		return "admin/addStore";
-	}
-
+	// Saving Store Information
 	@PostMapping("/saveStore")
-	public ResponseEntity<String> saveStore(@RequestBody Store store) {
-	    try {
-	        System.out.println(store);
-	        storeDAO.saveStore(store);
-	        return ResponseEntity.ok("Store added successfully.");
-	    } catch (Exception e) {
-	    	e.printStackTrace();
-	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while saving the store.");
-	    }
+	public String saveStore(@RequestBody String data, Model model) {
+		StoreInfo storeInfo = null;
+		ObjectMapper objectMapper = new ObjectMapper();
+		try {
+			storeInfo = objectMapper.readValue(data, StoreInfo.class);
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		Store s = mapper.map(storeInfo, Store.class);
+		storeDAO.saveStore(s);
+		return "admin/adminHome";
+
 	}
 
+	// Getting Store Id and Name for Drop down
+	@PostMapping("/getStore")
+	public @ResponseBody List<StoreIds> deleteStore(Model model) {
 
+		List<Store> stores = storeDAO.getAllActiveStores();
+
+		List<StoreIds> storeOutputs = stores.stream().map(store -> mapper.map(store, StoreIds.class))
+				.collect(Collectors.toList());
+
+		return storeOutputs;
+	}
+
+	// Delete store
+	@PostMapping("/deleteStoreData")
+	public String deleteStore(@RequestBody StoreId store) {
+		storeDAO.deleteStore(store);
+		return "admin/success";
+	}
+
+	// Getting Store Information
 	@GetMapping("/showStores")
-	public String createStore(Model m) {
-		m.addAttribute("stores", storeDAO.getAllStores());
-		System.out.println("Store created");
-		return "admin/storeData";
-	}
-
-	@RequestMapping(value = "/getStoreData", method = RequestMethod.POST)
-	@ResponseBody
-	public Store getStoreData(@RequestBody StoreDto v) {
-		Store store = storeDAO.getStoreData(v);
-		return store;
+	public @ResponseBody List<Store> showStores() {
+		return storeDAO.getAllStores();
 	}
 
 	@GetMapping("/storeHome")

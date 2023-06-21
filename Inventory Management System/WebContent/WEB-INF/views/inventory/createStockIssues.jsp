@@ -13,7 +13,35 @@
       width:1000px;
   
   }
+  
+    #htag{
+  position: relative;
+  top: 10px;
+  margin-left: 450px;
 
+  }
+  
+  #h1tag
+  {   
+     position: relative;
+    top: 10px;
+     margin-left: 500px;
+  }
+
+   #addButton
+    {
+        margin-left: 450px;
+        border-radius:6px;
+       width:120px;
+      height:40px;
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+      
+    }
     table {
       border-collapse: collapse;
       margin-bottom: 20px;
@@ -82,16 +110,42 @@
     }
     #products-dropdown
     {
-    display:flex;
+     display:flex;
      margin-left:650px;
-     padding-bottom:5px;
+     padding-bottom:10px;
      
     }
+     #products-dropdown1
+    {
+     display:flex;
+     margin-left:640px;
+     padding-bottom:10px;
+     
+    }
+    #product-category{
+    
+     padding-left:20px;
+     padding-right:20px;
+     
+    
+    }
     #products-dropdown label{
-    display: block;
+     display: block;
       font-weight: bold;
+      font-size: 20px;
       color: #333;
-      margin-bottom: 5px;
+      margin-bottom: 10px;
+      margin-left:200px;
+      margin-right: 10px;
+    }
+     #products-dropdown1 label{
+     display: block;
+      font-weight: bold;
+      font-size: 20px;
+      color: #333;
+      margin-bottom: 10px;
+      margin-left:200px;
+      margin-right: 10px;
     }
     #products-table input{
     
@@ -126,28 +180,74 @@
     }
 
   </style>
+  <script>
+  
+  
+  $(document).ready(funtion(){
+	$.ajax(function(){
+	     url:'getProductCategories',
+	     method:'POST',
+	     success:function(category){
+	    	 
+	    	   var dropdown = document.getElementById('product-category');
+
+	    	    // Clear any existing options
+	    	    dropdown.innerHTML = '';
+
+	    	    // Iterate over the list of objects
+	    	    response.forEach(function(obj) {
+	    	      var option = document.createElement('option');
+	    	      
+	    	      // Set the value and display text for the option
+	    	      option.value = obj.productCategoryId;
+	    	      option.textContent = obj.productCategoryName;
+	    	      
+	    	      // Append the option to the dropdown
+	    	      dropdown.appendChild(option);
+	    	    }
+	    	  },
+	    	  error: function(error) {
+	    	    console.log("error occured");
+	    	  }
+	    	 
+	     });
+	    	    
+	    	    
+  </script>
 </head>
 <body>
-  <h2 align="center">Create Stock Issue</h2>
-  <div style="margin-bottom:20px">
-   <div id="products-dropdown" align="right">
-    <label for="product-category">Product Category</label>
-    <select id="product-category">
-      <option value="category1">Soaps & Lotions</option>
-      <option value="category2">Category 2</option>
-      <option value="category3">Category 3</option>
+  <h2 id="htag">Create Stock Issue</h2>
+    <div style="margin-bottom:20px">
+    <div id="products-dropdown" align="right" >
+    <label for="stores-list">Stores List: </label>
+    <select id="stores-list">
+      <option value="category1">D-Mart</option>
+      <option value="category2">More</option>
+      <option value="category3">Spencer's</option>
     </select>
-  </div>
+    </div>
+    
+     <div style="margin-bottom:20px">
+   <div id="products-dropdown1" align="right" >
+    <label for="product-category">Indents List: </label>
+    <select id="product-category">
+      <option value="category1">101</option>
+      <option value="category2">102</option>
+      <option value="category3">103</option>
+    </select>
+    </div>
+  
   
   <div id="first_table">
     <table id="product-details-table">
       <thead>
         <tr>
+           <th>Indent ID</th>
           <th>Product ID</th>
           <th>Product Name</th>
-          <th>Batch No.</th>
-          <th>Stock</th>
-          <th>Add</th>
+          <th>Requested Quantity</th>
+          <th>Action</th>
+         
         </tr>
       </thead>
       <tbody>
@@ -197,25 +297,28 @@
     </table>
   </div>
 </div>
-  <h2 align="center" style="margin-bottom:5px">Indents List</h2>
+
+  
+
+  <h2 id="h1tag" style="margin-bottom:30px">Indents List</h2>
 
   <div id="addedproducts">
     <form>
       <table class="table bg-white rounded shadow-sm table-hover" id="products-table">
         <thead>
           <tr>
-            <th>Product ID</th>
-            <th>Product Name</th>
-            <th>Batch No.</th>
-            <th>Stock</th>
-            <th>Required Stock</th>
-            <th>Action</th>
+            <th>Indent ID</th>
+          <th>Product ID</th>
+          <th>Product Name</th>
+          <th>Requested Quantity</th>
+          <th>Issued Quantity</th>
+          <th>Action</th>
           </tr>
         </thead>
         <tbody>
         </tbody>
       </table>
-      <button type="button" id="createIndentButtonId" ">Create</button>
+      <button type="button" id="addButton" >Issue Stock</button>
     </form>
   </div>
   

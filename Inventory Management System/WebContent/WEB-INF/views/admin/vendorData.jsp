@@ -48,12 +48,37 @@
     }
 </style>
 
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "showVendors",
+        method: "GET",
+        dataType: "json",
+        success: function(data) {
+            var tableBody = $("#vendorTable tbody");
+            tableBody.empty(); // Clear existing table data
 
+            data.forEach(function(vendor) {
+                var row = $("<tr>");
+                $("<td>").text(vendor.vendorId).appendTo(row);
+                $("<td>").text(vendor.vendorName).appendTo(row);
+                $("<td>").text(vendor.vendorAddress).appendTo(row);
+                $("<td>").text(vendor.vendorPhone).appendTo(row);
+                $("<td>").text(vendor.status).appendTo(row);
+                row.appendTo(tableBody);
+            });
+        },
+        error: function() {
+            console.log("Error");
+        }
+    });
+});
+</script>
 
 <div class="container">
     <h1>Vendor List</h1>
     <div class="table-container">
-        <table>
+        <table id="vendorTable">
             <thead>
                 <tr>
                     <th>Vendor ID</th>
@@ -64,15 +89,7 @@
                 </tr>
             </thead>
             <tbody>
-                <c:forEach var="vendor" items="${vendors}">
-                    <tr>
-                        <td>${vendor.vendorId}</td>
-                        <td>${vendor.vendorName}</td>
-                        <td>${vendor.vendorAddress}</td>
-                        <td>${vendor.vendorPhone}</td>
-                        <td>${vendor.status}</td>
-                    </tr>
-                </c:forEach>
+                <!-- Table body will be populated dynamically using AJAX -->
             </tbody>
         </table>
     </div>

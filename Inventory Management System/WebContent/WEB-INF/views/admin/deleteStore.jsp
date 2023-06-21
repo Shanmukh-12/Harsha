@@ -9,6 +9,30 @@
 }
 </style>
 <script>
+$(document).ready(function() {
+    $.ajax({
+        url: "getStore",
+        method: "POST",
+        dataType: "json",
+        success: function(data) {
+            console.log(data);
+            var dropdown = $("#storeId");
+            dropdown.empty(); // Clear existing options
+
+            var defaultOption = $("<option>").val("").text("Select Store ID");
+            dropdown.append(defaultOption);
+
+            data.forEach(function(store) {
+                var option = $("<option>").val(store.storeId).text("{" + store.storeId + "} - " + store.storeName);
+                dropdown.append(option);
+            });
+        },
+        error: function() {
+            console.log("Error");
+        }
+    });
+});
+
 	function deleteStore() {
 		// Retrieve form data
 		var storeId = $("#storeId").val();
@@ -21,7 +45,7 @@
 		if (userConfirmed) {
 			// Send the data to the backend using AJAX
 			$.ajax({
-				url : "deleteStore",
+				url : "deleteStoreData",
 				type : "POST",
 				contentType : "application/json",
 				data : JSON.stringify({
@@ -49,10 +73,6 @@
 				<label for="storeId">Store Id:</label> <select class="form-control"
 					id="storeId" name="storeId" required>
 					<option value="">Select Store Name</option>
-					<c:forEach var="store" items="${stores}">
-						<option value="${store.storeId}">${store.storeName}
-							(${store.storeId})</option>
-					</c:forEach>
 				</select>
 			</div>
 

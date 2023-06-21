@@ -118,6 +118,36 @@
       text-overflow: ellipsis;
     }
     
+     #updateButton
+    {
+       margin-left: 160px;
+        border-radius:6px;
+       width:80px;
+      height:40px;
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    
+    #addButton
+    {
+        margin-left: 120px;
+        border-radius:6px;
+       width:120px;
+      height:40px;
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+      
+    }
+    
+    
     
   </style>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
@@ -217,6 +247,7 @@
 
         // Get input values
         var productname = document.getElementById("productnameid").value;
+        var batchno = document.getElementById("batchnoid").value;
         var originalcost = document.getElementById("originalcostid").value;
         var modifiedcost = document.getElementById("modifiedcostid").value;
         var reason =  document.getElementById("reasonid").value;
@@ -229,6 +260,9 @@
         // Insert cells with product details
         var productnameCell = newRow.insertCell();
         productnameCell.innerHTML = productname;
+        
+        var batchnoCell = newRow.insertCell();
+        batchnoCell.innerHTML = batchno;
 
         var originalcostCell = newRow.insertCell();
         originalcostCell.innerHTML = originalcost;
@@ -244,6 +278,7 @@
 
         // Clear input fields
         document.getElementById("productnameid").value = "";
+        document.getElementById("batchnoid").value = "";
         document.getElementById("originalcostid").value = "";
         document.getElementById("modifiedcostid").value = "";
         document.getElementById("reasonid").value = "";
@@ -256,130 +291,138 @@
       
       
       
-      $(document).onchange(funtion(){
-      	$.ajax(function({
-      	     url:'getProductCategory',
-      	     method:'POST',
-      	     success:function(category){
-      	    	 
-      	    	   var dropdown = document.getElementById('productcategoryid');
-
-      	    	    // Clear any existing options
-      	    	    dropdown.innerHTML = '';
-
-      	    	    // Iterate over the list of objects
-      	    	    response.forEach(function(obj) {
-      	    	      var option = document.createElement('option');
-      	    	      
-      	    	      // Set the value and display text for the option
-      	    	      option.value = obj.categoryid;
-      	    	      option.textContent = obj.categoryname;
-      	    	      
-      	    	      // Append the option to the dropdown
-      	    	      dropdown.appendChild(option);
-      	    	    });
-      	    	  },
-      	    	  error: function(error) {
-      	    	    // Handle error
-      	    	  }
-      	    	 
-      	     }))
-      	});
-        
-        
-        $document.onchange(function(){
-        	$.ajax(function({
-        		
-        		url:'getProductName',
-        		method:'POST',
-        		success:function(name){
-        			
-        			  var dropdown = document.getElementById('productnameid');
-
-      	    	    // Clear any existing options
-      	    	    dropdown.innerHTML = '';
-
-      	    	    // Iterate over the list of objects
-      	    	    response.forEach(function(obj) {
-      	    	      var option = document.createElement('option');
-      	    	      
-      	    	      // Set the value and display text for the option
-      	    	      option.value = obj.productnameid;
-      	    	      option.textContent = obj.productname;
-      	    	      
-      	    	      // Append the option to the dropdown
-      	    	      dropdown.appendChild(option);
-      	    	    });
-      	    	  },
-      	    	  error: function(error) {
-      	    	    // Handle error
-        			
-        			}
-        		
-        		}))
+      $(document).ready(function(){
+        	$.ajax({
+        	     url :"getProductCategories",
+        	     method :"post",
+        	   success : function(data) {
+                 $.each(data, function(index, category) {
+                     var option = '<option value="' + category.productCategoryId + '">' + category.productCategoryName + '</option>';
+                     $('#productcategoryid').append(option);
+                 });
+             },
+             error: function() {
+                 alert('Error occurred while retrieving categories.');
+             }
+        	    	  
         	});
-        	
-        $document.onchange(fucntion(){
-      	  $.ajax(function({
-      		  
-      		  url:'getProductBatchNo',
-      		  method:'POST',
-      		  success:function(name){
-      			  
-      			  
-      			  var dropdown = document.getElementById('batchnoid');
-
-    	    	    // Clear any existing options
-    	    	    dropdown.innerHTML = '';
-
-    	    	    // Iterate over the list of objects
-    	    	    response.forEach(function(obj) {
-    	    	      var option = document.createElement('option');
-    	    	      
-    	    	      // Set the value and display text for the option
-    	    	      option.value = obj.batchnoid;
-    	    	      option.textContent = obj.batchnoname;
-    	    	      
-    	    	      // Append the option to the dropdown
-    	    	      dropdown.appendChild(option);
-    	    	    });
-    	    	  },
-    	    	  error: function(error) {
-    	    	    // Handle error
-      			
-      			}
-      			 	  
-      		  
-      	  }))
-      	  
-      });
-        
-        $document.onchange(fucntion(){
-      	  $.ajax(function({
-      		  url:'getOriginalCost',
-      		  method:'POST',
-      		  success:function(name){
-      			  
-      			  
-   			   var textField = document.getElementById('originalcostid');
-
-   			    // Extract the desired values from the list of objects
-   			    var values = response.map(function(obj) {
-   			      return obj.property; // Replace 'property' with the actual property name
-   			    });
-
-   			    // Set the text field value by joining the extracted values
-   			    textField.value = values.join(', ');
-   			  },
-   			  error: function(error) {
-   			    // Handle error
-   			  }
-   			  
-      			  
-      		  }))
-      	  
-        });
+        	    	 
     
+          $("#productcategoryid").change(function() {
+          	
+              $.ajax({
+                  url : "getProductStockData",
+                  method : "post",
+                  data:{
+                  	
+                  	categoryId : $("#productcategoryid").val()
+                  	
+                  },
+                  success: function(data) {
+                      $('#productnameid').empty();
+                      var option = '<option >' + "select Product" + '</option>';
+                      $('#productnameid').append(option);
+                      $.each(data, function(index, products) {
+                          var option = '<option value="' + products.productId + '">' + products.productName + '</option>';
+                          $('#productnameid').append(option);
+                      });
+                  },
+                  error: function() {
+                      alert('Error occurred while retrieving products.');
+                  }
+              });
+          });
+
+          $("#productnameid").change(function() {
+              $.ajax({
+                  url : "getProductBatchNos",
+                  method : "post",
+                  data : {
+                      "productId": $('#productnameid').val()
+                  },
+                  success: function(data) {
+                      $('#batchnoid').empty();
+                      var option = '<option >' + "select batchNo" + '</option>';
+                      $('#batchnoid').append(option);
+                      $.each(data, function(index, batches) {
+                      	
+                          var option = '<option value="' + batches.batchNo + '">' + batches.batchNo + '</option>';
+                          $('#batchnoid').append(option);
+                      });
+                  },
+                  error: function() {
+                      alert('Error occurred while retrieving batchnos.');
+                  }
+              });
+          });
+
+          $("#batchnoid").change(function() {
+              $.ajax({
+                  url : "getProductQuantityOrPrice",
+                  method : "post",
+                  data:{
+                  	"productId": $('#productnameid').val(),
+                  	"batchNo": $('#batchnoid').val()
+                  	
+                  },
+                  success : function(Price) {
+                  	console.log("hi");
+                  	$('#originalcostid').val(Price.costPrice);
+                  },
+                  error: function(error) {
+                	  alert('Error occurred while retrieving cost price');
+                  }
+              });
+          });
+          
+          function getTableData() {
+        	  const table = document.getElementById('products-table');
+        	  const tableData = [];
+        	  
+        	  for (let i = 1; i < table.rows.length; i++) {
+        	    const row = table.rows[i];
+        	    const rowData = {};
+
+        	    rowData["product_id"] = row.cells[0].innerText;
+        	    rowData["batch_no"] = row.cells[1].innerText;
+        	    rowData["old_Price"] = row.cells[2].innerText;
+        	    rowData["new_price"] = row.cells[3].innerText;
+        	    rowData["review_desc"] = row.cells[4].innerText;
+        	    
+
+        	    tableData.push(rowData);
+        	  }
+
+        	  const jsonData = {
+        			  
+        	    "productsList": tableData
+        	  };
+
+        	  return jsonData;
+        	}
+        
+        
+        
+        
+        $("#updateButton").click(function() {
+         	var data = getTableData();
+           	const jsonData = JSON.stringify(data);
+          		console.log(jsonData);
+            $.ajax({
+                url : "createPriceReview",
+                method : "post",
+                data:{"jsonData":jsonData},
+                success : function(data) {
+                	alert('Prices updated successfully');
+                	
+                },
+                error: function(error) {
+                	 alert('Error occurred while saving prices');
+                }
+            });
+        });
+          
+        });
   </script>
   
 </head>
@@ -392,27 +435,20 @@
     <label for="productcategoryid">Product Category:</label>
     <select id="productcategoryid" name="ProductCategory" onblur="validateProductCategory()">
       <option value="">Select Category</option>
-      <option value="option1">Option 1</option>
-      <option value="option2">Option 2</option>
-      <option value="option3">Option 3</option>
+
     </select>
     <span id="productcategory-error" class="error-message"></span>
     
     <label for="productnameid">Product Name:</label>
     <select id="productnameid" name="ProductName" onblur="validateProductName()">
-      <option value="">Select Name</option>
-      <option value="option1">Option 1</option>
-      <option value="option2">Option 2</option>
-      <option value="option3">Option 3</option>
+   
+    
     </select>
     <span id="productname-error" class="error-message"></span>
     
     <label for="batchnoid">Batch No:</label>
     <select id="batchnoid" name="BatchNo" onblur="validateBatchNo()">
-      <option value="">Select Batch No</option>
-      <option value="option1">Option 1</option>
-      <option value="option2">Option 2</option>
-      <option value="option3">Option 3</option>
+   
     </select>
     <span id="batchno-error" class="error-message"></span>
     
@@ -428,7 +464,7 @@
     <textarea id="reasonid" name="Reason" rows="4" cols="42" onblur="validateReason()"></textarea>
     <span id="reason-error" class="error-message"></span>
     
-    <button type="button" style="margin-left: 120px; background-color: #4CAF50; color:white; border: none; border-radius: 5px; width: 120px; height: 40px;" onclick="addProduct()">Update Cost</button>
+    <button type="button" id="addButton" onclick="addProduct()">Add Cost</button>
    </div>
    
    <div id="addedproducts">
@@ -437,7 +473,8 @@
   <table class="table bg-white rounded shadow-sm  table-hover" id="products-table">
     <thead>
       <tr>
-        <th>Product Name</th>
+        <th>Product ID</th>
+        <th>Batch No</th>
         <th>Original Cost</th>
         <th>Modified Cost</th>
         <th>Reason</th>
@@ -447,6 +484,7 @@
     <tbody id="products-table-body">
     </tbody>
   </table>
+  <button type="button" id="updateButton">Update</button>
 </form>
    </div> 
     

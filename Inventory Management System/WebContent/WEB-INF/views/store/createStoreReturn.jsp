@@ -24,7 +24,7 @@
             vertical-align: middle;
         }
 
-        input[type="text"] {
+        input[type="text"],select {
             width: 200px;
             padding: 5px;
             vertical-align: middle;
@@ -74,6 +74,69 @@
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+
+$(document).ready(function () {
+ 	$.ajax({
+		url:"getStoreIds",
+		method:"post",
+		dataType:"json",
+		success:function(storeData){
+		    var select = document.getElementById('storeId');
+		    
+		    // Clear any existing options
+		    select.innerHTML = '';
+
+	           var nonSelectableOption = document.createElement('option');
+	            nonSelectableOption.disabled = true;
+	            nonSelectableOption.selected = true;
+	            nonSelectableOption.textContent = 'Select a Store';
+	            select.appendChild(nonSelectableOption);
+
+	            // Iterate over the store data and create options
+		    for (var i = 0; i < storeData.length; i++) {
+		        var option = document.createElement('option');
+		        option.value = storeData[i].storeId;
+		        option.textContent = storeData[i].storeName+" ("+storeData[i].storeId+")";
+		        select.appendChild(option);
+		    }
+		},
+		error:function(){
+			console.log("Unable to load store Data");
+		}
+	});
+ 	
+ 	$('#storeId').change(function(){
+ 	    var storeId = document.getElementById('storeId').value;
+ 	   	console.log(storeId);
+ 	  	console.log(JSON.stringify({"storeId":storeId}));
+	    
+ 		$.ajax({
+ 			url:'getStoreIssueIds',
+ 			method:"post",
+ 			dataType:"json",
+ 			data:{storeId:storeId},
+ 			success:function(response){
+ 			    var dropdown = $('#issueId');
+
+ 			    // Clear any existing options
+ 			    dropdown.empty();
+ 			    var defaultOption = $('<option disabled selected value="">Select an Issue ID</option>');
+ 			    dropdown.append(defaultOption);
+
+ 			    // Iterate over the response and add an option for each item
+ 			    response.forEach(function (item) {
+ 			      var option = $('<option></option>').attr('value', item.storeIssueId).text(item.storeIssueId);
+ 			      dropdown.append(option);
+ 			    }); 			},
+ 			error:function(response){
+ 				console.log("Error");
+ 				console.log(response);
+ 			}
+ 				
+ 		});
+ 	});
+});
+
   function getTableData() {
     const table = document.getElementById('returnsTable');
     console.log(table.rows[1]);
@@ -103,6 +166,7 @@
 
     const jsonData = {};
     jsonData['storeID'] = document.getElementById('storeId').value;
+    jsonData['issueId'] = document.getElementById('issueId').value;
     jsonData['productsList'] = tableData;
     return jsonData;
   }
@@ -113,11 +177,6 @@
     var rowCount = tbody.rows.length;
     console.log(tbody);
     console.log(rowCount);
-    // Check if the table has data
-    if (rowCount <= 1) {
-      alert('Table is empty. Add data to proceed.');
-      return;
-    }
 
     var data = getTableData();
     const jsonData = JSON.stringify(data);
@@ -125,7 +184,8 @@
     $.ajax({
       url: 'newCreateStoreReturn',
       method: 'post',
-      data: { jsonData: jsonData },
+      contentType:'application/json',
+      data: jsonData ,
       success: function (page) {
         console.log('Success');
         alert('Return successful!'); // Display alert message
@@ -141,72 +201,120 @@
       },
     });
   }
-
   $(document).ready(function () {
-    var productIds = [];
+	  var productBatchData = []; // Array to store product and batch data
 
-    $('#addButton').click(function () {
-      var productId = $('#productId').val();
-      var quantity = $('#quantity').val();
+	  $('#addButton').click(function () {
+	    var productId = $('#productId').val();
+	    var batchNo = $('#BatchNo').val();
+	    var quantity = $('#quantity').val();
+	    var reason = $('#reason').val();
 
-      if (!productId || productIds.includes(productId)) {
-        $('#productId').addClass('error');
-        return;
-      } else {
-        $('#productId').removeClass('error');
-      }
+	    // Check if productId or batchNo already exists in the table
+	    if (productId === '' || batchNo === '' || quantity===''||reason==='') {
+	      return;
+	    }
 
-      var row =
-        '<tr><td>' +
-        productId +
-        '</td><td>' +
-        quantity +
-        '</td><td><button class="deleteButton">Delete</button></td></tr>';
-      $('#returnsTable tbody').append(row);
+	    // Create a new table row
+	    var newRow = $('<tr></tr>');
 
-      productIds.push(productId);
-      $('#returnsTable tbody tr.no-data').remove(); // Remove "No data" row if it exists
-      $('#productId').val('');
-      $('#quantity').val('');
-    });
+	    // Add table cells for the form data
+	    newRow.append('<td>' + productId + '</td>');
+	    newRow.append('<td>' + batchNo + '</td>');
+	    newRow.append('<td>' + quantity + '</td>');
+	    newRow.append('<td>' + reason + '</td>');
 
-    $(document).on('click', '.deleteButton', function () {
-      var productId = $(this).closest('tr').find('td:first').text();
-      productIds = productIds.filter(function (id) {
-        return id !== productId;
-      });
-      $(this).closest('tr').remove();
+	    // Add a delete button cell
+	    newRow.append('<td><button class="deleteButton">Delete</button></td>');
 
-      if ($('#returnsTable tbody tr').length === 0) {
-        $('#returnsTable tbody').append(
-          '<tr class="no-data"><td colspan="3">No data</td></tr>'
-        );
-      }
-    });
-  });
+	    // Append the new row to the table body
+	    $('#returnsTable tbody').append(newRow);
+
+	    // Remove the "No data" row if it exists
+	    $('#returnsTable tbody tr.no-data').remove();
+
+	    // Add product and batch data to the array
+	    productBatchData.push({ productId: productId, batchNo: batchNo });
+
+	    // Clear the form fields
+	    $('#productId').val('');
+	    $('#BatchNo').val('');
+	    $('#quantity').val('');
+	    $('#reason').val('');
+	  });
+
+	  // Delete button click handler
+	  $(document).on('click', '.deleteButton', function () {
+	    var row = $(this).closest('tr');
+	    var productId = row.find('td:nth-child(1)').text();
+	    var batchNo = row.find('td:nth-child(2)').text();
+
+	    // Remove the row from the table
+	    row.remove();
+
+	    // Remove the product and batch data from the array
+	    productBatchData = productBatchData.filter(function (data) {
+	      return data.productId !== productId || data.batchNo !== batchNo;
+	    });
+
+	    // Add back the "No data" row if the table is empty
+	    if ($('#returnsTable tbody tr').length === 0) {
+	      $('#returnsTable tbody').append(
+	        '<tr class="no-data"><td colspan="5">No data</td></tr>'
+	      );
+	    }
+	  });
+	});
+
 </script>
 <div class="container" align="center">
   <h1>Store Returns</h1><br /><br />
+<div>
+	<div>
+		<label for="storeId">Store ID:</label> <select id="storeId"
+			name="StoreID" required></select><br>
+		<br>
+	</div>
+<div>
+  <label for="issueId">Issue ID:</label>
+  <select id="issueId" name="issueId" required></select><br><br>
+</div>
+</div>
+
+<table>
+	<tr>
+		<th>Product Id</th>
+		<th>Batch No</th>
+		<th>Issued Quantity</th>
+	</tr>
+</table>
 
   <form id="storeReturnsForm" onsubmit="createReturn(); return false;">
-    <div>
-      <label for="storeId">Store ID:</label>
-      <input type="text" id="storeId" name="storeId" required /><br /><br />
-    </div>
     <div>
       <label for="productId">Product ID:</label>
       <input type="text" id="productId" name="productId"  /><br /><br />
     </div>
     <div>
+      <label for="BatchNo">Batch NO:</label>
+      <input type="text" id="BatchNo" name="BatchNo"  /><br /><br />
+    </div>
+    <div>
       <label for="quantity">Quantity:</label>
       <input type="text" id="quantity" name="quantity" /><br /><br />
     </div>
-    <button type="button" id="addButton">Add</button><br /><br />
+    <div>
+      <label for="reason">Reason:</label>
+      <textarea id="reason" name="reason" ></textarea><br /><br />
+    </div>
+
+    <button type="button" id="addButton" >Add</button><br /><br />
     <table id="returnsTable" border="1">
       <thead>
         <tr>
           <th id="productId">Product ID</th>
+          <th id="batchNo">Batch NO</th>
           <th id="quantity">Quantity</th>
+          <th id="reason">Reason</th>
           <th>Action</th>
         </tr>
       </thead>

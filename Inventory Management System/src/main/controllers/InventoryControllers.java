@@ -21,7 +21,7 @@ public class InventoryControllers {
 
 	@PostMapping(value = "/createIndentButton")
 	public String CallCreateIndent() {
-		return "inventory/indents";
+		return "inventory/createIndent";
 	}
 
 	@PostMapping(value = "/adjustmentsButton")
@@ -64,11 +64,11 @@ public class InventoryControllers {
 		return "inventory/indentProducts";
 	}
 
-	// @GetMapping("/indentsButton")
-	// public String getIndentsPage(Model m) {
-	// m.addAttribute("indents", p.getAllIndents());
-	// return "inventory/indents";
-	// }
+	@PostMapping("/indentsButton")
+	public String getIndentsPage(Model m) {
+		m.addAttribute("indents", p.getAllIndents());
+		return "inventory/indents";
+	}
 
 	@PostMapping("/storeIndentsButton")
 	public String getStoreIndentsPage(Model m) {

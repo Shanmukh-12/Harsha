@@ -4,7 +4,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -43,10 +42,8 @@ public class IndentsController {
 		return "inventory/createIndent";
 	}
 
-	@GetMapping("/indentsButton")
-	public String createVendor(Model m) {
-		m.addAttribute("indents", procurementIndentsDAL.getAllIndents());
-		return "inventory/indents";
-	}
-
+	/*
+	 * @PostMapping("/indentsButton") public String createVendor(Model m) { m.addAttribute("indents",
+	 * procurementIndentsDAL.getAllIndents()); return "inventory/indents"; }
+	 */
 }

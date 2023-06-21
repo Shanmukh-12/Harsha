@@ -380,6 +380,7 @@ button:hover{
               <option value="procurement">Procurement</option>
               <option value="inventory">Inventory</option>
               <option value="admin">Admin</option>
+              <option value="store">Store</option>
             </select>
             
              <div class="forget-pass" align="right" >
@@ -419,7 +420,6 @@ function login() {
 	  var x = $('#username').val();
 	  var y = $('#password').val();
 	  var z = document.getElementById("userType").value;
-	  
 	  $.ajax({
 	    url: "login",
 	    type: "POST",
@@ -442,7 +442,11 @@ function login() {
 	        } else if (z === "admin") {
 	          // Redirect to admin dashboard
 	          window.location.href = "adminHome";
-	        }
+	        }else if(z==="store")
+			{
+	            window.location.href = "storeHome";
+	   
+	  		}
 	      } else {
 	        $('#emailError').css('color', 'red');
 	        $('#emailError').css('font-weight', 'bold');

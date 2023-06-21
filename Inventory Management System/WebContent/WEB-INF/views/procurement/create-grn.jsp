@@ -1,238 +1,464 @@
-<html>
-   <head>
-      <style>
-         .purchaseClass
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<style>
+   table {
+   border-collapse: collapse;
+   width: 100%;
+   }
+   table, th, td {
+   border: 1px solid black;
+   padding: 5px;
+   }
+   /* Styling for Add button in the purchasedItemsTable */
+   #purchasedItemsTable button {
+   background-color: #4CAF50;
+   color: white;
+   border: none;
+   padding: 5px 10px;
+   border-radius: 3px;
+   cursor: pointer;
+   }
+   .filters{
+   display:flex;
+   justify-content: space-evenly;
+   }
+   .purchaseClass1
          {
          position:relative;
-         left:620px;
-         }
-         .purchaseClass1
-         {
-         position:relative;
-         left:500px;
-          font-size: 18px;
+        right:100px;	
+         top:50px;
+        
+	     font-size: 18px;
          font-weight: bold;
          color: #333;
          text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
          }
-         .purchaseClass2
+   .purchaseClass2
          {
-         position:relative;
-         left:610px;
-         }
-         table {
-         border-width: collapse;
-         width: 100%;
-         }
-         #dataTable {
-         width: 1000px; /* Change the width value to your desired width */
-         border-collapse: collapse;
-         }
-         #dataTable td,
-         #dataTable th {
-         border: 1px solid #000; /* Change the border style and color as desired */
-         padding: 8px; /* Adjust the padding as needed */
-         }
-         th {
-         text-align: left;
-         padding: 8px;
-         border-bottom: 1px solid #ccc; /* Add border-bottom for table header */
-         }
-         label {
-         font-size: 18px;
+          position:relative;
+         left:440px;
+	     font-size: 18px;
          font-weight: bold;
          color: #333;
          text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-         padding: 10px;
-         border-radius: 5px;
          }
-         .purchaseClass {
-         font-size: 16px;
-         font-weight: bold;
-         color: #fff;
-         background-color: #6fbf73;
-         padding: 10px 20px;
-         border: none;
-         border-radius: 5px;
-         box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
-         }
-         .purchaseClass:hover {
-         background-color: #4b9d54;
-         }
-         .purchaseClass:active {
-         background-color: #3e7c46;
-         }
-         .addProductsClass{
-         font-size: 16px;
-         font-weight: bold;
-         color: #fff;
-         background-color: #6fbf73;
-         padding: 10px 20px;
-         border: none;
-         border-radius: 5px;
-         box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
-         }
-         .addProductsClass:hover {
-         background-color: #4b9d54;
-         }
-         .addProductsClass:active {
-         background-color: #3e7c46;
-         }
-      </style>
-   </head>
-   <body>
-      <h1 align="center">Create GRN</h1>
-      <br>
-      <label class="purchaseClass1">Select VendorID:</label>
-      <select id="vendorId" class="purchaseClass1" align="center" >
-         <option>897</option>
-      </select>
-      
-      <label class="purchaseClass1">Select OrderedDate:</label>
-      <input type="date" id="orderedDate" class="purchaseClass1">
-      
-      
-      <br>
-      <label class="purchaseClass1">Select PurchaseID:</label>
-      <select id="purchaseId" class="purchaseClass1" align="center" >
-         <option>782</option>
-      </select>
-      
-      
-      
-      <br><br>
-      <label class="purchaseClass1">
-         <h4> Purchased Items</h4>
-      </label>
-      <table class="table bg-white rounded shadow-sm  table-hover"  id="dataTable" align="center" >
-         <thead>
-            <tr>
-               <th scope="col">Product Id</th>
-               <th scope="col">Batch NO</th>
-               <th scope="col">Ordered Quantity</th>
-               <th scope="col">Recieved Quantity</th>
-               <th scope="col">Cost</th>
-               <th scope="col">Action</th>
-            </tr>
-         </thead>
-         <tbody>
-            <tr>
-               <td>1</td>
-               <td>2468</td>
-               <td>60</td>
-               <td>30</td>
-               <td>76836</td>
-               <td><button onclick="moveToTable2(this)">Add</button></td>
-            </tr>
-         </tbody>
-      </table>
-      <br><br>
-      <label class="purchaseClass1">
-         <h4>GRN List</h4>
-      </label>
-      <br>
-      <table class="table bg-white rounded shadow-sm  table-hover" id="dataTable" align="center" >
-         <thead id="dt">
-            <tr>
-               <th scope="col">Product Id</th>
-               <th scope="col">Batch NO</th>
-               <th scope="col">Ordered Quantity</th>
-               <th scope="col">Recieved Quantity</th>
-               <th scope="col">Bonus</th>
-               <th scope="col">Total Quantity</th>
-               <th scope="col">Cost</th>
-               <th>Action</th>
-            </tr>
-         </thead>
-         <tbody id="dataTable1"></tbody>
-      </table>
-      <br><br><br><br>
-     
-      <input type="button"  value="Create GRN" class="purchaseClass">
-      <script>
-      function ButtonAction(button) {
-  		console.log("hello");
-  	    var row = button.parentNode.parentNode;
-  	    row.parentNode.removeChild(row);
-  	  }
-     
+   /* Styling for Delete button in the grnListTable */
+   #grnListTable button {
+   background-color: #FF0000;
+   color: white;
+   border: none;
+   padding: 5px 10px;
+   border-radius: 3px;
+   cursor: pointer;
+   }
+   /* Styling for createGRN button */
+   #createGRNButton {
+   background-color: #2ECC71;
+   color: white;
+   border: none;
+   padding: 10px 20px;
+   border-radius: 5px;
+   font-size: 16px;
+   cursor: pointer;
+   margin: 0 auto;
+   display: block;
+   }
+   /* Center align the button container */
+   .button-container {
+   text-align: center;
+   }
+   /* Center align the table headings */
+   th {
+   text-align: center;
+   }
+   #bonusId,#currentReceivedId{
+   width:40px;
+   }
+   #grnListTable{
+   margin-left:200px;
+   width:900px;
+   }
+   #purchasedItemsTable{
+   margin-left:200px;
+   width:900px;
+   }
+</style>
+<script>
+$(document).ready(function() {
+	tk();
+	$("#purchaseId").click(tk2);
+    $("#vendorId").on('click',function() {
+        $.ajax({
+            url: "getGrnList",
+            method: "POST",
+            success: function(data) {
+                console.log(data);
+
+                // Clear existing options
+                $("#vendorId").empty();
+
+                // Populate options from response data
+                data.forEach(function(vendor) {
+                    $("<option>").val(vendor.vendor_id).text(vendor.vendor_name).appendTo("#vendorId");
+                });
+            },
+            error: function() {
+                console.log("Error111");
+            }
+        });
+    });
+});
+
+
+
+
+
+
+
+   function addToGRNList(button) {
+     var row = button.parentNode.parentNode;
+     var table = document.getElementById("grnListTable");
+     var newRow = table.tBodies[0].insertRow(-1);
+   
+     for (var i = 0; i < row.cells.length+3; i++) {
+       var newCell = newRow.insertCell(i);
+       if (i === row.cells.length + 2) {
+         newCell.innerHTML = '<button onclick="deleteFromGRNList(this)">Delete</button>';
+       }else if (i === 6) {
+         newCell.innerHTML = '<input id="bonusId" type="number" min="0" value="0" oninput="this.value = this.value.replace(/[^0-9]/g, \'\')">'; 
+   
        
+   }
+       else if (i === 4 ) {
+         newCell.innerHTML = '<input id="batchno" type="number" min="0" value="0" oninput="this.value = this.value.replace(/[^0-9]/g, \'\')">';
+   
        
+   } else if (i === 5) {
+         newCell.innerHTML = '<input id="currentReceivedId" type="number" min="0" value="0" oninput="this.value = this.value.replace(/[^0-9]/g, \'\')">';
+   }else {
+         newCell.innerHTML = row.cells[i].innerText;
+       }
+     }
+     row.remove();
+   }
+   
+   function deleteFromGRNList(button) {
+     var row = button.parentNode.parentNode;
+     var table = document.getElementById("purchasedItemsTable");
+     var originalRow = document.createElement("tr");
+   
+     // Extract the data from the row being deleted
+     var rowData = [];
+     for (var i = 0; i < row.cells.length - 4; i++) {
+       rowData.push(row.cells[i].innerHTML);
+     }
+   
+     // Create cells in the original row and populate with the extracted data
+     for (var j = 0; j < rowData.length; j++) {
+       var newCell = originalRow.insertCell(j);
+       newCell.innerHTML = rowData[j];
+     }
+     var newCell = originalRow.insertCell(rowData.length);
+     newCell.innerHTML = '<button onclick="addToGRNList(this)">Add</button>';
+   
+     // Append the original row to the purchasedItemsTable
+     table.tBodies[0].appendChild(originalRow);
+   
+     // Remove the row from the grnListTable
+     row.remove();
+   }
+   
+   
+   
+   
+   function getTableData() {
+   const table = document.getElementById('grnListTable');
+   
+   const tableData = [];
+   const headerRow = table.rows[0];
+   
+   // Iterate through each row of the table
+   for (let i = 1; i < table.rows.length; i++) {
+    const row = table.rows[i];
+    const rowData = {};
+   
+    // Iterate through each cell of the row excluding the "product_name" column
+    for (let j = 0; j < row.cells.length - 1; j++) {
+      if (j == 0 || j == 4 || j == 5 || j == 6) {
+        // Check if the cell contains an input tag or plain text
+        const cell = row.cells[j];
+        const cellHeader = headerRow.cells[j].id; // Use textContent to get the header
+   
+        if (cell.querySelector("input")) {
+          rowData[cellHeader] = cell.querySelector("input").value; // Get input value
+        } else {
+          rowData[cellHeader] = cell.textContent.trim(); // Get plain text content
+        }
+      }
+    }
+   
+    // Add row data to the tableData array
+    tableData.push(rowData);
+   }
+   const jsonData = {};
+   jsonData["purchase_order_id"] = document.getElementById("purchaseId").value;
+   jsonData["productsList"] = tableData;
+   
+   return jsonData;
+   }
+   
+   function createGRN()
+   {
+   var data = getTableData();
+   const jsonData = JSON.stringify(data);
+   console.log(jsonData);
+   $.ajax({
+   url:"makeGrn",
+   method:"post",
+   data:{"jsonData":jsonData},
+   success:function(page)
+   {
+   console.log("Success");
+   }
+   
+   });
+   }
       
+      function tk() {
+          
+    	  	var vendorIdf=$("#vendorId option:selected").val();
+    	   	  var vendorId=parseInt(vendorIdf || 0);
+    	    var expectedDate = $("#expectedDate").val();
+    	    var expectedDate1 = $("#expectedDate1").val();
+    	    console.log(expectedDate1)
+    	   
+    	    console.log(vendorId);
+    	    console.log(expectedDate);
+    	    $.ajax({
+    	        url: "getPurchaseId2",
+    	        method:"GET",
+    	        
+    	        data: {
+    	          "vendor_id": vendorId,
+    	          "purchase_order_expected_date": expectedDate,
+    	          "purchase_order_expected_date1": expectedDate1
+
+    	        },
+    	       	
+    	       	  
+    	        success: function(response) {
+    	      	  
+    	      	  console.log(this.url);
+    	      	  console.log(response);
+    	      	populatePurchaseOrderIds(response);
+    	      	  
+    	           
+    	        },
+    	    error: function () {
+    	  	  console.log(this.url);
+    	  	  console.log("AJAX call error");
+    	    }
+    	        
+    	    
+    	        
+    	    });
+    	    
+
+    	  };
+ 
+    	  function populatePurchaseOrderIds(jsonArray) {
+    		  var selectElement = document.getElementById("purchaseId");
+    		  $("#purchaseId").empty();
+
+    		  for (var i = 0; i < jsonArray.length; i++) {
+    		    var purchaseOrder = jsonArray[i];
+    		    var option = document.createElement("option");
+    		    option.value = purchaseOrder.purchase_order_id;
+    		    option.text = purchaseOrder.purchase_order_id;
+    		    selectElement.appendChild(option);
+    		  }
+    		}
+
+    	  function tk2() {
+    		  var purchaseIdSelect = document.getElementById("purchaseId");
+    		  var PurchasesId = purchaseIdSelect.value;
+    		  console.log(PurchasesId);
+
+    		     
+    	      console.log(vendorId);
+    	      console.log(expectedDate);
+    	      $.ajax({
+    	          url: "getPurchaseProducts",
+    	          method:"GET",
+    	          
+    	          data: {
+    	           
+    	            "purchase_order_id":PurchasesId
+    	          },
+    	         	
+    	         	  
+    	          success: function(response) {
+    	        	  
+    	        	  console.log(this.url);
+    	        	  console.log(response);
+    	        	      
+    	        	  populatePurchasedItemsTable(response);
+    	                 
+    	                  }
+    	              
+    	        	  
+    	        	  
+    	             
+    	          ,
+    	      error: function () {
+    	    	  console.log(this.url);
+    	    	  console.log("AJAX call error");
+    	      }
+    	          
+    	      
+    	          
+    	      });
+    	      
+
+    	    };
+    	    function populatePurchasedItemsTable(data) {
+    	    	  var purchasedItemsTable = document.getElementById("purchasedItemsTable");
+    	    	  var tbody = purchasedItemsTable.getElementsByTagName("tbody")[0];
+    	    	  tbody.innerHTML = ""; // Clear existing table body
+
+    	    	  for (var i = 0; i < data.length; i++) {
+    	    	    var po = data[i].po;
+    	    	    var pop = data[i].pop;
+
+    	    	    var productID = pop.product_id;
+    	    	    var orderedQuantity = po.children.find(function (child) {
+    	    	      return child.product_id === productID;
+    	    	    }).purchase_order_quantity;
+    	    	    var receivedQuantity = pop.quantity_received;
+    	    	    var cost = pop.negotiation_price * receivedQuantity;
+
+    	    	    var row = document.createElement("tr");
+
+    	    	    var productIDCell = document.createElement("td");
+    	    	    productIDCell.textContent = productID;
+    	    	    row.appendChild(productIDCell);
+
+    	    	    var orderedQuantityCell = document.createElement("td");
+    	    	    orderedQuantityCell.textContent = orderedQuantity;
+    	    	    row.appendChild(orderedQuantityCell);
+
+    	    	    var receivedQuantityCell = document.createElement("td");
+    	    	    receivedQuantityCell.textContent = receivedQuantity;
+    	    	    row.appendChild(receivedQuantityCell);
+
+    	    	    var costCell = document.createElement("td");
+    	    	    costCell.textContent = cost;
+    	    	    row.appendChild(costCell);
+
+    	    	    var actionCell = document.createElement("td");
+    	    	    var addButton = document.createElement("button");
+    	    	    addButton.textContent = "Add";
+    	    	    addButton.onclick = function () {
+    	    	      addToGRNList(this);
+    	    	    };
+    	    	    actionCell.appendChild(addButton);
+    	    	    row.appendChild(actionCell);
+
+    	    	    tbody.appendChild(row);
+    	    	  }
+    	    	}
+
+      
+</script>
+<!-- #f2f2f2 -->
+
+   <h2 style="font-size: 24px; margin-bottom: 10px;" align="center">Create GRN</h2>
+   <br>
+   <label class="purchaseClass2">Select VendorID:</label>
+      <select id="vendorId" class="purchaseClass2"  >
+      <option value="">Select Vendor</option>
+         <option>20001</option>
+         <option>20002</option>
+         <option>20003</option>
+      </select>
+
+      
+      <label class="purchaseClass1">Select Expected From Date:</label>
+      <input type="date" id="expectedDate" class="purchaseClass1">
+      <label class="purchaseClass1">Select Expected To Date:</label>
+      <input type="date" id="expectedDate1" class="purchaseClass1">
+      <input type="button" value="filter" onclick="tk()" class="purchaseClass1" style="color: white; background-color: green;">
+		
+	      <input type="button" value="clear" onclick="clearSelection()" class="purchaseClass1" style="color: white; background-color: green;">
+	
+	<br><br><br><br>
+
+   <br>
+   <div  style="display:flex;    justify-content: center;">
+      <div style="width:45%">
+         <label  style="font-weight: bold; font-size: 16px; display: block; margin-bottom: 5px;">Purchase ID:</label>
+         <select id="purchaseId" style="padding: 10px; font-size: 14px; border-radius: 5px; border: 1px solid #ccc; width: 100%; margin-bottom: 10px;">
+            <option value="5001">5001</option>
+            <option value="5002">5002</option>
+            <option value="5003">5003</option>
+         </select>
+      </div>
+   </div>
+</div>
+<br><br>
+<h3 align="center">Purchased Items</h3>
+<table id="purchasedItemsTable">
+   <thead>
+      <tr>
+         <!--<th>S.No</th>-->
+         <th>Product ID</th>
          
-         function deleteRow(button) {
-           var row = button.parentNode.parentNode;
-           row.parentNode.removeChild(row);
-         }
+         <th>Ordered Quantity</th>
+         <th>Received Quantity (till Now)</th>
+         <th>Cost</th>
+         <th>Action</th>
+      </tr>
+   </thead>
+   <tbody>
+      <tr>
+         <!--<td>1</td>-->
+         <td>1</td>
          
-         function moveToTable2(button) {
-        	  // Get the row of the clicked button
-        	  const row = button.parentNode.parentNode;
-
-        	  // Get the values from the row
-        	  const product_id = row.cells[0].textContent;
-        	  const batch = row.cells[1].textContent;
-        	  const oq = row.cells[2].textContent;
-        	  const rq = row.cells[3].textContent;
-        	  const cost = row.cells[4].textContent;
-        	  // Create a new row in table2 with the values
-        	  const newRow = document.createElement("tr");
-        	  const idCell = document.createElement("td");
-        	  const batchCell = document.createElement("td");
-        	  
-        	  const oqCell = document.createElement("td");
-        	  const rqCell = document.createElement("td");
-        	  const bonusCell = document.createElement("td");
-        	  const tqCell = document.createElement("td");
-        	  const costCell = document.createElement("td");
-        	  const actionCell = document.createElement("td");
-        	  idCell.textContent = product_id;
-        	  batchCell.textContent = batch;
-        	  oqCell.textContent = oq;
-        	  rqCell.textContent = rq;
-        	  costCell.textContent = cost;
-        	  newRow.appendChild(idCell);
-        	  newRow.appendChild(batchCell);
-        	  newRow.appendChild(oqCell);
-        	  newRow.appendChild(rqCell);
-        	  
-
-        	  // Add the negative price input field
-        	  const inputNegativePrice = document.createElement("input");
-        	  inputNegativePrice.type = "number";
-        	  inputNegativePrice.id = "negprice";
-        	  inputNegativePrice.style.width = "80px";
-        	  inputNegativePrice.style.height = "20px";
-        	  bonusCell.appendChild(inputNegativePrice);
-        	  newRow.appendChild(bonusCell);
-        	  
-        	  const inputNegativePrice2 = document.createElement("input");
-        	  inputNegativePrice2.type = "number";
-        	  inputNegativePrice2.id = "total Quantity";
-        	  inputNegativePrice2.style.width = "80px";
-        	  inputNegativePrice2.style.height = "20px";
-        	  tqCell.appendChild(inputNegativePrice2);
-        	  newRow.appendChild(tqCell);
-        	  newRow.appendChild(costCell);
-
-        	  // Add the delete button
-        	  const deleteButton = document.createElement("button");
-        	  deleteButton.textContent = "Delete";
-        	  deleteButton.addEventListener("click", function () {
-        	    ButtonAction(this);
-        	  });
-        	  actionCell.appendChild(deleteButton);
-        	  newRow.appendChild(actionCell);
-        	  
-
-        	  // Append the new row to table2
-        	  const table2Body = document.querySelector("#dataTable1");
-        	  table2Body.appendChild(newRow);
-
-        	  // Remove the row from table1
-        	  row.parentNode.removeChild(row);
-        	}
-
-      </script>
-   </body>
-</html>
+         <td>5</td>
+         <td>5</td>
+         <td>50</td>
+         <td><button onclick="addToGRNList(this)">Add</button></td>
+      </tr>
+      <tr>
+         <!--<td>2</td>-->
+         <td>02</td>
+        
+         <td>20</td>
+         <td>15</td>
+         <td>100</td>
+         <td><button onclick="addToGRNList(this)">Add</button></td>
+      </tr>
+   </tbody>
+</table>
+<br><br>
+<h3 align="center">GRN List</h3>
+<table id="grnListTable">
+   <thead>
+      <tr>
+         <!--<th>S.No</th>-->
+         <th id="product_id">Product ID</th>
+         <th>Ordered Quantity</th>
+         <th>Received Quantity (till Now)</th>
+         <th>Cost</th>
+        <th id="batch_no">Batch No</th>
+         <th id="quantity">current Received Quantity </th>
+         <th id="bonus">bonus</th>
+         <th>Action</th>
+      </tr>
+   </thead>
+   <tbody>
+   </tbody>
+</table>
+<br><br>
+<div class="button-container">
+   <button id="createGRNButton" onclick="createGRN()">Create GRN</button>
+</div>
