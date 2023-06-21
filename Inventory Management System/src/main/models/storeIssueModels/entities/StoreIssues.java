@@ -12,27 +12,25 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import main.models.purchaseOrder.entityModels.Im_Purchase_Order_Products;
-
 @Entity
-@Table(name="im_storeissues")
+@Table(name = "im_storeissues")
 public class StoreIssues {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="storeissue_id")
+	@Column(name = "storeissue_id")
 	int storeIssueId;
-	
-	@Column(name="store_Id")
+
+	@Column(name = "store_Id")
 	int storeId;
-	
-	@Column(name="storeIssue_date")
+
+	@Column(name = "storeIssue_date")
 	LocalDate date = LocalDate.now();
-	
-	@Column(name="amount")
+
+	@Column(name = "amount")
 	double amount;
-	
-	@Column(name="storeissue_status")
+
+	@Column(name = "storeissue_status")
 	String status;
 
 	@OneToMany(mappedBy = "storeIssues", fetch = FetchType.LAZY)
@@ -80,9 +78,16 @@ public class StoreIssues {
 
 	@Override
 	public String toString() {
-		return "StoreIssues [storeIssueId=" + storeIssueId + ", date=" + date + ", amount=" + amount + ", status="
-				+ status + ", storeProducts=" + storeProducts + "]";
+		return "StoreIssues [storeIssueId=" + storeIssueId + ", storeId=" + storeId + ", date=" + date + ", amount="
+				+ amount + ", status=" + status + ", storeProducts=" + storeProducts + "]";
 	}
-	
-	
+
+	public int getStoreId() {
+		return storeId;
+	}
+
+	public void setStoreId(int storeId) {
+		this.storeId = storeId;
+	}
+
 }

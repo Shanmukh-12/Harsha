@@ -15,5 +15,14 @@ public class StoreId {
 	public String toString() {
 		return "StoreId [storeId=" + storeId + "]";
 	}
-	
+
+	public StoreId() {
+		super();
+	}
+
+	public StoreId(int storeId) {
+		super();
+		this.storeId = storeId;
+	}
+
 }

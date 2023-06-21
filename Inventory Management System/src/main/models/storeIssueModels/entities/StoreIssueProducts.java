@@ -8,24 +8,23 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="im_storeissues_products")
+@Table(name = "im_storeissues_products")
 public class StoreIssueProducts {
 
 	@Id
-	@Column(name="storeIssue_id")
+	@Column(name = "storeIssue_id")
 	int storeIssueId;
-	
-	@Column(name="product_id")
+
+	@Column(name = "product_id")
 	int productId;
-	
-	@Column(name="quantity")
+
+	@Column(name = "quantity")
 	int quantity;
 
 	@ManyToOne()
-	@JoinColumn(name="storeIssue_id",referencedColumnName="storeIssue_id", insertable = false, updatable = false)
+	@JoinColumn(name = "storeIssue_id", referencedColumnName = "storeIssue_id", insertable = false, updatable = false)
 	private StoreIssues storeIssues;
-	
-	
+
 	public int getStoreIssueId() {
 		return storeIssueId;
 	}
@@ -63,5 +62,5 @@ public class StoreIssueProducts {
 		return "StoreIssueProducts [storeIssueId=" + storeIssueId + ", productId=" + productId + ", quantity="
 				+ quantity + ", storeIssues=" + storeIssues + "]";
 	}
-	
+
 }

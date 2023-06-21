@@ -46,7 +46,6 @@ public class StoreIndentsDal implements StoreIndentsDao {
 		for (StoreIndentProducts p : s)
 			System.out.println("Inside " + p);
 		return s;
-
 	}
 
 	@Transactional

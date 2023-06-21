@@ -2,11 +2,10 @@ package main.dao.storeIssues;
 
 import java.util.List;
 
-import main.models.storeIssueModels.entities.StoreIssues;
-import main.models.storeIssueModels.outputModels.StoreIssueIds;
+import main.models.storeIssueModels.entities.StoreIssueData;
 import main.models.storeModels.inputmodels.StoreId;
 
 public interface StoreIssueDao {
 
-	public List<StoreIssues> getStoreIds(StoreId sid);
+	public List<StoreIssueData> getStoreIds(StoreId sid);
 }

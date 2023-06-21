@@ -107,15 +107,27 @@ $(document).ready(function () {
  	
  	$('#storeId').change(function(){
  	    var storeId = document.getElementById('storeId').value;
- 	    console.log(storeId);
+ 	   	console.log(storeId);
+ 	  	console.log(JSON.stringify({"storeId":storeId}));
+	    
  		$.ajax({
  			url:'getStoreIssueIds',
  			method:"post",
  			dataType:"json",
- 			data:{"storeId":JSON.stringify({"storeId":storeId})},
+ 			data:{storeId:storeId},
  			success:function(response){
- 				console.log(response);
- 			},
+ 			    var dropdown = $('#issueId');
+
+ 			    // Clear any existing options
+ 			    dropdown.empty();
+ 			    var defaultOption = $('<option disabled selected value="">Select an Issue ID</option>');
+ 			    dropdown.append(defaultOption);
+
+ 			    // Iterate over the response and add an option for each item
+ 			    response.forEach(function (item) {
+ 			      var option = $('<option></option>').attr('value', item.storeIssueId).text(item.storeIssueId);
+ 			      dropdown.append(option);
+ 			    }); 			},
  			error:function(response){
  				console.log("Error");
  				console.log(response);
@@ -154,6 +166,7 @@ $(document).ready(function () {
 
     const jsonData = {};
     jsonData['storeID'] = document.getElementById('storeId').value;
+    jsonData['issueId'] = document.getElementById('issueId').value;
     jsonData['productsList'] = tableData;
     return jsonData;
   }
@@ -164,11 +177,6 @@ $(document).ready(function () {
     var rowCount = tbody.rows.length;
     console.log(tbody);
     console.log(rowCount);
-    // Check if the table has data
-    if (rowCount <= 1) {
-      alert('Table is empty. Add data to proceed.');
-      return;
-    }
 
     var data = getTableData();
     const jsonData = JSON.stringify(data);
@@ -176,7 +184,8 @@ $(document).ready(function () {
     $.ajax({
       url: 'newCreateStoreReturn',
       method: 'post',
-      data: { jsonData: jsonData },
+      contentType:'application/json',
+      data: jsonData ,
       success: function (page) {
         console.log('Success');
         alert('Return successful!'); // Display alert message
@@ -260,17 +269,27 @@ $(document).ready(function () {
 </script>
 <div class="container" align="center">
   <h1>Store Returns</h1><br /><br />
-
-  <form id="storeReturnsForm" onsubmit="createReturn(); return false;">
+<div>
 	<div>
 		<label for="storeId">Store ID:</label> <select id="storeId"
 			name="StoreID" required></select><br>
 		<br>
 	</div>
-    <div>
-      <label for="issueId">Issue ID:</label>
-      <input type="text" id="issueId" name="issueId" required /><br /><br />
-    </div>
+<div>
+  <label for="issueId">Issue ID:</label>
+  <select id="issueId" name="issueId" required></select><br><br>
+</div>
+</div>
+
+<table>
+	<tr>
+		<th>Product Id</th>
+		<th>Batch No</th>
+		<th>Issued Quantity</th>
+	</tr>
+</table>
+
+  <form id="storeReturnsForm" onsubmit="createReturn(); return false;">
     <div>
       <label for="productId">Product ID:</label>
       <input type="text" id="productId" name="productId"  /><br /><br />
