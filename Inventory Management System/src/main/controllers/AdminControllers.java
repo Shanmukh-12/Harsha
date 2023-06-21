@@ -7,6 +7,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class AdminControllers {
 
+	@Autowired
+	WarehouseUsersDAO userDAO;
+	@Autowired
+	VendorsDAO vendorDAO;
+	@Autowired
+	StoreUsersDAO storeDAO;
+
 	// Warehouse and Home page
 	@RequestMapping(value = { "/adminHome" })
 	public String getHome() {
@@ -101,6 +108,11 @@ public class AdminControllers {
 	@GetMapping("/reports")
 	public String getReports() {
 		return "admin/reports";
+	}
+
+	@GetMapping("/logout")
+	public String logout() {
+		return "login/login";
 	}
 
 }

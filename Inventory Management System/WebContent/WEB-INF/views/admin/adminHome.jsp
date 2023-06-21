@@ -111,6 +111,20 @@
 	$(document).ready(function(){
  		Myfunction2('warehousestock');
  	});
+function logout() {
+    $.ajax({
+        url: "logout",
+        method: "GET",
+        success: function(response) {
+            console.log("Logout successful");
+            console.log(response);
+            location.href= "/inventory/";
+        },
+        error: function() {
+            console.log("Logout error");
+        }
+    });
+}
 
 	function clicked(data) {
 		console.log("Clicked");
@@ -219,7 +233,6 @@
 
 <body>
 	<div class="d-flex" id="wrapper">
-		<!-- Sidebar -->
 		<div class="bg-white" id="sidebar-wrapper">
 			<div
 				class="sidebar-heading text-center py-4 primary-text fs-4 fw-bold text-uppercase border-bottom">

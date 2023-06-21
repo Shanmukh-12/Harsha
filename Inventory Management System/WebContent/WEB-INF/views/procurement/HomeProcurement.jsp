@@ -118,6 +118,20 @@
  		Myfunction2('warehousestock');
  	});
 
+function logout() {
+    $.ajax({
+        url: "logout",
+        method: "GET",
+        success: function(response) {
+            console.log("Logout successful");
+            console.log(response);
+            location.href= "/inventory/";
+        },
+        error: function() {
+            console.log("Logout error");
+        }
+    });
+}
 function ButtonAction(button) {
 	console.log("hello");
     var row = button.parentNode.parentNode;
