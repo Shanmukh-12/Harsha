@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 import main.dao.adjustments.AdjustmentsDAO;
 import main.models.adjustmentsModels.entities.AdjustmentsList;
 import main.models.adjustmentsModels.entities.AdjustmentsProductsList;
+import main.models.adjustmentsModels.inputModels.AdjustmentsInputList;
+import main.models.adjustmentsModels.outputModels.AdjustmentProductsListData;
 
 @Component
 public class AdjustmentsDAL implements AdjustmentsDAO {
@@ -40,6 +42,24 @@ public class AdjustmentsDAL implements AdjustmentsDAO {
 			entityManager.persist(s);
 		}
 		return true;
+
+	}
+
+	@Transactional
+	public List<AdjustmentProductsListData> getAdjustmentProductsList(AdjustmentsInputList adjustmentid) {
+		int data = adjustmentid.getAdjs_id();
+		System.out.println(data);
+		List<AdjustmentProductsListData> s = entityManager.createQuery(
+				"SELECT NEW main.models.adjustmentsModels.outputModels.AdjustmentProductsListData(e.product_id, p.productName, pc.productCategoryName, e.batch_no, e.current_stock, e.updated_stock, e.adjs_desc) "
+						+ "FROM AdjustmentsProductsList e "
+						+ "JOIN main.models.productModels.entities.Products p ON e.product_id = p.productId "
+						+ "JOIN main.models.productModels.entities.ProductsCategory pc ON p.category = pc.productCategoryId "
+						+ "WHERE e.adjs_id = :data",
+				AdjustmentProductsListData.class).setParameter("data", data).getResultList();
+		for (AdjustmentProductsListData p : s)
+			System.out.println("Inside " + p);
+
+		return s;
 
 	}
 
