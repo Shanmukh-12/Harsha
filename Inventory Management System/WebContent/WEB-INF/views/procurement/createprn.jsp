@@ -135,9 +135,16 @@
 			
 			<th scope="col">product_id</th>
 			<th scope="col">batch_no</th>
-			<th scope="col">quantity</th>
+			<th scope="col">Ordered Quantity</th>
+            <th scope="col">Recieved Quantity</th>
+			<th scope="col">Bonus</th>
 			
-			<th scope="col">received quantity</th>
+			<th scope="col">Total quantity</th>
+            <th scope="col">Cost</th>
+			
+			<th scope="col">Returning quantity</th>
+			
+			
 			
 			<th>Action</th>
 		</tr>                        
@@ -163,21 +170,41 @@
 	  // Get the values from the row
 	  const product_id = row.cells[0].textContent;
 	  const batch = row.cells[1].textContent;
+	  const orderedq = row.cells[2].textContent;
+	  const receivedq = row.cells[3].textContent;
+	  const bonus = row.cells[4].textContent;
+	  const cost = row.cells[6].textContent;
+
      const quantityreceived=row.cells[5].textContent;
 	  // Create a new row in table2 with the values
 	  const newRow = document.createElement("tr");
 	  const idCell = document.createElement("td");
 	  const batchCell = document.createElement("td");
-	  
+	  const OrderquantityCell = document.createElement("td");
+	  const receivedquantityCell = document.createElement("td");
+	  const bonusCell = document.createElement("td");
+	  const costCell = document.createElement("td");
+
 	  
 	  const quantityCell = document.createElement("td");
 	  const quantityreceivedCell = document.createElement("td");
 	  const actionCell = document.createElement("td");
+	  OrderquantityCell.textContent=orderedq;
+	  receivedquantityCell.textContent=receivedq;
+	  bonusCell.textContent=bonus;
 	  idCell.textContent = product_id;
 	  batchCell.textContent = batch;
+	  costCell.textContent = cost;
+
 	  quantityreceivedCell.textContent=quantityreceived;
 	  newRow.appendChild(idCell);
 	  newRow.appendChild(batchCell);
+	  newRow.appendChild(OrderquantityCell);
+	  newRow.appendChild(receivedquantityCell);
+	  newRow.appendChild(bonusCell);
+	  newRow.appendChild(quantityreceivedCell);
+
+	  newRow.appendChild(costCell);
 
 	  
 
@@ -189,7 +216,7 @@
 	  inputNegativePrice.style.height = "20px";
 	  quantityCell.appendChild(inputNegativePrice);
 	  newRow.appendChild(quantityCell);
-	  newRow.appendChild(quantityreceivedCell);
+	  
 
 
 
@@ -225,30 +252,47 @@
   const headerRow = table.rows[0];
   for (let i = 0; i < headerRow.cells.length - 1; i++) {
     const headerText = headerRow.cells[i].textContent.trim();
-    if (headerText !== 'Action' && headerText !== 'received quantity') {
+    if (
+      headerText !== 'Action' &&
+      headerText !== 'Bonus' &&
+      headerText !== 'Recieved Quantity' &&
+      headerText !== 'Total quantity' &&
+      headerText !== 'Ordered Quantity' &&
+      headerText !== 'Cost'
+    ) {
       headers.push(headerText);
     }
   }
+  console.log(headers);
 
   // Iterate through each row of the table
   for (let i = 1; i < table.rows.length; i++) {
     const row = table.rows[i];
     const rowData = {};
-
+     
     // Iterate through each cell of the row
     let headerIndex = 0;
     for (let j = 0; j < row.cells.length - 1; j++) {
       const headerText = headerRow.cells[j].textContent.trim();
-      if (headerText !== 'Action' && headerText !== 'received quantity') {
+      if (
+        headerText !== 'Action' &&
+        headerText !== 'Bonus' &&
+        headerText !== 'Received Quantity' &&
+        headerText !== 'Total quantity' &&
+        headerText !== 'Ordered Quantity' &&
+        headerText !== 'Cost'
+      ) {
         const cell = row.cells[j];
 
         // Check if the cell contains an input element
         if (cell.firstChild && cell.firstChild.tagName === 'INPUT') {
           // Assign the input field value
-          rowData[headers[headerIndex]] = cell.firstChild.value.trim();
+          rowData["quantity"] = cell.firstChild.value.trim();
         } else {
           // Assign the cell text content
-          rowData[headers[headerIndex]] = cell.textContent.trim();
+          
+            rowData[headers[headerIndex]] = cell.textContent.trim();
+       
         }
 
         headerIndex++;
@@ -306,7 +350,7 @@
 
     	  // Create a new row in table1 with the values from the deleted row
     	  var newRow = document.createElement("tr");
-    	  for (var i = 0; i < row.cells.length; i++) {
+    	  for (var i = 0; i < row.cells.length-2; i++) {
     	    var cellValue = row.cells[i].textContent;
     	    var newCell = document.createElement("td");
     	    newCell.textContent = cellValue;
