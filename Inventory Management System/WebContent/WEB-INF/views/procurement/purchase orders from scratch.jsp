@@ -92,7 +92,7 @@
       <th>product_id</th>
       <th>purchase_order_quantity</th>
 	  <th>vendor_id</th>
-	  <th>negotiation_price </th>
+	  <th>negotiation_price</th>
 	  <th>Action</th>
       
     </tr>
@@ -181,7 +181,13 @@
       negPriceCell.innerHTML = negPrice;
       actionCell.innerHTML = '<button class="delete-btn" onclick="deleteRow(this)">Delete</button>';
 
-      document.getElementById("myForm").reset();
+      document.getElementById("negPrice").value='';
+  	document.getElementById("qnty").value='';
+  	var selectElement = document.getElementById("prid");
+    selectElement.selectedIndex = 0;
+    
+
+
     });
    
     function deleteRow(button) {
@@ -262,7 +268,6 @@
   	      break;
   	    }
   	  }
-  	  console.log(productNameColumnIndex);
   	  for (let j = 0; j < headerRow.cells.length; j++) {
     	    if (headerRow.cells[j].textContent === "negotiation_price") {
     	    	negotiationpriceindex = j;
@@ -270,7 +275,7 @@
     	      break;
     	    }
     	  }
-  	  console.log(negotiationpriceindex);
+  	  console.log("hi"+negotiationpriceindex);
 
   	  // Iterate through each row of the table
   	  for (let i = 1; i < table.rows.length; i++) {
@@ -288,8 +293,8 @@
   	      // Check if the cell contains an input element
   	      if (cell.firstChild && cell.firstChild.tagName === 'INPUT') {
   	        // Assign the input field value
-  	        rowData[cellHeader] = cell.firstChild.value;
-  	        if (j === negotiationpriceindex) {
+  	        
+  	        if (j === negotiationpriceindex-1) {
       	    	  console.log("hii");
       	    	  console.log(cell.firstChild.value);
       	    	  const price = parseInt(cell.firstChild.value);
@@ -297,6 +302,7 @@
       	    	    totalamount += price;
       	    	  }
       	    	}
+  	      rowData[cellHeader] = cell.firstChild.value;
   	      } else {
   	        // Assign the cell text content
   	        rowData[cellHeader] = cell.textContent;
@@ -309,7 +315,7 @@
   	    // Add row data to the tableData array
   	    tableData.push(rowData);
   	  }
-  	
+  	console.log(totalamount);
 
   	  var children=[];
   	
@@ -336,6 +342,8 @@
            	
            	    data: jsonData,
             success: function() {
+            	
+            	
           	  alert("Purchase order created successfuly");
                
             }
