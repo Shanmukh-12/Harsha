@@ -3,6 +3,10 @@ package main.models.procurementModels.inputmodels;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+
 public class PurchaseOrderProductInput implements Serializable {
 	int purchase_order_id;
 	int product_id;
