@@ -161,7 +161,10 @@
 	    var row = button.parentNode.parentNode;
 	    row.parentNode.removeChild(row);
 	  }
- 
+ function clear()
+ {
+	 document.getElementById('reason').value = '';
+ }
    
   function moveToTable2(button) {
 	  // Get the row of the clicked button
@@ -243,8 +246,12 @@
     }
     
     function createpurchasereturn() {
+    	 const table = document.getElementById('dataTable');
+    	    const table1 = document.querySelector('.table');
+
+    	    // Move all rows from dataTable back to table
+    	   
     	  // Retrieve the table element
-    	  const table = document.getElementById('dataTable');
   const tableData = [];
 
   // Get the column headers
@@ -329,10 +336,38 @@
      	
      	    data: jsonData,
       success: function() {
+    	 	clear();
     	  alert("products returned successfully");
+     
+
+    	  
          
       }
   });
+  const tableDataRows = table.querySelectorAll('tbody tr');
+  for (let i = 0; i < tableDataRows.length; i++) {
+      const row = tableDataRows[i];
+      const newRow = document.createElement('tr');
+      for (let j = 0; j < row.cells.length - 2; j++) {
+          const cellValue = row.cells[j].textContent;
+          const newCell = document.createElement('td');
+          newCell.textContent = cellValue;
+          newRow.appendChild(newCell);
+      }
+      const actionCell = document.createElement('td');
+      const addButton = document.createElement('button');
+      addButton.textContent = 'Add';
+      addButton.addEventListener('click', function () {
+          moveToTable2(this);
+      });
+      actionCell.appendChild(addButton);
+      newRow.appendChild(actionCell);
+      table1.querySelector('tbody').appendChild(newRow);
+  }
+
+  // Clear dataTable
+  const dataTableBody = table.querySelector('tbody');
+  dataTableBody.innerHTML = '';
 
   
   

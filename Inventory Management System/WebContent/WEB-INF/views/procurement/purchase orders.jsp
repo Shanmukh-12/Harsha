@@ -134,9 +134,10 @@
             <tr>
             <th >product_id</th>
                <th>product_name</th>
+               <th>indent quantity</th>
                <th>purchase_order_quantity</th>
                <th>negotiation_price</th>
-               <th>indent quantity</th>
+               
                
                <th>Action</th>
             </tr>
@@ -187,7 +188,7 @@
         	  qtyCell.appendChild(inputNegativePrice2);
         	  newRow.appendChild(idCell);
         	  newRow.appendChild(nameCell);
-        	  
+        	  newRow.appendChild(indentqtyCell);
         	  newRow.appendChild(qtyCell);
        
         	  // Add the negative price input field
@@ -207,7 +208,7 @@
         	  actionCell.appendChild(deleteButton);
         	  
         	  newRow.appendChild(negCell);
-        	  newRow.appendChild(indentqtyCell);
+        	  
         	  newRow.appendChild(actionCell);
 
         	  // Append the new row to table2
@@ -220,6 +221,7 @@
          
          function createpurchase() {
         	 const table = document.getElementById('dataTable');
+        	    const table1 = document.querySelector('.table');
         	  console.log(table.rows[1]);
         	  var totalamount = 0;
         	  // Create an array to store the table data
@@ -306,7 +308,32 @@
                      
                   }
               });
+        	  
 
+          	 const tableDataRows = table.querySelectorAll('tbody tr');
+       	    for (let i = 0; i < tableDataRows.length; i++) {
+       	        const row = tableDataRows[i];
+       	        const newRow = document.createElement('tr');
+       	        for (let j = 0; j < row.cells.length - 3; j++) {
+       	            const cellValue = row.cells[j].textContent;
+       	            const newCell = document.createElement('td');
+       	            newCell.textContent = cellValue;
+       	            newRow.appendChild(newCell);
+       	        }
+       	        const actionCell = document.createElement('td');
+       	        const addButton = document.createElement('button');
+       	        addButton.textContent = 'Add';
+       	        addButton.addEventListener('click', function () {
+       	            moveToTable2(this);
+       	        });
+       	        actionCell.appendChild(addButton);
+       	        newRow.appendChild(actionCell);
+       	        table1.querySelector('tbody').appendChild(newRow);
+       	    }
+
+       	    // Clear dataTable
+       	    const dataTableBody = table.querySelector('tbody');
+       	    dataTableBody.innerHTML = '';
         	  // Output the JSON data
         	 
         	}
@@ -318,9 +345,9 @@
         	  // Get the values from the row
         	  var product_id = row.cells[0].textContent;
         	  var product_name = row.cells[1].textContent;
-        	  var purchase_order_quantity = row.cells[2].textContent;
-        	  var negotiation_price = row.cells[3].textContent;
-        	  var indent_quantity = row.cells[4].textContent;
+        	  var purchase_order_quantity = row.cells[3].textContent;
+        	  var negotiation_price = row.cells[4].textContent;
+        	  var indent_quantity = row.cells[2].textContent;
  
         	  // Create a new row in the "indentTable" table with the values
         	  var newRow = document.createElement("tr");
