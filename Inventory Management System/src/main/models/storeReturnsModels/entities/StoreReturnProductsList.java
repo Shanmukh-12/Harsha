@@ -1,4 +1,4 @@
-package main.models.storeModels.entities;
+package main.models.storeReturnsModels.entities;
 
 import java.io.Serializable;
 
