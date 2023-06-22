@@ -349,6 +349,11 @@
     };
     function refresh()
     {
+    	 $('#vendorId').val('');
+ 	    $('#expectedDate').val('');
+ 	    $('#expectedDate1').val('');
+ 	   $("#purchaseorderid").val('')
+ 	    
     	tk();
     }
     

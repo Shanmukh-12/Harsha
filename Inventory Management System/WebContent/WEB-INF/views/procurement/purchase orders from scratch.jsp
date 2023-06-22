@@ -36,6 +36,11 @@
       padding: 8px;
       border-bottom: 1px solid #ccc; /* Add border-bottom for table header */
     }
+      
+  .refresh-icon {
+  display: inline-block;
+  cursor: pointer;
+}
 	</style>
     
 </head>
@@ -67,9 +72,12 @@
         <td><label for="prid">Product Id</label></td>
         <td>
 			<select id="prid" class="prClass" align="center" >
+			    <option value="" disabled selected>Select a product</option>
+			
 				<option>1</option>
 				<option>2</option>
-				
+				<option>3</option>
+				<option>4</option>
 			</select>
 		</td>
       </tr>
@@ -80,11 +88,17 @@
       <tr>
         <td><label for="vid">vendor_id</label></td>
         <td>
-          <select id="vid" class="vid" align="center">
+          <select id="vid" class="vid" align="center" onchange="handleSelectChange()">
+            <option value="" disabled selected>Select an option</option>
             <option>20001</option>
+            <option>20002</option>
           </select>
+            <span class="refresh-icon searchClass" onclick="enableOptions()">&#x21bb;</span>
         </td>
+    
+        
       </tr>
+      
       <tr>
         <td><label for="negPrice">negotiation_price</label></td>
         <td><input type="number" id="negPrice" name="negPrice" required></td>
@@ -92,15 +106,17 @@
       <tr>
         
         <td>
-          <button id="addProductsId" class="addProductsClass" onclick="addProducts()" >Add Product</button>
+          <button id="addProductsId" class="addProductsClass" >Add Product</button>
         </td>
       </tr>
     </table>
    
   </div><br><br>
  <input type="button"  value="Create Purchase" class="indentClass1" onclick="createpurchase()">
+ 
   <script>
     document.getElementById("addProductsId").addEventListener("click", function(event) {
+    	handleSelectChangeprid()
       event.preventDefault();
       var prid = document.getElementById("prid").value;
       var qnty = document.getElementById("qnty").value;
@@ -124,14 +140,68 @@
 
       document.getElementById("myForm").reset();
     });
-
+   
     function deleteRow(button) {
       var row = button.parentNode.parentNode;
       row.parentNode.removeChild(row);
     }
-    
+    function handleSelectChange() {
+    	console.log("hello");
+        var selectElement = document.getElementById("vid");
+        var options = selectElement.options;
+        
+        for (var i = 0; i < options.length; i++) {
+          if (options[i].value !== selectElement.value) {
+            options[i].disabled = true;
+          }
+        }
+      }
+    var selectedOptions = [];
+
+    function handleSelectChangeprid() {
+      var selectElement = document.getElementById("prid");
+      var selectedValue = selectElement.value;
+
+      if (!selectedOptions.includes(selectedValue)) {
+        selectedOptions.push(selectedValue);
+      }
+
+      var options = selectElement.options;
+      for (var i = 0; i < options.length; i++) {
+        if (selectedOptions.includes(options[i].value)) {
+          options[i].disabled = true;
+        } else {
+          options[i].disabled = false;
+        }
+      }
+    }
+    function enableOptions() {
+        var selectElement = document.getElementById("vid");
+       
+        var options = selectElement.options;
+        
+        for (var i = 0; i < options.length; i++) {
+          options[i].disabled = false;
+        }
+        selectElement.selectedIndex = 0;
+      }
+
+      function enableOptionspr() {
+        var selectElement = document.getElementById("prid");
+       
+        var options = selectElement.options;
+        
+        for (var i = 0; i < options.length; i++) {
+          options[i].disabled = false;
+        }
+        selectElement.selectedIndex = 0;
+      }
     
     function createpurchase() {
+    	enableOptions();
+    	enableOptionspr();
+    
+
   	  // Retrieve the table element
   	  const table = document.getElementById('dataTable');
   	  console.log(table.rows[1])
