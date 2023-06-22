@@ -71,7 +71,7 @@
                                 <tr>
                                     <th scope="row">1</th>
                                     <td>1</td>
-                                    <td>45</td>
+                                    <td>1</td>
 									<td>60</td>
 									<td>30</td>
 									<td>2</td>
@@ -105,8 +105,6 @@
 			<th scope="col">batch_no</th>
 			<th scope="col">quantity</th>
 			
-			<th scope="col">received quantity</th>
-			
 			<th>Action</th>
 		</tr>                        
 	</thead>   
@@ -131,7 +129,7 @@
 	  // Get the values from the row
 	  const product_id = row.cells[1].textContent;
 	  const batch = row.cells[2].textContent;
-     const quantityreceived=row.cells[6].textContent;
+
 	  // Create a new row in table2 with the values
 	  const newRow = document.createElement("tr");
 	  const idCell = document.createElement("td");
@@ -139,11 +137,11 @@
 	  
 	  
 	  const quantityCell = document.createElement("td");
-	  const quantityreceivedCell = document.createElement("td");
+	  const reasonCell = document.createElement("td");
 	  const actionCell = document.createElement("td");
 	  idCell.textContent = product_id;
 	  batchCell.textContent = batch;
-	  quantityreceivedCell.textContent=quantityreceived;
+	
 	  newRow.appendChild(idCell);
 	  newRow.appendChild(batchCell);
 
@@ -157,8 +155,7 @@
 	  inputNegativePrice.style.height = "20px";
 	  quantityCell.appendChild(inputNegativePrice);
 	  newRow.appendChild(quantityCell);
-	  newRow.appendChild(quantityreceivedCell);
-
+	  
 
 
 	  // Add the delete button
@@ -193,7 +190,7 @@
   const headerRow = table.rows[0];
   for (let i = 0; i < headerRow.cells.length - 1; i++) {
     const headerText = headerRow.cells[i].textContent.trim();
-    if (headerText !== 'Action' && headerText !== 'received quantity') {
+    if (headerText !== 'Action') {
       headers.push(headerText);
     }
   }
@@ -207,7 +204,7 @@
     let headerIndex = 0;
     for (let j = 0; j < row.cells.length - 1; j++) {
       const headerText = headerRow.cells[j].textContent.trim();
-      if (headerText !== 'Action' && headerText !== 'received quantity') {
+      if (headerText !== 'Action') {
         const cell = row.cells[j];
 
         // Check if the cell contains an input element
