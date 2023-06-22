@@ -17,12 +17,51 @@
 	position:relative;
 	left:610px;
 	}
-   table {
-      border-width: collapse;
-      width: 100%;
-     
+	 .table {
+        border-collapse: collapse;
+        width: 90%;
+        margin: 0 auto; /* Center the table */
+        border: 1px solid #ccc; /* Add border for the table */
+        border-radius: 4px; /* Add border-radius for a rounded look */
     }
-	 
+  
+	 th,
+        td {
+            padding: 8px;
+            border: 1px solid #ccc; /* Add border for table cells */
+                    text-align: left;
+            
+            border-bottom: 1px solid #ccc; /* Add border-bottom for table cells */
+        }
+
+        thead th {
+            text-align: left;
+            border-bottom-width: 2px; /* Increase border-bottom width for table header */
+        }
+        .table {
+            border: 1px solid #ccc; /* Add border for the table */
+            border-radius: 4px; /* Add border-radius for a rounded look */
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: #f5f5f5; /* Add hover effect for table rows */
+        }
+
+        .form-table {
+        width: 90%;
+        margin: 0 auto; /* Center the table */
+        border: none; 
+        }
+
+        .form-table td {
+            padding: 8px;
+                    border: none; 
+            
+        }
+         td:last-child {
+        border-right: none; /* Remove right border for last data cell in each row */
+    }
+        
     #dt
     {
       color : green;
@@ -55,7 +94,7 @@
 	  <th>vendor_id</th>
 	  <th>negotiation_price </th>
 	  <th>Action</th>
-      <th></th>
+      
     </tr>
                                 
          </thead>   
@@ -63,11 +102,14 @@
 </tbody>                        </table>
   
   
-  <br><br><br><br>
+  <br><br><br><br>  <br><br><br><br>
 
-  <label><b><h6>Add Products</h6></b></label>
+  
  <div class="form-table">
     <table>
+    <tr>
+    <td colspan="2"><label><b><h6>Add Products</h6></b></label></td>
+    </tr>
       <tr>
         <td><label for="prid">Product Id</label></td>
         <td>
@@ -108,6 +150,7 @@
         <td>
           <button id="addProductsId" class="addProductsClass" >Add Product</button>
         </td>
+        <td></td>
       </tr>
     </table>
    
