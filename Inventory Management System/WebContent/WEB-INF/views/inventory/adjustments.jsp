@@ -428,6 +428,7 @@
 </head>
 <body>
 <h1 id ="htag" class="single-line-heading" >Adjustments</h1>
+
 <div id="adjustmenttable">
 <div style="margin-left:70px; margin-top:50px">
 

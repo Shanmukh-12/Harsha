@@ -5,6 +5,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Create Store Issue</title>
+ 
+  
   <style>
   #product-details-table{
     background-color: white;
@@ -180,40 +182,6 @@
     }
 
   </style>
-  <script>
-  
-  
-  $(document).ready(funtion(){
-	$.ajax(function(){
-	     url:'getProductCategories',
-	     method:'POST',
-	     success:function(category){
-	    	 
-	    	   var dropdown = document.getElementById('product-category');
-
-	    	    // Clear any existing options
-	    	    dropdown.innerHTML = '';
-
-	    	    // Iterate over the list of objects
-	    	    response.forEach(function(obj) {
-	    	      var option = document.createElement('option');
-	    	      
-	    	      // Set the value and display text for the option
-	    	      option.value = obj.productCategoryId;
-	    	      option.textContent = obj.productCategoryName;
-	    	      
-	    	      // Append the option to the dropdown
-	    	      dropdown.appendChild(option);
-	    	    }
-	    	  },
-	    	  error: function(error) {
-	    	    console.log("error occured");
-	    	  }
-	    	 
-	     });
-	    	    
-	    	    
-  </script>
 </head>
 <body>
   <h2 id="htag">Create Stock Issue</h2>
@@ -221,82 +189,34 @@
     <div id="products-dropdown" align="right" >
     <label for="stores-list">Stores List: </label>
     <select id="stores-list">
-      <option value="category1">D-Mart</option>
-      <option value="category2">More</option>
-      <option value="category3">Spencer's</option>
     </select>
     </div>
     
-     <div style="margin-bottom:20px">
-   <div id="products-dropdown1" align="right" >
-    <label for="product-category">Indents List: </label>
-    <select id="product-category">
-      <option value="category1">101</option>
-      <option value="category2">102</option>
-      <option value="category3">103</option>
-    </select>
-    </div>
-  
-  
-  <div id="first_table">
-    <table id="product-details-table">
-      <thead>
-        <tr>
-           <th>Indent ID</th>
-          <th>Product ID</th>
-          <th>Product Name</th>
-          <th>Requested Quantity</th>
-          <th>Action</th>
-         
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>101</td>
-          <td>Pears Soap</td>
-          <td>14268</td>
-          <td>50</td>
-          <td><button class="add-btn">Add</button></td>
-        </tr>
-        <tr>
-          <td>102</td>
-          <td>Santoor Soap</td>
-          <td>14267</td>
-          <td>50</td>
-          <td><button class="add-btn">Add</button></td>
-        </tr>
-        <tr>
-          <td>103</td>
-          <td>Rexona Soap</td>
-          <td>14266</td>
-          <td>50</td>
-          <td><button class="add-btn">Add</button></td>
-        </tr>
-        <tr>
-          <td>104</td>
-          <td>Lifebuoy Soap</td>
-          <td>14269</td>
-          <td>50</td>
-          <td><button class="add-btn">Add</button></td>
-        </tr>
-        <tr>
-          <td>101</td>
-          <td>Pears Soap</td>
-          <td>14268</td>
-          <td>50</td>
-          <td><button class="add-btn">Add</button></td>
-        </tr>
-        <tr>
-          <td>101</td>
-          <td>Pears Soap</td>
-          <td>14268</td>
-          <td>50</td>
-          <td><button class="add-btn">Add</button></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
+	     <div style="margin-bottom:20px">
+	   <div id="products-dropdown1" align="right" >
+	    <label for="indents-list">Indents List: </label>
+	    <select id="indents-list">
+	    </select>
+	    </div>
+	  </div>
+	 
+	  
+	  <div id="first_table">
+	    <table id="product-details-table">
+	      <thead>
+	        <tr>
+	           <th>Indent ID</th>
+	          <th>Product ID</th>
+	          <th>Product Name</th>
+	          <th>Requested Quantity</th>
+	          <th>Action</th>
+	        </tr>
+	      </thead>
+	      <tbody id="product-details-table-body">
+	      </tbody>
+	    </table>
+	  </div>
+	</div>
 
   
 
@@ -323,72 +243,142 @@
   </div>
   
   
+   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-	var firstTable1 = document.getElementById('product-details-table');
-    var selectedTable1 = document.getElementById('products-table');
-    var addButtons2 = firstTable1.getElementsByClassName('add-btn');
+    var addButtons;
+  $(document).ready(function(){
+	  
+	  
+    	$.ajax({
+    	     url :"getStoreIds",
+    	     method :"post",
+    	     success: function(data) {
+                 $('#stores-list').empty();
+                 var option = '<option >' + "select StoreID" + '</option>';
+                 $('#stores-list').append(option);
+                 $.each(data, function(index, products) {
+                     var option = '<option value="' + products.storeId + '">' + products.storeName + '</option>';
+                     $('#stores-list').append(option);
+                 });
+             },
+         error: function() {
+             alert('Error occurred while retrieving categories.');
+         }
+    	    	  
+    	});
+    	
+    	
+    	$("#stores-list").change(function() {
+    	    $.ajax({
+    	        url: "getIndentsListByStoreID",
+    	        method: "post",
+    	        data: {
+    	            "storeId": $("#stores-list").val()
+    	        },
+    	        success: function(data) {
+    	            $('#product-details-table-body').empty(); // Remove existing rows
+    	            console.log(data);
+    	            $('#indents-list').empty();
+    	            var option = '<option>' + "select IndentID" + '</option>';
+    	            $('#indents-list').append(option);
+    	            $.each(data, function(index, products) {
+    	                var option = '<option value="' + products.indentId + '">' + products.indentId + '</option>';
+    	                $('#indents-list').append(option);
+    	            });
+    	        },
+    	        error: function() {
+    	            alert('Error occurred while retrieving categories.');
+    	        }
+    	    });
+    	});
 
-      // Function to add a row to the selected table
-      function addRowToSelectedTable(row) {
     
-       
-        var cells = row.cells;
-        var field1 = cells[0].textContent;
-        var field2 = cells[1].textContent;
-        var field3 = cells[2].textContent;
-        var field4 = cells[3].textContent;
+    $("#indents-list").change(function(){
+    	var data = {}
+        data["indentId"]=$("#indents-list").val();
+    	$.ajax({
+   	     url :"getStoreIndentProductsListData",
+   	     method :"post",
+   	     data: {"indentId":JSON.stringify(data) 
+   	     },
+   	  success : function(prodlist) {
+   		$('#product-details-table-body').html('');
+	   		$.each(prodlist, function(index, data1) {
+	   			
+	   			
+	   			console.log(index);
+	   			console.log(data1);
+	   			var newRow = '<tr>' +
+	   	        '<td>' + $("#indents-list").val()+ '</td>' +
+	   	        '<td>' + data1.productId + '</td>' +
+	   	        '<td>' + data1.productName + '</td>' +
+	   	        '<td>' + data1.quantity + '</td>' +
+	   	        '<td><button class = "add-btn" >Add</button></td>' +
+	   	        '</tr>';
 
-        var newRow = document.createElement('tr');
+	   	    // Append the new row to the table body
+	   	    $('#product-details-table tbody').append(newRow);
+	   		  console.log("Completed");
+	   		});
+	
+	   	 var addButtons = $('#product-details-table .add-btn');
+         addButtons.click(function() {
+           var row = $(this).closest('tr');
+           addRowToSelectedTable(row);
+         });
+         
+	          
+   	  },
+        error: function() {
+            alert('Error occurred while retrieving Products Data');
+        }
+   	    	  
+   	});
+    	
+    	
+ 	}); 
+    	
+    $(document).on('click', '#products-table .delete-btn', function() {
+        var row = $(this).closest('tr');
+        deleteRowFromSelectedTable(row);
+      });
+     
+        function addRowToSelectedTable(row) {
+      	  console.log("hello");
+      	  var selectedTable = $('#products-table');
+      	  var cells = row[0].cells;
+      	  var field1 = cells[0].textContent;
+      	  var field2 = cells[1].textContent;
+      	  var field3 = cells[2].textContent;
+      	  var field4 = cells[3].textContent;
 
-        var field1Cell = document.createElement('td');
-        field1Cell.textContent = field1;
+      	  var newRow = '<tr>' +
+            '<td>' + field1 + '</td>' +
+            '<td>' + field2 + '</td>' +
+            '<td>' + field3 + '</td>' +
+            '<td>' + field4 + '</td>' +
+            '<td><input type="number" value="1"></td>' +
+            '<td><button class="delete-btn">Delete</button></td>' +
+            '</tr>';
 
-        var field2Cell = document.createElement('td');
-        field2Cell.textContent = field2;
+          selectedTable.find('tbody').append(newRow);
 
-        var field3Cell = document.createElement('td');
-        field3Cell.textContent = field3;
+      	      }
+        
+	      // Function to delete a row from the selected table
+	      function deleteRowFromSelectedTable(row) {
+	    	  row.remove();
+	    	  
+	      }
+    	
+  });
+    
 
-        var field4Cell = document.createElement('td');
-        field4Cell.textContent = field4;
-
-        var quantityCell = document.createElement('td');
-        var quantityInput = document.createElement('input');
-        quantityInput.type = 'number';
-        quantityInput.value = 1;
-        quantityCell.appendChild(quantityInput);
-
-        var actionCell = document.createElement('td');
-        var deleteButton = document.createElement('button');
-        deleteButton.classList.add('delete-btn');
-        deleteButton.textContent = 'Delete';
-        deleteButton.addEventListener('click', function() {
-          deleteRowFromSelectedTable(newRow);
-        });
-        actionCell.appendChild(deleteButton);
-
-        newRow.appendChild(field1Cell);
-        newRow.appendChild(field2Cell);
-        newRow.appendChild(field3Cell);
-        newRow.appendChild(field4Cell);
-        newRow.appendChild(quantityCell);
-        newRow.appendChild(actionCell);
-
-        selectedTable1.querySelector('tbody').appendChild(newRow);
-      }
-
-      // Function to delete a row from the selected table
-      function deleteRowFromSelectedTable(row) {
-        selectedTable1.querySelector('tbody').removeChild(row);
-      }
-
-      for (let i = 0; i < addButtons2.length; i++) {
-        var addButton = addButtons2[i];
-        addButton.addEventListener('click', function() {
-          var row = this.parentNode.parentNode;
-          addRowToSelectedTable(row);
-        });
-      }
+	    	    
   </script>
+  
+  
+  
+  
 </body>
 </html>

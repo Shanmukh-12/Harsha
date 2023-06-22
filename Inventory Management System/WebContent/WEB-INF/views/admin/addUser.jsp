@@ -12,6 +12,8 @@
 	$(document)
 			.ready(
 					function() {
+						console.log("Hellooo");
+
 						function showSuccessMessage(event) {
 							event.preventDefault();
 

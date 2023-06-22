@@ -16,11 +16,11 @@
         }
 
         :root {
-            --main-bg-color: #009d63;
-            --main-text-color: #009d63;
-            --second-text-color: #bbbec5;
-            --second-bg-color: #c1efde;
-        }
+        --main-bg-color: #bef7f5;
+        --main-text-color: #009d63;
+        --second-text-color: #bbbec5;
+        --second-bg-color: #bef7f5;
+    }
 
         .primary-text {
             color: var(--main-text-color);
@@ -108,10 +108,6 @@
     
     
  <script>
- 
- 	$(document).ready(function(){
- 		Myfunction2('warehousestock');
- 	});
    
     function Myfunction(controllerUrl) {
             $.ajax({
@@ -126,95 +122,7 @@
             });  
         
     }
-    function logout() {
-        $.ajax({
-            url: "logout",
-            method: "GET",
-            success: function(response) {
-                console.log("Logout successful");
-                console.log(response);
-                location.href= "/inventory/";
-            },
-            error: function() {
-                console.log("Logout error");
-            }
-        });
-    }
-    function Myfunction2(containerurl) {
-        $.ajax({
-            url: containerurl,
-            method: "GET",
-            success: function (response) {
-                console.log("AJAX call successful");
-              
-                $("#content").html(response);
-                var ctx1 = document.getElementById('myChart');
-                ctx1.width = 300; // Set the width
-                ctx1.height = 130;
-                var ctx = ctx1.getContext('2d');
-
-            	$.ajax({
-            		  url: "getStock",
-            		  type: "GET",
-            		  dataType:"json",
-            		  success: function(response) {
-            		    // Handle the response from the servlet if needed
-            		     console.log(response);
-            		    var name=[];
-            		    var stock=[];
-            		    response.forEach(function(value)
-            		    {
-            		    stock.push(value.stock.product_stock);
-            		    name.push(value.product.product_name);
-            		    	
-            		    })
-            		    
-            		    
-
-            		 // Define chart data
-            		 var data = {
-            		   labels: name,
-            		   datasets: [{
-            		     label: 'stock',
-            		     data: stock,
-            		     
-            		     backgroundColor: 'rgba(54, 162, 235, 0.5)', // Bar color
-            		     borderColor: 'rgba(54, 162, 235, 1)', // Border color
-            		     borderWidth: 1 // Border width
-            		   }]
-            		 };
-            	
-            	var myChart = new Chart(ctx, {
-            		  type: 'bar',
-            		  data: data,
-            		  responsive: true,
-            		    maintainAspectRatio: false,
-            		  width: 100,
-         		     height: 100,
-            		  options: {
-            		    scales: {
-            		    	
-            		      y: {
-            		        beginAtZero: true
-            		      }
-            		    }
-            		  }
-            		});
-            		  },
-            		  error: function() {
-            		    // Handle errors
-            		    console.error("AJAX request failed.");
-            		  }
-            		});
-
-               	
-               
-            },
-            error: function () {
-                console.log("AJAX call error");
-            }
-        });
-    }
+   
    </script>
     
 </head>
@@ -228,7 +136,7 @@
         </div>
         <div class="list-group list-group-flush my-3">
             <button class="list-group-item list-group-item-action bg-transparent second-text active"
-                    onclick="Myfunction2('warehousestock')">
+                    onclick="Myfunction('wareHouseButton')">
                 <span class="material-symbols-outlined">inventory</span>Warehouse Stock
             </button>
 
@@ -241,37 +149,50 @@
                     Indents
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="indentsDropDownId">
-                    <li><button class="dropdown-item" onclick="Myfunction('indentsButton')">Indents List</button></li>
+                    <li><button class="dropdown-item" onclick="Myfunction('indentsButton')">List Indents</button></li>
                     <li><button class="dropdown-item" onclick="Myfunction('createIndentButton')">Create Indent</button></li>
                 </ul>
             </div>
 
-            <button class="list-group-item list-group-item-action bg-transparent second-text fw-bold"
-                    id="adjustmentsButton" onclick="Myfunction('adjustmentsButton')">
+           
+           <div class="dropdown">
+            <button class="list-group-item list-group-item-action bg-transparent second-text fw-bold dropdown-toggle"
+                    id="adjustmentsButton" data-bs-toggle="dropdown" aria-expanded="false">
                 <span class="material-symbols-outlined">equalizer</span>
                 Adjustments
             </button>
-            <button class="list-group-item list-group-item-action bg-transparent second-text fw-bold"
-                    id="priceReviewButton" onclick="Myfunction('priceReviewButton')">
+             <ul class="dropdown-menu" aria-labelledby="adjustmentsDropDownId">
+                    <li><button class="dropdown-item" onclick="Myfunction('adjustmentsButton')">Create Adjustment</button></li>
+                    <li><button class="dropdown-item" onclick="Myfunction('adjustmentsListButton')">List Adjustments</button></li>
+                </ul>
+             </div>
+             <div class="dropdown">
+            <button class="list-group-item list-group-item-action bg-transparent second-text fw-bold dropdown-toggle"
+                    id="priceReviewButton" data-bs-toggle="dropdown" aria-expanded="false">
                 <i>
                     <span class="material-symbols-outlined">currency_rupee</span>
                 </i>
                 Price Review
             </button>
+             <ul class="dropdown-menu" aria-labelledby="priceReviewDropDownId">
+                    <li><button class="dropdown-item" onclick="Myfunction('priceReviewButton')">Create Price Review</button></li>
+                    <li><button class="dropdown-item" onclick="Myfunction('priceReviewListButton')">List Price Review</button></li>
+                </ul>
+            </div>
             <div class="dropdown">
                 <button class="list-group-item list-group-item-action bg-transparent second-text fw-bold dropdown-toggle"
                         role="button" id="storeDropDownId" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="fas fa-shopping-cart me-2"></i>Store
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="storeDropDownId">
-                    <li><button class="dropdown-item" onclick="Myfunction('getStoreIndents')">Store Indents</button></li>
-                    <li><button class="dropdown-item" onclick="Myfunction('stockIssuesButton')">Stock Issues</button></li>
-                    <li><button class="dropdown-item" onclick="Myfunction('createStockIssueButton')">Create Stock Issue</button></li>
-                    <li><button class="dropdown-item" onclick="Myfunction('storeReturnsButton')">Store Returns</button></li>
+                    <li><button class="dropdown-item" onclick="Myfunction('getStoreIndents')">List Store Indents</button></li>
+                     <li><button class="dropdown-item" onclick="Myfunction('createStockIssueButton')">Create Store Issue</button></li>
+                    <li><button class="dropdown-item" onclick="Myfunction('stockIssuesButton')">List Store Issues</button></li>
+                    <li><button class="dropdown-item" onclick="Myfunction('storeReturnsButton')">List Store Returns</button></li>
                 </ul>
             </div>
 
-            <button class="list-group-item list-group-item-action bg-transparent text-danger fw-bold" onclick="logout()"><i
+            <button class="list-group-item list-group-item-action bg-transparent text-danger fw-bold"><i
                     class="fas fa-power-off me-2"></i>Logout
             </button>
         </div>
@@ -280,7 +201,7 @@
         <nav class="navbar navbar-expand-lg navbar-light bg-transparent py-4 px-4">
             <div class="d-flex align-items-center">
                 <i class="fas fa-align-left primary-text fs-4 me-3" id="menu-toggle"></i>
-                <h2 class="fs-2 m-0">Dashboard</h2>
+                <h2 class="fs-2 m-0">InventoryHome</h2>
             </div>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -294,7 +215,7 @@
                     <li class="nav-item dropdown">
                         <button class="nav-link dropdown-toggle second-text fw-bold" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-user me-2"></i>Inventory
+                            <i class="fas fa-user me-2"></i>John Doe
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><button class="dropdown-item">Profile</button></li>

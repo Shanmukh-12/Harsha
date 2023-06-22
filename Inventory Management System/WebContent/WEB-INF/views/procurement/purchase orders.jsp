@@ -136,9 +136,10 @@
                <th>product_name</th>
                <th>indent quantity</th>
                <th>purchase_order_quantity</th>
+
                <th>negotiation_price</th>
                
-               
+
                <th>Action</th>
             </tr>
          </thead>
@@ -172,13 +173,11 @@
 
         	  const nameCell = document.createElement("td");
         	  const qtyCell = document.createElement("td");
-        	  const indentqtyCell=document.createElement("td");
         	  const negCell = document.createElement("td");
         	  const actionCell = document.createElement("td");
         	  nameCell.textContent = product_name;
         	  nameCell.value = product_name;
         	  idCell.textContent=product_id;
-        	  indentqtyCell.textContent=quantity;
         	  idCell.value=product_id;
         	  const inputNegativePrice2 = document.createElement("input");
         	  inputNegativePrice2.type = "number";
@@ -188,9 +187,11 @@
         	  qtyCell.appendChild(inputNegativePrice2);
         	  newRow.appendChild(idCell);
         	  newRow.appendChild(nameCell);
+
         	  newRow.appendChild(indentqtyCell);
+
         	  newRow.appendChild(qtyCell);
-       
+
         	  // Add the negative price input field
         	  const inputNegativePrice = document.createElement("input");
         	  inputNegativePrice.type = "number";
@@ -198,7 +199,7 @@
         	  inputNegativePrice.style.width = "80px";
         	  inputNegativePrice.style.height = "20px";
         	  negCell.appendChild(inputNegativePrice);
-        	  
+
         	  // Add the delete button
         	  const deleteButton = document.createElement("button");
         	  deleteButton.textContent = "Delete";
@@ -206,9 +207,9 @@
         	    ButtonActionback(this);
         	  });
         	  actionCell.appendChild(deleteButton);
-        	  
+
         	  newRow.appendChild(negCell);
-        	  
+
         	  newRow.appendChild(actionCell);
 
         	  // Append the new row to table2
@@ -220,10 +221,13 @@
         	}
          
          function createpurchase() {
+
         	 const table = document.getElementById('dataTable');
         	    const table1 = document.querySelector('.table');
         	  console.log(table.rows[1]);
         	  var totalamount = 0;
+
+
         	  // Create an array to store the table data
         	  const tableData = [];
 
@@ -234,14 +238,17 @@
         	  for (let j = 0; j < headerRow.cells.length; j++) {
         	    if (headerRow.cells[j].textContent === "product_name") {
         	      productNameColumnIndex = j;
-        	    } else if (headerRow.cells[j].textContent === "negotiation_price") {
-        	      negotiationpriceindex = j;
-        	    }
-        	    if (productNameColumnIndex !== -1 && negotiationpriceindex !== -1) {
         	      break;
         	    }
         	  }
         	  console.log(productNameColumnIndex);
+        	  for (let j = 0; j < headerRow.cells.length; j++) {
+          	    if (headerRow.cells[j].textContent === "negotiation_price") {
+          	    	negotiationpriceindex = j;
+          	    	
+          	      break;
+          	    }
+          	  }
         	  console.log(negotiationpriceindex);
 
         	  // Iterate through each row of the table
@@ -249,35 +256,39 @@
         	    const row = table.rows[i];
         	    const rowData = {};
 
-        	    // Iterate through each cell of the row excluding the "product_name" and "indent quantity" columns
-        	    for (let j = 0; j < row.cells.length - 1; j++) {
-        	      if (j === productNameColumnIndex || headerRow.cells[j].textContent === "indent quantity") continue; // Skip the "product_name" and "indent quantity" columns
+        	    // Iterate through each cell of the row excluding the "product_name" column
+        	    for (let j = 0; j < row.cells.length-1; j++) {
+        	      if (j === productNameColumnIndex) continue; // Skip the "product_name" column
         	      const cell = row.cells[j];
         	      console.log(cell);
         	      const cellHeader = headerRow.cells[j].textContent; // Use textContent to get the header
+        	    
 
         	      // Check if the cell contains an input element
         	      if (cell.firstChild && cell.firstChild.tagName === 'INPUT') {
         	        // Assign the input field value
         	        rowData[cellHeader] = cell.firstChild.value;
         	        if (j === negotiationpriceindex) {
-        	          console.log("hii");
-        	          console.log(cell.firstChild.value);
-        	          const price = parseInt(cell.firstChild.value);
-        	          if (!isNaN(price)) {
-        	            totalamount += price;
-        	          }
-        	        }
+            	    	  console.log("hii");
+            	    	  console.log(cell.firstChild.value);
+            	    	  const price = parseInt(cell.firstChild.value);
+            	    	  if (!isNaN(price)) {
+            	    	    totalamount += price;
+            	    	  }
+            	    	}
         	      } else {
         	        // Assign the cell text content
         	        rowData[cellHeader] = cell.textContent;
-        	        console.log(cell.textContent);
+        	    	  console.log(cell.textContent);
+
+        	       
         	      }
         	    }
-
+                  
         	    // Add row data to the tableData array
         	    tableData.push(rowData);
         	  }
+        	
 
         	  var children=[];
         	
