@@ -142,7 +142,7 @@
 	<br><br><br><br>
 	<input type="text" id="purchaseorderid" placeholder="Enter purchase id" class="searchClass" style="width:140px;">
 	<input type="button" onclick="tk3()" value="search" class="searchClass">
-<span class="refresh-icon searchClass" onclick="tk()">&#x21bb;</span>
+<span class="refresh-icon searchClass" onclick="refresh()">&#x21bb;</span>
 	
 
 <form method="Get">
@@ -197,7 +197,7 @@
       console.log(vendorId);
       console.log(expectedDate);
       $.ajax({
-          url: "getPurchaseId2",
+          url: "getPurchaseIdDetails",
           method:"GET",
           
           data: {
@@ -241,7 +241,7 @@
     console.log(vendorId);
     console.log(expectedDate);
     $.ajax({
-        url: "getPurchaseId2",
+        url: "getPurchaseIdDetails",
         method:"GET",
         
         data: {
@@ -315,7 +315,7 @@
 
 		console.log(pid)
       $.ajax({
-          url: "getPurchaseId3",
+          url: "getPurchaseIdDetailsById",
           method:"GET",
           
           data: {
@@ -350,10 +350,11 @@
     };
     function refresh()
     {
+     console.log("hii babu");
     	 $('#vendorId').val('');
  	    $('#expectedDate').val('');
  	    $('#expectedDate1').val('');
- 	   $("#purchaseorderid").val('')
+ 	   $("#purchaseorderid").val('');
  	    
     	tk();
     }

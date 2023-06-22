@@ -218,7 +218,7 @@
 
     	$.ajax({
     		            
-    	                 url: "getPurchaseReturnsList2",
+    	                 url: "getPurchaseReturnsListDetails",
     	                 method:"GET",
     	                	    data: {
     	                	    	"purchase_return_date":returnDate,
@@ -263,7 +263,7 @@
 
  	$.ajax({
  		            
- 	                 url: "getPurchaseReturnsList2",
+ 	                 url: "getPurchaseReturnsListDetails",
  	                 method:"GET",
  	                	    data: {
  	                	    	"purchase_return_date":returnDate,
@@ -331,7 +331,7 @@
  		var pid=$("#purchasereturnid").val();
  		 $.ajax({
  		      
- 		      url: "getPurchaseReturnsList3",
+ 		      url: "getPurchaseReturnsListDetailsById",
  		      method:"GET",
  		     	    data: {
  		     	    	"purchase_return_id":pid,

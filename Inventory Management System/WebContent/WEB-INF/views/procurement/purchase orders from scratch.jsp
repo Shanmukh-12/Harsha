@@ -345,6 +345,9 @@
             	
             	
           	  alert("Purchase order created successfuly");
+          	  var table = document.getElementById('dataTable1');
+          	  table.innerHTML="";
+
                
             }
         });

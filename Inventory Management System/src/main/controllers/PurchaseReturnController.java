@@ -49,7 +49,7 @@ public class PurchaseReturnController {
 
 	}
 
-	@RequestMapping(value = "/getPurchaseReturnsList2", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/getPurchaseReturnsListDetails", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public String getPurchaseReturnsList2(@ModelAttribute PurchasesReturnFilter p, Model m)
 			throws MessagingException, JsonMappingException, JsonProcessingException, UnsupportedEncodingException {
@@ -64,7 +64,7 @@ public class PurchaseReturnController {
 
 	}
 
-	@RequestMapping(value = "/getPurchaseReturnsList3", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/getPurchaseReturnsListDetailsById", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public String getPurchaseReturnsList2(@ModelAttribute PurchaseReturnId p, Model m)
 			throws MessagingException, JsonMappingException, JsonProcessingException, UnsupportedEncodingException {
