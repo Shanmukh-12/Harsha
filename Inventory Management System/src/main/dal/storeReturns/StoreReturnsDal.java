@@ -24,7 +24,7 @@ public class StoreReturnsDal implements StoreReturnsDao {
 	@Override
 	@Transactional
 	public List<StoreReturnsData> getStoreReturnsList() {
-		return entityManager.createQuery("select e from StoreReturnsData e  ORDER BY e.indentId DESC").setMaxResults(5)
+		return entityManager.createQuery("select e from StoreReturnsData e  ORDER BY e.storeIssueId DESC").setMaxResults(5)
 				.getResultList();
 
 	}
@@ -35,7 +35,7 @@ public class StoreReturnsDal implements StoreReturnsDao {
 		int data = returnid.getReturnId();
 		System.out.println(data);
 		List<StoreReturnProductsList> s = entityManager
-				.createQuery("select e from StoreReturnProductsList e where e.retrunsID = :data",
+				.createQuery("select e from StoreReturnProductsList e where e.returnId = :data",
 						StoreReturnProductsList.class)
 				.setParameter("data", data).getResultList();
 		return s;

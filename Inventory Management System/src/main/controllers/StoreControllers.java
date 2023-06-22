@@ -87,9 +87,9 @@ public class StoreControllers {
 		return "store/createStoreIndent";
 	}
 
-	@PostMapping("/listStoreReturns")
+	@PostMapping("/getStoreReturns")
 	public String listStoreReturns() {
-		return "store/listStoreReturns";
+		return "store/storeReturns";
 	}
 
 	@PostMapping("/createStoreReturn")

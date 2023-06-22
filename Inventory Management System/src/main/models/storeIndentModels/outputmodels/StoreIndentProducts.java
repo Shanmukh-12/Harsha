@@ -1,4 +1,4 @@
-package main.models.storeModels.outputmodels;
+package main.models.storeIndentModels.outputmodels;
 
 public class StoreIndentProducts {
 
