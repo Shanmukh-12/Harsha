@@ -4,7 +4,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Bus List Page</title>
+    <title>Price Review List</title>
    <style>
         .container {
             max-width: 800px;
@@ -29,7 +29,8 @@
         }
 
         .issue-details{
-            display: flex;
+
+            margin-top:10px;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 10px;
@@ -85,14 +86,34 @@
     .modal-body {
         padding: 20px;
     }
+    
+     .twoDropdowns {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+}
+
+.dropdowns {
+	display: flex;
+	padding-left: 300px;
+    height: 100px;
+}
+
+.dropdown {
+	display: inline-block;
+	margin-right: 10px;
+} 
 
     </style>
     <script>
-    function loadIndentProducts(indentId) {
+    function loadPriceReviewProducts(pr_id) {
         var currentPageUrl = window.location.href;
+        var data = {}
+        data["pr_id"]=pr_id;
         $.ajax({
-          url: "indentProductsButton",
+          url: "getPriceReviewProductsList",
           method: "post",
+          data:{"pr_id":JSON.stringify(data)},
           success: function (response) {
             $("#modalContent").html(response);
             $("#productsModal").modal("show");
@@ -111,18 +132,52 @@
 </head>
 <body>
 
+<form method=post onsubmit="filterData(); return false">
+	<div class="dropdowns">
+		<div class="twoDropdowns">
+			<div class="dropdown">
+				<select id="store-id-dropdown">
+				<option value="" selected>Select Product Category</option>
+				
+				</select>
+			</div>
+			<div class="dropdown">
+				<select id="indent-status-dropdown">
+					<option value="" selected>Select Product Name</option>
+					
+				</select>
+			</div>
+		</div>
+		<div class="twoDropdowns">
+			<div class="dropdown">
+				<label>From Date :</label>
+				<input type="date" id="indent-date-dropdown-from"
+					placeholder="Select Indent Date">
+			</div>
+			<div class="dropdown">
+				<label>To  Date :</label>
+				<input type="date" id="indent-date-dropdown-to"
+					placeholder="Select Indent Date">
+			</div>
+		</div>
+		
+		<div class="twoDropdowns">
+			<input type="reset">
+			<button type="submit" >Apply Filters</button>
+		</div>
+	</div>
+</form>
+
 <form method="post" action="">
     <div class="container">
-        <h1 class="text-center mb-4">Indents List</h1>
-        <c:forEach items="${indents}" var="indent">
-            <div class="issues-block">
-                <h4 class="store-indent-id">Status: <span class="bold">${indent.indentsStatus}</span></h4>
-                <div class="issue-details">
-                    <span class="label">Indent ID:</span><span>${indent.indentID}</span>
-                    <span class="label">Indent Date:</span><span>${indent.d}</span>
-                </div>
-                <div>
-                    <button type="button" class="btn-issues" onclick="loadIndentProducts('indentsProductsButton')">View Products</button>
+        <h1 class="text-center mb-4">Price Review List</h1>
+        <c:forEach items="${priceReview}" var="pricereview">
+            <div class="issues-block" >
+                <h4 class="store-indent-id">Price Review ID: <span class="bold">${pricereview.priceReviewId}</span></h4>
+                <div class="issue-details" >
+                    <span class="label">Price Review Date :  </span><span>${pricereview.priceReviewDate}</span>
+                
+                    <button type="button" class="btn-issues" onclick="loadPriceReviewProducts(${pricereview.priceReviewId})">View Products</button>
                 </div>
             </div>
         </c:forEach>
@@ -135,7 +190,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="productsModalLabel">Products</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+               <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="modalContent">
                 <!-- Modal content will be loaded dynamically here -->

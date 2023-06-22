@@ -24,8 +24,8 @@ public class PriceReviewProductsList implements Serializable {
 	@Column(name = "batch_no")
 	int batch_no;
 
-	@Column(name = "old_Price")
-	int old_Price;
+	@Column(name = "old_price")
+	int old_price;
 
 	@Column(name = "new_price")
 	int new_price;
@@ -61,12 +61,12 @@ public class PriceReviewProductsList implements Serializable {
 		this.batch_no = batch_no;
 	}
 
-	public int getOld_Price() {
-		return old_Price;
+	public int getOld_price() {
+		return old_price;
 	}
 
-	public void setOld_Price(int old_Price) {
-		this.old_Price = old_Price;
+	public void setOld_price(int old_price) {
+		this.old_price = old_price;
 	}
 
 	public int getNew_price() {
