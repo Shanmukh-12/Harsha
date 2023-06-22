@@ -65,18 +65,22 @@
       <thead>
         <tr>
           <th>Product ID</th>
-          <th>Product Name</th>
-          <th>Product Category</th>
-          <th>Quantity</th>
+          <th>Batch NO</th>
+<!--           <th>Product Name</th>
+           <th>Product Category</th>
+ -->         <th>Quantity</th>
+          <th>Reason</th>
         </tr>
       </thead>
       <tbody>
       	<c:forEach var="item" items="${productsList}">
             <tr>
                 <td>${item.productId}</td>
-                <td>${item.productName}</td>
-                <td>${item.productCategoryName}</td>
-                <td>${item.quantity}</td>
+                <td>${item.batchNo}</td>
+<%--                 <td>${item.productName}</td>
+                 <td>${item.productCategoryName}</td>
+  --%>              <td>${item.quantity}</td>
+                <td>${item.reason}</td>
             </tr>
         </c:forEach>
       		

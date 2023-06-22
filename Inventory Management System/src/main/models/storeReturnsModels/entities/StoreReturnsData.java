@@ -21,7 +21,7 @@ public class StoreReturnsData {
 	int returnId;
 	
 	@Column(name="store_return_date")
-	LocalDate date;
+	LocalDate date = LocalDate.now();
 	
 	@Column(name="storeissue_id")
 	int storeIssueId;

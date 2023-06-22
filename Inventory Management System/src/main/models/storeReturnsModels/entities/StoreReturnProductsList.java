@@ -25,6 +25,14 @@ public class StoreReturnProductsList implements Serializable{
 	@Column(name="batch_no")
 	int batchNo;
 	
+	public StoreReturnsList getSrl() {
+		return srl;
+	}
+
+	public void setSrl(StoreReturnsList srl) {
+		this.srl = srl;
+	}
+
 	@Column(name="quantity")
 	int quantity;
 	

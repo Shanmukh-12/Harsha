@@ -21,9 +21,11 @@ public class StoreIssueDal implements StoreIssueDao {
 	@Transactional
 	public List<StoreIssueData> getStoreIds(StoreId sid) {
 		int value = sid.getStoreId();
+		System.out.println(value);
 		List<StoreIssueData> data = entityManager
 				.createQuery("select s from StoreIssueData s where s.storeId = :id", StoreIssueData.class)
 				.setParameter("id", value).getResultList();
+		System.out.println("data is : "+data);
 		return data;
 	}
 }

@@ -93,6 +93,12 @@ select, button, #searchInput, input {
 	justify-content: space-around;
 }
 </style>
+<!-- Add the following CSS link in the head section of your HTML -->
+
+<!-- Add the following script tags before your JavaScript code -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
 <script>
 
 	function filterData()
@@ -234,7 +240,7 @@ select, button, #searchInput, input {
 	   
 	   
        $.ajax({
-           url: "getStoreIndentsList",
+           url: "getStoreReturnsList",
            method: "POST",
            dataType: "json",
            success: function(response) {
@@ -249,16 +255,15 @@ select, button, #searchInput, input {
         	     $('.container > h1').after(noDataMessage);
         	   } else {
         	     // Iterate over the response object
-        	     Object.values(response).forEach(function(indent) {
+        	     Object.values(response).forEach(function(returns) {
         	       var issueBlock = $('<div class="issues-block"></div>');
-        	       var status = $('<h4 class="store-indent-id">Indent Id: <span class="bold">' + indent.indentId + '</span></h4>');
-        	       var issueDetails = $('<div class="issue-details"></div>');
-        	       var storeId = $('<span class="label">Store ID:</span><span>' + indent.storeId + '</span>');
-        	       var indentId = $('<span class="label">Status:</span><span>' + indent.indentStatus + '</span>');
-        	       var indentDate = $('<span class="label">Indent Date:</span><span>' + new Date(indent.date[0], indent.date[1] - 1, indent.date[2]).toLocaleDateString() + '</span>');
-        	       var viewProductsButton = $('<button type="button" class="btn-issues" onclick="loadIndentProducts(\'' + indent.indentId + '\')">View Products</button>');
+        	       var status = $('<h4 class="store-return-id">Indent Id: <span class="bold">' + returns.returnId + '</span></h4>');
+        	       var issueDetails = $('<div class="return-details"></div>');
+        	       var indentId = $('<span class="label">Issue Id:</span><span>' + returns.storeIssueId + '</span>');
+        	       var indentDate = $('<span class="label">Return Date:</span><span>' + new Date(returns.date[0], returns.date[1] - 1, returns.date[2]).toLocaleDateString() + '</span>');
+        	       var viewProductsButton = $('<button type="button" class="btn-issues" onclick="loadIndentProducts(\'' + returns.returnId + '\')">View Products</button>');
 
-        	       issueDetails.append(storeId, indentId, indentDate);
+        	       issueDetails.append(indentId, indentDate);
         	       issueBlock.append(status, issueDetails, viewProductsButton);
         	       // Insert the issue block after the h1 tag
         	       $('.container').append(issueBlock);
@@ -296,16 +301,16 @@ select, button, #searchInput, input {
    // Add event listener to the search button
 document.getElementById("searchInput").addEventListener("input", performSearch);
    
-   function loadIndentProducts(indentId) {
+   function loadIndentProducts(returnId) {
        var currentPageUrl = window.location.href;
-       console.log(indentId);
+       console.log(returnId);
        var data = {}
-       data["indentId"]=indentId;
+       data["returnId"]=returnId;
        console.log("Hehree");
        $.ajax({
-         url: "getStoreIndentProductsList",
+         url: "getStoreReturnProductsList",
          method: "post",
-         data:{"indentId":JSON.stringify(data)},
+         data:{"returnId":JSON.stringify(data)},
          success: function (response) {
            $("#modalContent").html(response);
            $("#productsModal").modal("show");
@@ -369,7 +374,7 @@ document.getElementById("indent-date-dropdown-from").setAttribute("max", formatt
 	<h1 class="text-center mb-4">Store Indents List</h1>
 
 	<div class="search-container" align="right">
-		<input type="text" id="searchInput" placeholder="Search Indent ID">
+		<input type="text" id="searchInput" placeholder="Search Store Return ID">
 		<button type="button" id="searchButton">Search</button>
 	</div><br>
 
