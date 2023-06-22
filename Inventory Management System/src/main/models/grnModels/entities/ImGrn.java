@@ -96,7 +96,7 @@ public class ImGrn {
 	@Override
 	public String toString() {
 		return "ImGrn [grnId=" + grnId + ", grnDate=" + grnDate + ", purchase_order_id=" + purchase_order_id
-				+ ", grnAmount=" + grnAmount + ", grnStatus=" + grnStatus + ", productsList=" + productsList + "]";
+				+ ", grnAmount=" + grnAmount + ", grnStatus=" + grnStatus + " ]";
 	}
 
 }
