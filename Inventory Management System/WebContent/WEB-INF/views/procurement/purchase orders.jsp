@@ -1,6 +1,35 @@
 <html>
    <head>
       <style>
+   .table {
+        border-collapse: collapse;
+        width: 90%;
+        margin: 0 auto; /* Center the table */
+        border: 1px solid #ccc; /* Add border for the table */
+        border-radius: 4px; /* Add border-radius for a rounded look */
+    }
+  
+	 th,
+        td {
+            padding: 8px;
+            border: 1px solid #ccc; /* Add border for table cells */
+                    text-align: center;
+            
+            border-bottom: 1px solid #ccc; /* Add border-bottom for table cells */
+        }
+
+        thead th {
+            border-bottom-width: 2px; /* Increase border-bottom width for table header */
+        }
+        .table {
+            border: 1px solid #ccc; /* Add border for the table */
+            border-radius: 4px; /* Add border-radius for a rounded look */
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: #f5f5f5; /* Add hover effect for table rows */
+        }
+   
          .indentClass
          {
          position:relative;
@@ -34,12 +63,8 @@
          {
          color : green;
          }
-         #indentTable
-         {
-         color : #4266f5;
-         }
+         
          th {
-         text-align: left;
          padding: 8px;
          border-bottom: 1px solid #ccc; /* Add border-bottom for table header */
          }
@@ -66,10 +91,10 @@
       <label class="indentClass1">
          <h4>Indent List</h4>
       </label>
-      <table class="table bg-white rounded shadow-sm  table-hover"  >
+      <table class="table bg-white rounded shadow-sm  table-hover"  id="indentTable">
          <thead id="indentTable">
             <tr>
-               <th scope="col" width="50">#</th>
+             
                <th scope="col">Product Id</th>
                <th scope="col">Product Name</th>
                <th scope="col"> Quantity</th>
@@ -78,14 +103,14 @@
          </thead>
          <tbody>
             <tr>
-               <th scope="row">1</th>
+               
                <td>1</td>
                <td>Television</td>
                <td>200</td>
               <td><button onclick="moveToTable2(this)">Add</button></td>
             </tr>
             <tr>
-               <th scope="row">2</th>
+             
                <td>2</td>
                <td>santoor</td>
                <td>200</td>
@@ -114,7 +139,6 @@
                <th>indent quantity</th>
                
                <th>Action</th>
-               <th></th>
             </tr>
          </thead>
          <tbody id="dataTable1">
@@ -137,9 +161,9 @@
         	  const row = button.parentNode.parentNode;
 
         	  // Get the values from the row
-        	  const product_id = row.cells[1].textContent;
-        	  const product_name = row.cells[2].textContent;
-        	  const quantity = row.cells[3].textContent;
+        	  const product_id = row.cells[0].textContent;
+        	  const product_name = row.cells[1].textContent;
+        	  const quantity = row.cells[2].textContent;
 
         	  // Create a new row in table2 with the values
         	  const newRow = document.createElement("tr");
@@ -178,7 +202,7 @@
         	  const deleteButton = document.createElement("button");
         	  deleteButton.textContent = "Delete";
         	  deleteButton.addEventListener("click", function () {
-        	    ButtonAction(this);
+        	    ButtonActionback(this);
         	  });
         	  actionCell.appendChild(deleteButton);
         	  
@@ -193,6 +217,7 @@
         	  // Remove the row from table1
         	  
         	}
+         
          function createpurchase() {
         	 const table = document.getElementById('dataTable');
         	  console.log(table.rows[1]);
@@ -286,6 +311,67 @@
         	 
         	}
 
+         function ButtonActionback(button) {
+        	  var row = button.parentNode.parentNode;
+        	  var tableData = [];
+
+        	  // Get the values from the row
+        	  var product_id = row.cells[0].textContent;
+        	  var product_name = row.cells[1].textContent;
+        	  var purchase_order_quantity = row.cells[2].textContent;
+        	  var negotiation_price = row.cells[3].textContent;
+        	  var indent_quantity = row.cells[4].textContent;
+ 
+        	  // Create a new row in the "indentTable" table with the values
+        	  var newRow = document.createElement("tr");
+        	  var idCell = document.createElement("td");
+        	  var nameCell = document.createElement("td");
+        	  var qtyCell = document.createElement("td");
+        	  var indentqtyCell = document.createElement("td");
+        	  var negCell = document.createElement("td");
+        	  var actionCell = document.createElement("td");
+        	  var newCell = document.createElement("td");
+        	  newCell.textContent="#";
+        	  idCell.textContent = product_id;
+        	  nameCell.textContent = product_name;
+        	  qtyCell.textContent = purchase_order_quantity;
+        	  indentqtyCell.textContent = indent_quantity;
+
+        	  newRow.appendChild(idCell);
+        	  newRow.appendChild(nameCell);
+        	  newRow.appendChild(indentqtyCell);
+        	  newRow.appendChild(actionCell);
+
+        	  // Add the delete button
+        	  var deleteButton = document.createElement("button");
+        	  deleteButton.textContent = "Add";
+        	  deleteButton.addEventListener("click", function () {
+        		  moveToTable2(this)
+        	  });
+        	  actionCell.appendChild(deleteButton);
+
+        	  // Append the new row to the "indentTable" table
+        	  var indentTableBody = document.querySelector("#indentTable tbody");
+        	  indentTableBody.appendChild(newRow);
+
+        	  // Remove the row from the "dataTable" table
+        	  row.parentNode.removeChild(row);
+
+        	  // Construct the data object with the values
+        	  var data = {
+        	    product_id: product_id,
+        	    product_name: product_name,
+        	    purchase_order_quantity: purchase_order_quantity,
+        	    negotiation_price: negotiation_price,
+        	    indent_quantity: indent_quantity
+        	  };
+
+        	  // Add the data object to the tableData array
+        	  tableData.push(data);
+
+        	  // Output the tableData array (you can replace this with your desired logic)
+        	  console.log(tableData);
+        	}
 
 
       </script>

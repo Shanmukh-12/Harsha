@@ -2,7 +2,43 @@
 <head>
     
 	<style>
-	
+	.table {
+        border-collapse: collapse;
+        width: 90%;
+        margin: 0 auto; /* Center the table */
+        border: 1px solid #ccc; /* Add border for the table */
+        border-radius: 4px; /* Add border-radius for a rounded look */
+    }
+  
+	 th,
+        td {
+            padding: 8px;
+            border: 1px solid #ccc; /* Add border for table cells */
+                    text-align: center;
+            
+            border-bottom: 1px solid #ccc; /* Add border-bottom for table cells */
+        }
+
+        thead th {
+            border-bottom-width: 2px; /* Increase border-bottom width for table header */
+        }
+        .table {
+            border: 1px solid #ccc; /* Add border for the table */
+            border-radius: 4px; /* Add border-radius for a rounded look */
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: #f5f5f5; /* Add hover effect for table rows */
+        }
+        .prnClass2
+	{
+	position:relative;
+	left:560px;
+	 font-size: 18px;
+         font-weight: bold;
+         color: #333;
+         text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+	}
 	.prnClass
 	{
 	position:relative;
@@ -20,7 +56,7 @@
 	.prnfilterClass2
 	{
 	position:relative;
-	left:1020px;
+	left:850px;
 	
 	
 	}
@@ -52,11 +88,10 @@
 	</select>
 	<br><br><br>
 
-	<label class="prnClass"><h4>GRN Data</h4></label>
+	<label class="prnClass2"><h4>GRN Data</h4></label>
 	<table class="table bg-white rounded shadow-sm  table-hover">
                             <thead>
                                 <tr>
-                                    <th scope="col" width="50">#</th>
                                     <th scope="col">Product Id</th>
 									<th scope="col">Batch NO</th>
 									<th scope="col">Ordered Quantity</th>
@@ -69,7 +104,6 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <th scope="row">1</th>
                                     <td>1</td>
                                     <td>45</td>
 									<td>60</td>
@@ -80,7 +114,6 @@
 									<td><button onclick="moveToTable2(this)">Add</button></td>
                                 </tr>
                                   <tr>
-                                    <th scope="row">2</th>
                                     <td>2</td>
                                     <td>1</td>
 									<td>60</td>
@@ -92,11 +125,10 @@
                                 </tr>
                             </tbody>
                         </table><br><br>
-                        
+   <label class="prnClass2"><h4>Returns List</h4></label>                      
 <label class="prnfilterClass2">Enter Reason</label>
 	<input type="text"  id="reason" name="reason" class="prnfilterClass2">
- 
-<label class="prnClass"><h4>Returns List</h4></label>						
+	
 <table class="table bg-white rounded shadow-sm  table-hover" id="dataTable" >
 	<thead id="dt">
          <tr>
@@ -129,9 +161,9 @@
 	  const row = button.parentNode.parentNode;
 
 	  // Get the values from the row
-	  const product_id = row.cells[1].textContent;
-	  const batch = row.cells[2].textContent;
-     const quantityreceived=row.cells[6].textContent;
+	  const product_id = row.cells[0].textContent;
+	  const batch = row.cells[1].textContent;
+     const quantityreceived=row.cells[5].textContent;
 	  // Create a new row in table2 with the values
 	  const newRow = document.createElement("tr");
 	  const idCell = document.createElement("td");
@@ -165,7 +197,7 @@
 	  const deleteButton = document.createElement("button");
 	  deleteButton.textContent = "Delete";
 	  deleteButton.addEventListener("click", function () {
-	    ButtonAction(this);
+	    ButtonActionback(this);
 	  });
 	  actionCell.appendChild(deleteButton);
 	  newRow.appendChild(actionCell);
@@ -262,6 +294,38 @@
   
   
     }
+    function ButtonActionback(button) {
+    	  // Get the row of the clicked button
+    	  var row = button.parentNode.parentNode;
+
+    	  // Remove the row from dataTable
+    	  row.parentNode.removeChild(row);
+
+    	  // Retrieve the first table (table with class "table")
+    	  var table1 = document.querySelector(".table");
+
+    	  // Create a new row in table1 with the values from the deleted row
+    	  var newRow = document.createElement("tr");
+    	  for (var i = 0; i < row.cells.length; i++) {
+    	    var cellValue = row.cells[i].textContent;
+    	    var newCell = document.createElement("td");
+    	    newCell.textContent = cellValue;
+    	    newRow.appendChild(newCell);
+    	  }
+
+    	  // Create a new cell for the "Action" column
+    	  var actionCell = document.createElement("td");
+    	  var addButton = document.createElement("button");
+    	  addButton.textContent = "Add";
+    	  addButton.addEventListener("click", function() {
+    	    moveToTable2(this);
+    	  });
+    	  actionCell.appendChild(addButton);
+    	  newRow.appendChild(actionCell);
+
+    	  // Append the new row to table1
+    	  table1.querySelector("tbody").appendChild(newRow);
+    	}
 
   </script>
 
