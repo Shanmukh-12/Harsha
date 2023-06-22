@@ -1,21 +1,23 @@
 package main.models.productModels.entities;
 
+import java.io.Serializable;
 import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "im_products_stock")
-public class im_products_stock {
+public class im_products_stock implements Serializable {
 
 	@Id
 	@Column(name = "Product_ID")
 	private int product_id;
+	@Id
 	private int batch_no;
 	private int product_stock;
 	private int product_mrp;
@@ -24,8 +26,8 @@ public class im_products_stock {
 	private String last_updated_user;
 	private Date last_updated_date;
 
-	@OneToOne
-	@JoinColumn(name = "Product_ID", referencedColumnName = "Product_ID")
+	@ManyToOne
+	@JoinColumn(name = "Product_ID", referencedColumnName = "Product_ID", insertable = false, updatable = false)
 	private im_products product;
 
 	public int getProduct_id() {

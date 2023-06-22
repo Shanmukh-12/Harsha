@@ -49,6 +49,7 @@ public class SendingEmailBLL {
 		msg.setFrom(new InternetAddress("devarmadd5@hotmail.com"));
 
 		msg.setRecipient(Message.RecipientType.TO, new InternetAddress(md.getMail()));
+
 		msg.setSubject("password reset");
 		msg.setText("your otp is :" + number);
 		Transport.send(msg);
