@@ -70,11 +70,6 @@ public class InventoryControllers {
 		return "inventory/indents";
 	}
 
-	@PostMapping("/storeIndentsButton")
-	public String getStoreIndentsPage(Model m) {
-		m.addAttribute("indents", p.getAllIndents());
-		return "inventory/storeIndents";
-	}
 
 	@PostMapping(value = "/logoutButton")
 	public String CallLogout() {

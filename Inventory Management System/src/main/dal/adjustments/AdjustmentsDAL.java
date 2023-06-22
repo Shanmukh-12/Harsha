@@ -60,7 +60,8 @@ public class AdjustmentsDAL implements AdjustmentsDAO {
 			System.out.println("Inside " + p);
 
 		return s;
-
+      
+		
 	}
 
 }

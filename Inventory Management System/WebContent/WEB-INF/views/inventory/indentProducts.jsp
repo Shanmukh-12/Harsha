@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -56,62 +57,27 @@
 <body>
   <h2 align="center">Indents List</h2>
   <div style="margin-bottom:20px; margin-left:50px;">
-   <div id="products-dropdown" align="right">
-    <label for="product-category">Product Category</label>
-    <select id="product-category">
-      <option value="category1">Soaps & Lotions</option>
-      <option value="category2">Category 2</option>
-      <option value="category3">Category 3</option>
-    </select>
-  </div>
+
   
   <div id="first_table">
     <table id="product-details-table">
-      <thead>
-        <tr>
+    <thead>
+         <tr>
           <th>Product ID</th>
           <th>Product Name</th>
-          <th>Batch No.</th>
-          <th>Stock</th>
+          <th>Product Category</th>
+          <th>Quantity</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>101</td>
-          <td>Pears Soap</td>
-          <td>14268</td>
-          <td>50</td>
-        </tr>
-        <tr>
-          <td>102</td>
-          <td>Santoor Soap</td>
-          <td>14267</td>
-          <td>50</td>
-        </tr>
-        <tr>
-          <td>103</td>
-          <td>Rexona Soap</td>
-          <td>14266</td>
-          <td>50</td>
-        </tr>
-        <tr>
-          <td>104</td>
-          <td>Lifebuoy Soap</td>
-          <td>14269</td>
-          <td>50</td>
-        </tr>
-        <tr>
-          <td>101</td>
-          <td>Pears Soap</td>
-          <td>14268</td>
-          <td>50</td>
-        </tr>
-        <tr>
-          <td>101</td>
-          <td>Pears Soap</td>
-          <td>14268</td>
-          <td>50</td>
-        </tr>
+      	<c:forEach var="item" items="${productsList}">
+            <tr>
+                <td>${item.productId}</td>
+                <td>${item.productName}</td>
+                <td>${item.productCategoryName}</td>
+                <td>${item.quantity}</td>
+            </tr>
+        </c:forEach>  
       </tbody>
     </table>
   </div>
