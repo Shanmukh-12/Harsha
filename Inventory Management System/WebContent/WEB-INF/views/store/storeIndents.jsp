@@ -389,8 +389,7 @@ document.getElementById("indent-date-dropdown-from").setAttribute("max", formatt
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title" id="productsModalLabel">Products</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal"
-					aria-label="Close"></button>
+               <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body" id="modalContent">
 				<!-- Modal content will be loaded dynamically here -->
