@@ -10,9 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import main.dao.storeReturns.StoreReturnsDao;
-import main.models.storeModels.entities.StoreReturnsList;
-import main.models.storeModels.inputmodels.StoreReturnsInputList;
-import main.models.storeReturnsModels.inputModels.ReturnProducts;
+import main.models.storeReturnsModels.entities.StoreReturnsList;
+import main.models.storeReturnsModels.inputModels.StoreReturns;
 
 @Controller
 public class StoreReturnController {
@@ -25,13 +24,21 @@ public class StoreReturnController {
 	ObjectMapper objectMapper = new ObjectMapper();
 
 	@PostMapping("/newCreateStoreReturn")
-	public String createStoreReturn(@RequestBody ReturnProducts data, Model m) {
+	public String createStoreReturn(@RequestBody String data, Model m) {
 		System.out.println("Inside");
 		System.out.println(data);
-		StoreReturnsInputList storeReturnsInputList = null;
-		StoreReturnsList storeReturnsList = modelMapper.map(storeReturnsInputList, StoreReturnsList.class);
+		StoreReturns storeReturns = null;
+		try {
+			storeReturns = objectMapper.readValue(data, StoreReturns.class);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		StoreReturnsList storeReturnsList = modelMapper.map(storeReturns, StoreReturnsList.class);
+
 		System.out.println(storeReturnsList);
 		storeReturnsDao.saveStoreReturns(storeReturnsList);
 		return "store/createStoreReturn";
 	}
+
 }

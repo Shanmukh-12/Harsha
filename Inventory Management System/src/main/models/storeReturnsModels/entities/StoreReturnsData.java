@@ -1,4 +1,4 @@
-package main.models.storeModels.entities;
+package main.models.storeReturnsModels.entities;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -13,7 +13,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="im_store_returns")
-public class StoreReturnsList {
+public class StoreReturnsData {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,8 +26,6 @@ public class StoreReturnsList {
 	@Column(name="storeissue_id")
 	int storeIssueId;
 
-	@OneToMany(mappedBy="srl")
-	List<StoreReturnProductsList> productsList;
 	public int getReturnId() {
 		return returnId;
 	}
@@ -52,18 +50,10 @@ public class StoreReturnsList {
 		this.storeIssueId = storeIssueId;
 	}
 
-	public List<StoreReturnProductsList> getProductsList() {
-		return productsList;
-	}
-
-	public void setProductsList(List<StoreReturnProductsList> productsList) {
-		this.productsList = productsList;
-	}
-
 	@Override
 	public String toString() {
 		return "StoreReturnsList [returnId=" + returnId + ", date=" + date + ", storeIssueId=" + storeIssueId
-				+ ", productsList=" + productsList + "]";
+				+ "]";
 	}
 	
 }
