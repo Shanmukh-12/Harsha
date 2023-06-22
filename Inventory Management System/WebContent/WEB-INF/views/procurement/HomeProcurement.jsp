@@ -114,6 +114,24 @@
 </head>
 
 <script>
+	$(document).ready(function(){
+ 		Myfunction2('warehousestock');
+ 	});
+
+function logout() {
+    $.ajax({
+        url: "logout",
+        method: "GET",
+        success: function(response) {
+            console.log("Logout successful");
+            console.log(response);
+            location.href= "/inventory/";
+        },
+        error: function() {
+            console.log("Logout error");
+        }
+    });
+}
 function ButtonAction(button) {
 	console.log("hello");
     var row = button.parentNode.parentNode;
@@ -329,9 +347,6 @@ $("document").ready(
             <div class="sidebar-heading text-center py-4 primary-text fs-4 fw-bold text-uppercase border-bottom"><i
                     class="fas fa-user-secret me-2"></i>Procurement</div>
             <div class="list-group list-group-flush my-3">
-                <button  id="dashboard"
-                    class="list-group-item list-group-item-action bg-transparent second-text active"
-                    onclick="Myfunction('dashboard')"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</button>
                 <div class="dropdown">
                     <button  class="list-group-item list-group-item-action bg-transparent second-text fw-bold" onclick="Myfunction2('warehousestock')">
                         <i class="fas fa-project-diagram me-2"></i>WareHouse Stock

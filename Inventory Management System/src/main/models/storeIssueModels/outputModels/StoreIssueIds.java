@@ -11,10 +11,19 @@ public class StoreIssueIds {
 		this.storeIssueId = storeIssueId;
 	}
 
+	public StoreIssueIds() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public StoreIssueIds(int storeIssueId) {
+		super();
+		this.storeIssueId = storeIssueId;
+	}
+
 	@Override
 	public String toString() {
 		return "StoreIssueIds [storeIssueId=" + storeIssueId + "]";
 	}
 
-	
 }

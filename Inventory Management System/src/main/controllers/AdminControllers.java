@@ -1,11 +1,24 @@
 package main.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import main.dao.users.StoreUsersDAO;
+import main.dao.users.WarehouseUsersDAO;
+import main.dao.vendor.VendorsDAO;
+
+
 @Controller
 public class AdminControllers {
+
+	@Autowired
+	WarehouseUsersDAO userDAO;
+	@Autowired
+	VendorsDAO vendorDAO;
+	@Autowired
+	StoreUsersDAO storeDAO;
 
 	// Warehouse and Home page
 	@RequestMapping(value = { "/adminHome" })
@@ -102,5 +115,6 @@ public class AdminControllers {
 	public String getReports() {
 		return "admin/reports";
 	}
+
 
 }
