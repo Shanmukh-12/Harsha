@@ -9,13 +9,13 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Component;
 
 import main.dao.storeIndents.StoreIndentsDao;
+import main.models.storeIndentModels.outputmodels.StoreIndentProducts;
 import main.models.storeModels.entities.Store;
 import main.models.storeModels.entities.StoreIndentData;
 import main.models.storeModels.entities.StoreIndentProductsList;
 import main.models.storeModels.entities.StoreIndentsList;
 import main.models.storeModels.inputmodels.IndentId;
 import main.models.storeModels.inputmodels.StoreFilters;
-import main.models.storeModels.outputmodels.StoreIndentProducts;
 
 @Component
 public class StoreIndentsDal implements StoreIndentsDao {
@@ -37,7 +37,7 @@ public class StoreIndentsDal implements StoreIndentsDao {
 		int data = indentid.getIndentId();
 		System.out.println(data);
 		List<StoreIndentProducts> s = entityManager.createQuery(
-				"SELECT NEW main.models.storeModels.outputmodels.StoreIndentProducts(e.productId, p.productName, pc.productCategoryName, e.quantity) "
+				"SELECT NEW main.models.storeIndentModels.outputmodels.StoreIndentProducts(e.productId, p.productName, pc.productCategoryName, e.quantity) "
 						+ "FROM StoreIndentProductsList e "
 						+ "JOIN main.models.productModels.entities.Products p ON e.productId = p.productId "
 						+ "JOIN main.models.productModels.entities.ProductsCategory pc ON p.category = pc.productCategoryId "

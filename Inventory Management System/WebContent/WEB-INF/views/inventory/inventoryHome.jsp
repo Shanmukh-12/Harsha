@@ -188,7 +188,7 @@
                     <li><button class="dropdown-item" onclick="Myfunction('getStoreIndents')">List Store Indents</button></li>
                      <li><button class="dropdown-item" onclick="Myfunction('createStockIssueButton')">Create Store Issue</button></li>
                     <li><button class="dropdown-item" onclick="Myfunction('stockIssuesButton')">List Store Issues</button></li>
-                    <li><button class="dropdown-item" onclick="Myfunction('storeReturnsButton')">List Store Returns</button></li>
+                    <li><button class="dropdown-item" onclick="Myfunction('getStoreReturns')">List Store Returns</button></li>
                 </ul>
             </div>
 

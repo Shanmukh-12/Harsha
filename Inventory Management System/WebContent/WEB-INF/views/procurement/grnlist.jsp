@@ -384,7 +384,10 @@
 				
 
 				function clearSelection() {
-					$('#vendorId').val('');
+					 $("#vendorId").val("");
+					    $("#cost").val("");
+					    $("#fromDate").val("");
+					    $("#toDate").val("");
 					
 				}
 				function tk2(grnId) {

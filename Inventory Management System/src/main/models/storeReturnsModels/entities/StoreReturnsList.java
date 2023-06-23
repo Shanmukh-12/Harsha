@@ -1,4 +1,4 @@
-package main.models.storeModels.entities;
+package main.models.storeReturnsModels.entities;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -12,19 +12,22 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="im_store_returns")
-public class StoreReturnsData {
+@Table(name = "im_store_returns")
+public class StoreReturnsList {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="store_return_id")
+	@Column(name = "store_return_id")
 	int returnId;
-	
-	@Column(name="store_return_date")
-	LocalDate date;
-	
-	@Column(name="storeissue_id")
+
+	@Column(name = "store_return_date")
+	LocalDate date = LocalDate.now();
+
+	@Column(name = "storeissue_id")
 	int storeIssueId;
+
+	@OneToMany(mappedBy = "srl")
+	List<StoreReturnProductsList> productsList;
 
 	public int getReturnId() {
 		return returnId;
@@ -50,10 +53,18 @@ public class StoreReturnsData {
 		this.storeIssueId = storeIssueId;
 	}
 
+	public List<StoreReturnProductsList> getProductsList() {
+		return productsList;
+	}
+
+	public void setProductsList(List<StoreReturnProductsList> productsList) {
+		this.productsList = productsList;
+	}
+
 	@Override
 	public String toString() {
 		return "StoreReturnsList [returnId=" + returnId + ", date=" + date + ", storeIssueId=" + storeIssueId
-				+ "]";
+				+ ", productsList=" + productsList + "]";
 	}
-	
+
 }

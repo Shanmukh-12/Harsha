@@ -1,6 +1,35 @@
 <html>
    <head>
       <style>
+   .table {
+        border-collapse: collapse;
+        width: 90%;
+        margin: 0 auto; /* Center the table */
+        border: 1px solid #ccc; /* Add border for the table */
+        border-radius: 4px; /* Add border-radius for a rounded look */
+    }
+  
+	 th,
+        td {
+            padding: 8px;
+            border: 1px solid #ccc; /* Add border for table cells */
+                    text-align: center;
+            
+            border-bottom: 1px solid #ccc; /* Add border-bottom for table cells */
+        }
+
+        thead th {
+            border-bottom-width: 2px; /* Increase border-bottom width for table header */
+        }
+        .table {
+            border: 1px solid #ccc; /* Add border for the table */
+            border-radius: 4px; /* Add border-radius for a rounded look */
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: #f5f5f5; /* Add hover effect for table rows */
+        }
+   
          .indentClass
          {
          position:relative;
@@ -34,12 +63,8 @@
          {
          color : green;
          }
-         #indentTable
-         {
-         color : #4266f5;
-         }
+         
          th {
-         text-align: left;
          padding: 8px;
          border-bottom: 1px solid #ccc; /* Add border-bottom for table header */
          }
@@ -66,10 +91,10 @@
       <label class="indentClass1">
          <h4>Indent List</h4>
       </label>
-      <table class="table bg-white rounded shadow-sm  table-hover"  >
+      <table class="table bg-white rounded shadow-sm  table-hover"  id="indentTable">
          <thead id="indentTable">
             <tr>
-               <th scope="col" width="50">#</th>
+             
                <th scope="col">Product Id</th>
                <th scope="col">Product Name</th>
                <th scope="col"> Quantity</th>
@@ -78,14 +103,14 @@
          </thead>
          <tbody>
             <tr>
-               <th scope="row">1</th>
+               
                <td>1</td>
                <td>Television</td>
                <td>200</td>
               <td><button onclick="moveToTable2(this)">Add</button></td>
             </tr>
             <tr>
-               <th scope="row">2</th>
+             
                <td>2</td>
                <td>santoor</td>
                <td>200</td>
@@ -109,11 +134,12 @@
             <tr>
             <th >product_id</th>
                <th>product_name</th>
+               <th>indent quantity</th>
                <th>purchase_order_quantity</th>
-               
                <th>negotiation_price</th>
+               
+               
                <th>Action</th>
-               <th></th>
             </tr>
          </thead>
          <tbody id="dataTable1">
@@ -136,9 +162,9 @@
         	  const row = button.parentNode.parentNode;
 
         	  // Get the values from the row
-        	  const product_id = row.cells[1].textContent;
-        	  const product_name = row.cells[2].textContent;
-        	  const quantity = row.cells[3].textContent;
+        	  const product_id = row.cells[0].textContent;
+        	  const product_name = row.cells[1].textContent;
+        	  const quantity = row.cells[2].textContent;
 
         	  // Create a new row in table2 with the values
         	  const newRow = document.createElement("tr");
@@ -146,11 +172,13 @@
 
         	  const nameCell = document.createElement("td");
         	  const qtyCell = document.createElement("td");
+        	  const indentqtyCell=document.createElement("td");
         	  const negCell = document.createElement("td");
         	  const actionCell = document.createElement("td");
         	  nameCell.textContent = product_name;
         	  nameCell.value = product_name;
         	  idCell.textContent=product_id;
+        	  indentqtyCell.textContent=quantity;
         	  idCell.value=product_id;
         	  const inputNegativePrice2 = document.createElement("input");
         	  inputNegativePrice2.type = "number";
@@ -160,8 +188,9 @@
         	  qtyCell.appendChild(inputNegativePrice2);
         	  newRow.appendChild(idCell);
         	  newRow.appendChild(nameCell);
+        	  newRow.appendChild(indentqtyCell);
         	  newRow.appendChild(qtyCell);
-
+       
         	  // Add the negative price input field
         	  const inputNegativePrice = document.createElement("input");
         	  inputNegativePrice.type = "number";
@@ -169,16 +198,17 @@
         	  inputNegativePrice.style.width = "80px";
         	  inputNegativePrice.style.height = "20px";
         	  negCell.appendChild(inputNegativePrice);
-
+        	  
         	  // Add the delete button
         	  const deleteButton = document.createElement("button");
         	  deleteButton.textContent = "Delete";
         	  deleteButton.addEventListener("click", function () {
-        	    ButtonAction(this);
+        	    ButtonActionback(this);
         	  });
         	  actionCell.appendChild(deleteButton);
-
+        	  
         	  newRow.appendChild(negCell);
+        	  
         	  newRow.appendChild(actionCell);
 
         	  // Append the new row to table2
@@ -188,11 +218,12 @@
         	  // Remove the row from table1
         	  
         	}
+         
          function createpurchase() {
-        	  // Retrieve the table element
-        	  const table = document.getElementById('dataTable');
-        	  console.log(table.rows[1])
-              var totalamount=0;
+        	 const table = document.getElementById('dataTable');
+        	    const table1 = document.querySelector('.table');
+        	  console.log(table.rows[1]);
+        	  var totalamount = 0;
         	  // Create an array to store the table data
         	  const tableData = [];
 
@@ -203,17 +234,14 @@
         	  for (let j = 0; j < headerRow.cells.length; j++) {
         	    if (headerRow.cells[j].textContent === "product_name") {
         	      productNameColumnIndex = j;
+        	    } else if (headerRow.cells[j].textContent === "negotiation_price") {
+        	      negotiationpriceindex = j;
+        	    }
+        	    if (productNameColumnIndex !== -1 && negotiationpriceindex !== -1) {
         	      break;
         	    }
         	  }
         	  console.log(productNameColumnIndex);
-        	  for (let j = 0; j < headerRow.cells.length; j++) {
-          	    if (headerRow.cells[j].textContent === "negotiation_price") {
-          	    	negotiationpriceindex = j;
-          	    	
-          	      break;
-          	    }
-          	  }
         	  console.log(negotiationpriceindex);
 
         	  // Iterate through each row of the table
@@ -221,39 +249,35 @@
         	    const row = table.rows[i];
         	    const rowData = {};
 
-        	    // Iterate through each cell of the row excluding the "product_name" column
-        	    for (let j = 0; j < row.cells.length-1; j++) {
-        	      if (j === productNameColumnIndex) continue; // Skip the "product_name" column
+        	    // Iterate through each cell of the row excluding the "product_name" and "indent quantity" columns
+        	    for (let j = 0; j < row.cells.length - 1; j++) {
+        	      if (j === productNameColumnIndex || headerRow.cells[j].textContent === "indent quantity") continue; // Skip the "product_name" and "indent quantity" columns
         	      const cell = row.cells[j];
         	      console.log(cell);
         	      const cellHeader = headerRow.cells[j].textContent; // Use textContent to get the header
-        	    
 
         	      // Check if the cell contains an input element
         	      if (cell.firstChild && cell.firstChild.tagName === 'INPUT') {
         	        // Assign the input field value
         	        rowData[cellHeader] = cell.firstChild.value;
         	        if (j === negotiationpriceindex) {
-            	    	  console.log("hii");
-            	    	  console.log(cell.firstChild.value);
-            	    	  const price = parseInt(cell.firstChild.value);
-            	    	  if (!isNaN(price)) {
-            	    	    totalamount += price;
-            	    	  }
-            	    	}
+        	          console.log("hii");
+        	          console.log(cell.firstChild.value);
+        	          const price = parseInt(cell.firstChild.value);
+        	          if (!isNaN(price)) {
+        	            totalamount += price;
+        	          }
+        	        }
         	      } else {
         	        // Assign the cell text content
         	        rowData[cellHeader] = cell.textContent;
-        	    	  console.log(cell.textContent);
-
-        	       
+        	        console.log(cell.textContent);
         	      }
         	    }
-                  
+
         	    // Add row data to the tableData array
         	    tableData.push(rowData);
         	  }
-        	
 
         	  var children=[];
         	
@@ -284,11 +308,97 @@
                      
                   }
               });
+        	  
 
+          	 const tableDataRows = table.querySelectorAll('tbody tr');
+       	    for (let i = 0; i < tableDataRows.length; i++) {
+       	        const row = tableDataRows[i];
+       	        const newRow = document.createElement('tr');
+       	        for (let j = 0; j < row.cells.length - 3; j++) {
+       	            const cellValue = row.cells[j].textContent;
+       	            const newCell = document.createElement('td');
+       	            newCell.textContent = cellValue;
+       	            newRow.appendChild(newCell);
+       	        }
+       	        const actionCell = document.createElement('td');
+       	        const addButton = document.createElement('button');
+       	        addButton.textContent = 'Add';
+       	        addButton.addEventListener('click', function () {
+       	            moveToTable2(this);
+       	        });
+       	        actionCell.appendChild(addButton);
+       	        newRow.appendChild(actionCell);
+       	        table1.querySelector('tbody').appendChild(newRow);
+       	    }
+
+       	    // Clear dataTable
+       	    const dataTableBody = table.querySelector('tbody');
+       	    dataTableBody.innerHTML = '';
         	  // Output the JSON data
         	 
         	}
 
+         function ButtonActionback(button) {
+        	  var row = button.parentNode.parentNode;
+        	  var tableData = [];
+
+        	  // Get the values from the row
+        	  var product_id = row.cells[0].textContent;
+        	  var product_name = row.cells[1].textContent;
+        	  var purchase_order_quantity = row.cells[3].textContent;
+        	  var negotiation_price = row.cells[4].textContent;
+        	  var indent_quantity = row.cells[2].textContent;
+ 
+        	  // Create a new row in the "indentTable" table with the values
+        	  var newRow = document.createElement("tr");
+        	  var idCell = document.createElement("td");
+        	  var nameCell = document.createElement("td");
+        	  var qtyCell = document.createElement("td");
+        	  var indentqtyCell = document.createElement("td");
+        	  var negCell = document.createElement("td");
+        	  var actionCell = document.createElement("td");
+        	  var newCell = document.createElement("td");
+        	  newCell.textContent="#";
+        	  idCell.textContent = product_id;
+        	  nameCell.textContent = product_name;
+        	  qtyCell.textContent = purchase_order_quantity;
+        	  indentqtyCell.textContent = indent_quantity;
+
+        	  newRow.appendChild(idCell);
+        	  newRow.appendChild(nameCell);
+        	  newRow.appendChild(indentqtyCell);
+        	  newRow.appendChild(actionCell);
+
+        	  // Add the delete button
+        	  var deleteButton = document.createElement("button");
+        	  deleteButton.textContent = "Add";
+        	  deleteButton.addEventListener("click", function () {
+        		  moveToTable2(this)
+        	  });
+        	  actionCell.appendChild(deleteButton);
+
+        	  // Append the new row to the "indentTable" table
+        	  var indentTableBody = document.querySelector("#indentTable tbody");
+        	  indentTableBody.appendChild(newRow);
+
+        	  // Remove the row from the "dataTable" table
+        	  row.parentNode.removeChild(row);
+
+        	  // Construct the data object with the values
+        	  var data = {
+        	    product_id: product_id,
+        	    product_name: product_name,
+        	    purchase_order_quantity: purchase_order_quantity,
+        	    negotiation_price: negotiation_price,
+        	    indent_quantity: indent_quantity
+        	  };
+
+        	  // Add the data object to the tableData array
+        	  tableData.push(data);
+
+        	  // Output the tableData array (you can replace this with your desired logic)
+        	  console.log(tableData);
+        	}
 
 
       </script>

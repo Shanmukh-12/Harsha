@@ -167,7 +167,7 @@
           <i class="fas fa-gift me-2"></i>Store Retruns
         </button> 
          <ul class="dropdown-menu" aria-labelledby="grnDropdown">
-            <li><button class="dropdown-item"  onclick="clicked('listStoreReturns')">List Store Returns</button></li>
+            <li><button class="dropdown-item"  onclick="clicked('getStoreReturns')">List Store Returns</button></li>
             <li><button class="dropdown-item"  onclick="clicked('createStoreReturn')">Create Store Retrun</button></li>
           </ul>
         </div>

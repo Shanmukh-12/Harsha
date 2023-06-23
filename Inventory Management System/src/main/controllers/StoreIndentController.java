@@ -1,5 +1,6 @@
 package main.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -13,11 +14,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import main.dao.storeIndents.StoreIndentsDao;
+import main.models.storeIndentModels.outputmodels.StoreIndentDataOutput;
+import main.models.storeIndentModels.outputmodels.StoreIndentProducts;
 import main.models.storeModels.entities.StoreIndentData;
 import main.models.storeModels.entities.StoreIndentsList;
 import main.models.storeModels.inputmodels.IndentId;
 import main.models.storeModels.inputmodels.StoreIndentsInputList;
-import main.models.storeModels.outputmodels.StoreIndentProducts;
 
 @Controller
 public class StoreIndentController {
@@ -30,12 +32,16 @@ public class StoreIndentController {
 	ObjectMapper objectMapper = new ObjectMapper();
 
 	@PostMapping("/getStoreIndentsList")
-	public @ResponseBody List<StoreIndentData> getStoreIndentList(Model m) {
+	public @ResponseBody List<StoreIndentDataOutput> getStoreIndentList(Model m) {
 		System.out.println("indents");
 		List<StoreIndentData> sl = storeIndentsDao.getStoreIndentsList();
+		List<StoreIndentDataOutput> res = new ArrayList<>();
 		for (StoreIndentData s : sl)
+		{
+			res.add(modelMapper.map(s,StoreIndentDataOutput.class));
 			System.out.println(s);
-		return sl;
+		}
+		return res;
 	}
 
 	@PostMapping("/getStoreIndentProductsList")

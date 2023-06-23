@@ -27,6 +27,7 @@ public class StoreIssuesDataController {
 
 	@RequestMapping(value = "/getStoreIssueIds", method = RequestMethod.POST)
 	public @ResponseBody List<StoreIssueIds> getStoreIssueIds(StoreId storeId, Model m) {
+		System.out.println("Inside");
 		List<StoreIssueData> data = storeIssueDao.getStoreIds(storeId);
 		List<StoreIssueIds> res = new ArrayList<>();
 		for (StoreIssueData s : data)

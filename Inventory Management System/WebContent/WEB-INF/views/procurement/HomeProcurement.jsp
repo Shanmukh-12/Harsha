@@ -118,6 +118,20 @@
  		Myfunction2('warehousestock');
  	});
 
+function logout() {
+    $.ajax({
+        url: "logout",
+        method: "GET",
+        success: function(response) {
+            console.log("Logout successful");
+            console.log(response);
+            location.href= "/inventory/";
+        },
+        error: function() {
+            console.log("Logout error");
+        }
+    });
+}
 function ButtonAction(button) {
 	console.log("hello");
     var row = button.parentNode.parentNode;
@@ -161,6 +175,13 @@ $("document").ready(
                     
                  }
              });
+			 $.ajax({
+                 url: "https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js",
+                 dataType: "script",
+                 success: function() {
+                    
+                 }
+             });
 			  $.ajax({
                   url: "https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css",
                   dataType: "script",
@@ -183,13 +204,7 @@ $("document").ready(
                      
                   }
               });
-			  $.ajax({
-                  url: "https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js",
-                  dataType: "script",
-                  success: function() {
-                     
-                  }
-              });
+			 
 	
 		
 		}
@@ -302,7 +317,6 @@ $("document").ready(
          		     height: 100,
             		  options: {
             		    scales: {
-            		    	
             		      y: {
             		        beginAtZero: true
             		      }
