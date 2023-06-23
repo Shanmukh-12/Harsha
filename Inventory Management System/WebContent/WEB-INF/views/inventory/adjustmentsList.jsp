@@ -132,176 +132,185 @@
     
     <script>
     
-<%--	function filterData()
+	function filterData()
 	{
-		var productCategoryId = document.getElementById("product-category-dropdown").value;
-	    var productName = document.getElementById("product-name-dropdown").value;
+		var productCategoryId = $("#product-category-dropdown").val();
+	    var productId =$("#product-name-dropdown").val()
 	    var fromDate = document.getElementById("adjustment-date-dropdown-from").value;
 	    var toDate = document.getElementById("adjustment-date-dropdown-to").value;
+
 	    var url = null;
-		if(storeId)
+		if(productCategoryId)
 		{
-			if(productCategoryId)
+			if(productId)
 			{
 				if(fromDate)
 				{
-					url="getFilterDataIdStatusFrom";				
+					url="getFilterDataByCategoryIdProductIdFrom";				
 				}
 				else
-				{
-					url="getFilterDataIdStatus";
-				}
+				url="getFilterDataByCategoryIdProductId";
 			}
 			else
 			{
 				if(fromDate)
-				{
-					url="getFilterDataIdFrom";
+				{	
+					url="getFilterDataByCategoryIdFrom";
 				}
 				else
-				{
-					url="getFilterDataId";
-				}
-				
+				url="getFilterDataByCategoryId";
 			}
+				
 		}
 		else
 		{
-			if(productName)
-			{
-				if(fromDate)
-				{
-					url="getFilterDataStatusFrom";				
-				}
-				else
-				{
-					url="getFilterDataStatus";
-				}
+			if(fromDate)
+			{	
+				url="getFilterDataByFrom";
 			}
 			else
-			{
-				if(fromDate)
-				{
-					url="getFilterDataFrom";
-				}
-				else
-				{
-					console.log("TO only");
-					url="getFilterDataTo";
-				}
+			url="getFilterDataByTo";
 				
-			}
-			
 		}
+		
+		
+		
+		
 		console.log(productCategoryId);
-		console.log(productName);
+		console.log(productId);
 		console.log(fromDate);
 		console.log(toDate);
-		console.log(url);  
-		
-		 $.ajax({
-				
-		    	url:url,
-		    	method:"POST",
-		    	dataType:"json",
-		    	data:{
-		    		"filters":JSON.stringify(
-		    				{
-		    					"productCategoryId":productCategoryId,
-		    					"productName":productName,
-		    					"fromDate":fromDate,
-		    					"toDate":toDate
-		    				})
-		    	},
-		    	success: function(response) {
-		    		console.log(response);
-		    		  // Remove existing issues blocks and "No Indents Found" message
-		    		  $('.issues-block').remove();
-		    		  $('.not-found-message').remove();
+		console.log(url);
+	    $.ajax({
+			
+	    	url:url,
+	    	method:"POST",
+	    	dataType:"json",
+	    	data:{
+	    		"filters":JSON.stringify(
+	    				{
+	    					"productCategoryId":productCategoryId,
+	    					"productId":productId,
+	    					"fromDate":fromDate,
+	    					"toDate":toDate
+	    				})
+	    	},
+	    	success: function(response) {
+	    		console.log(response);
+	    		  // Remove existing issues blocks and "No Indents Found" message
+	    		  $('.issues-block').remove();
+	    		  $('.not-found-message').remove();
 
-		    		  if (Object.keys(response).length === 0) {
-		    		    // Response is empty, display "No Indents Found" message
-		    		    var noDataMessage = $('<h5 class="not-found-message" style="color:red" align="center">No Product Categories Found</h5>');
-		    		    $('.container > h1').after(noDataMessage);
-		    		  } else {
-		    		    // Iterate over the response object
-		    		    Object.values(response).forEach(function(indent) {
-		    		    	 var issueBlock = $('<div class="issues-block"></div>');
-			    		      var status = $('<h4 class="store-indent-id">Indent Id: <span class="bold">' + indent.indentId + '</span></h4>');
-			    		      var issueDetails = $('<div class="issue-details"></div>');
-			    		      var storeId = $('<span class="label">Store ID:</span><span>' + indent.storeId + '</span>');
-			    		      var indentId = $('<span class="label">Status:</span><span>' + indent.indentStatus + '</span>');
-			    		      var indentDate = $('<span class="label">Indent Date:</span><span>' + new Date(indent.date[0], indent.date[1] - 1, indent.date[2]).toLocaleDateString() + '</span>');
-			    		      var viewProductsButton = $('<button type="button" class="btn-issues" onclick="loadIndentProducts(\'' + indent.indentId + '\')">View Products</button>');
+	    		  if (Object.keys(response).length === 0) {
+	    		    // Response is empty, display "No Indents Found" message
+	    		    var noDataMessage = $('<h5 class="not-found-message" style="color:red" align="center">No Adjustments Found</h5>');
+	    		    $('.container > h1').after(noDataMessage);
+	    		  } else {
+	    		    // Iterate over the response object
+	    		    Object.values(response).forEach(function(adjustment) {
+       	       var issueBlock = $('<div class="issues-block"></div>');
+       	       var status = $('<h4 class="store-indent-id">Adjustment Id: <span class="bold">' + adjustment.adjs_id + '</span></h4>');
+       	       var issueDetails = $('<div class="issue-details"></div>');
+       	    <%-- var storeId = $('<span class="label">Store ID:</span><span>' + indent.storeId + '</span>');
+       	       var indentId = $('<span class="label">Status:</span><span>' + indent.indentStatus + '</span>'); --%>
+       	       var adjustmentDate = $('<span class="label">Adjustment Date:</span><span>' + new Date(adjustment.adjs_date[0], adjustment.adjs_date[1] - 1, adjustment.adjs_date[2]).toLocaleDateString() + '</span>');
+       	       var viewProductsButton = $('<button type="button" class="btn-issues" onclick="loadAdjustmentsProducts(\'' + adjustment.adjs_id + '\')">View Products</button>');
 
-		    		      issueDetails.append(productCategoryId, productName, indentDate);
-		    		      issueBlock.append(productName, issueDetails, viewProductsButton);
-		    		      // Insert the issue block after the h1 tag
-		    		      $('.container').append(issueBlock);
-		    		    });
-		    		  }
-		    		}
-		       });
-		}
+       	       issueDetails.append( adjustmentDate);
+       	       issueBlock.append(status, issueDetails, viewProductsButton);
+ 		      $('.container').append(issueBlock);
+
+	    		    });
+	    		  }
+	    		}
+	       });
+	}
 	
+	 function loadAdjustmentsProducts(adjs_id) {
+	        var currentPageUrl = window.location.href;
+	        var data = {}
+	        data["adjs_id"]=adjs_id;
+	        $.ajax({
+	          url: "getAdjustmentProductsList",
+	          method: "post",
+	          data:{"adjs_id":JSON.stringify(data)},
+	          success: function (response) {
+	            $("#modalContent").html(response);
+	            $("#productsModal").modal("show");
+	            history.pushState(null, null, currentPageUrl);
+	          },
+	          error: function () {
+	            console.log("Failed to load static page");
+	          }
+	        });
+	      }
+
 	
-	 $.ajax({
-         url: "getProductCategories",
-         method: "POST",
-         dataType: "json",
-         success: function(response) {
-      	   console.log(response);
-      	   // Remove existing issues blocks and "No Indents Found" message
-      	   $('.issues-block').remove();
-      	   $('.not-found-message').remove();
+   $(document).ready(function(){
+	   
+	   
+	   
+	   
+	   $.ajax({
+		   url:"getProductCategories",
+		   method:"POST",
+		   dataType:"json",
+		   success:function(response){
+			   $('#product-category-dropdown').empty();
 
-      	   if (Object.keys(response).length === 0) {
-      	     // Response is empty, display "No Indents Found" message
-      	     var noDataMessage = $('<h5 class="not-found-message" style="color:red" align="center">No Product Categories Found</h5>');
-      	     $('.container > h1').after(noDataMessage);
-      	   } else {
-      	     // Iterate over the response object
-      	     Object.values(response).forEach(function(indent) {
-      	    	 var issueBlock = $('<div class="issues-block"></div>');
-      	       var status = $('<h4 class="store-indent-id">Indent Id: <span class="bold">' + indent.indentId + '</span></h4>');
-      	       var issueDetails = $('<div class="issue-details"></div>');
-      	       var storeId = $('<span class="label">Store ID:</span><span>' + indent.storeId + '</span>');
-      	       var indentId = $('<span class="label">Status:</span><span>' + indent.indentStatus + '</span>');
-      	       var indentDate = $('<span class="label">Indent Date:</span><span>' + new Date(indent.date[0], indent.date[1] - 1, indent.date[2]).toLocaleDateString() + '</span>');
-      	       var viewProductsButton = $('<button type="button" class="btn-issues" onclick="loadIndentProducts(\'' + indent.indentId + '\')">View Products</button>');
-      	       issueDetails.append(productCategoryId, productName, indentDate);
-      	       issueBlock.append(productName, issueDetails, viewProductsButton);
-      	       // Insert the issue block after the h1 tag
-      	       $('.container').append(issueBlock);
-      	     });
-      	   }
-      	 }
-     });
- });--%>
-		
+		        $('#product-category-dropdown').append($('<option value="" selected disabled >Select Product Category</option>'));
+		        
+		        // Add options based on the response
+		        response.forEach(function(item) {
+		        	 $('<option>', {
+		        		    value: item.productCategoryId,
+		        		    text: item.productCategoryName+" ("+item.productCategoryId+")"
+		        		  }).appendTo('#product-category-dropdown');
+		        	 });
+		   },
+	   error:function(error){
+		   console.log(error);
+	   }
+	   });
+	  	
 
     
-    
-    
-    function loadAdjustmentsProducts(adjs_id) {
-        var currentPageUrl = window.location.href;
-        var data = {}
-        data["adjs_id"]=adjs_id;
-        $.ajax({
-          url: "getAdjustmentProductsList",
-          method: "post",
-          data:{"adjs_id":JSON.stringify(data)},
+	   $("#product-category-dropdown").change(function(){
+			
+			
+		   	$.ajax({
+		   	     url :"getProductStockData",
+		   	     method :"post",
+		   	  data:{
+		   	    	
+		   	    categoryId : $("#product-category-dropdown").val()
+		   	     },
           success: function (response) {
-            $("#modalContent").html(response);
-            $("#productsModal").modal("show");
-            history.pushState(null, null, currentPageUrl);
-          },
-          error: function () {
-            console.log("Failed to load static page");
-          }
-        });
-      }
+        	  console.log(response);
+        	  $('#product-name-dropdown').empty();
+        	  $('#product-name-dropdown').append($('<option value="" selected >Select Product</option>'));
+       		 $.each(response, function(index, product) {
+                 var option = '<option value="' + product.productId + '">' + product.productName + '</option>';
+                 $('#product-name-dropdown').append(option);
+             });
+       	   }
+       	 });
+      });
+  });
+   
+   var currentDate = new Date();
 
+	// Format the date as YYYY-MM-DD
+	var formattedDate = currentDate.toISOString().split("T")[0];
+
+	// Set the max attribute to the date with one day added
+	document.getElementById("adjustment-date-dropdown-to").setAttribute("max", formattedDate);
+	document.getElementById("adjustment-date-dropdown-from").setAttribute("max", formattedDate);
+
+
+	   document.getElementById("adjustment-date-dropdown-to").setAttribute("value", formattedDate);
+
+ 
     </script>
 </head>
 <body>
@@ -309,8 +318,8 @@
 	<div class="dropdowns">
 		<div class="twoDropdowns">
 			<div class="dropdown">
-				<select id="product-category-dropdown">
-				<option value="" selected>Select Product Category</option>
+				<select id="product-category-dropdown" required>
+				
 				
 				</select>
 			</div>
@@ -340,15 +349,18 @@
 			
 		</div>
 	</div>
+	
+	
+	
+	
+	
+	
 </form>
 
 <form method="post" action="">
     <div class="container">
        <h1 class="text-center mb-4">Adjustments List</h1>
-       
-      
-       
-           <c:forEach items="${adjustments}" var="adjustments">
+     <c:forEach items="${adjustments}" var="adjustments">
             <div class="issues-block" >
                 <h4 class="store-indent-id">Adjustment ID: <span class="bold">${adjustments.adjustmentID}</span></h4>
                 <div class="issue-details" >

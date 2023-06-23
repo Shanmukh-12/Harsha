@@ -7,14 +7,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import main.dao.adjustments.AdjustmentsDAO;
 import main.models.adjustmentsModels.entities.AdjustmentsList;
+import main.models.adjustmentsModels.inputModels.AdjustmentsFilterInput;
 import main.models.adjustmentsModels.inputModels.AdjustmentsInputList;
 import main.models.adjustmentsModels.outputModels.AdjustmentProductsListData;
+import main.models.adjustmentsModels.outputModels.AdjustmentsFilterOutput;
 
 @Controller
 public class AdjustmentsController {
@@ -76,12 +80,110 @@ public class AdjustmentsController {
 		// storeIndentProducts.add(modelMapper.map(s, StoreIndentProducts.class));
 		//
 		System.out.println("after dao");
-		m.addAttribute("productsList", adjustmentProductsListData);
+		m.addAttribute("productsList", adjustmentProductsListData); // adding to the view
 
 		for (AdjustmentProductsListData s : adjustmentProductsListData)
 			System.out.println(s);
 
 		return "inventory/adjustmentProducts";
+	}
+
+	@PostMapping("/getFilterDataByCategoryIdProductIdFrom")
+	public @ResponseBody List<AdjustmentsFilterOutput> getFilterDataByCategoryIdProductIdFrom(String filters,
+			Model model) {
+		AdjustmentsFilterInput adjustmentsFilterInput = null;
+		ObjectMapper objectMapper = new ObjectMapper();
+		objectMapper.registerModule(new JavaTimeModule());
+		try {
+			adjustmentsFilterInput = objectMapper.readValue(filters, AdjustmentsFilterInput.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println(adjustmentsFilterInput);
+
+		List<AdjustmentsFilterOutput> sl = adjustmentsDAO
+				.getFilterDataByCategoryIdProductIdFrom(adjustmentsFilterInput);
+		return sl;
+	}
+
+	@PostMapping("/getFilterDataByCategoryIdProductId")
+	public @ResponseBody List<AdjustmentsFilterOutput> getFilterDataByCategoryIdProductId(String filters, Model model) {
+		AdjustmentsFilterInput adjustmentsFilterInput = null;
+		ObjectMapper objectMapper = new ObjectMapper();
+		objectMapper.registerModule(new JavaTimeModule());
+		try {
+			adjustmentsFilterInput = objectMapper.readValue(filters, AdjustmentsFilterInput.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println(adjustmentsFilterInput);
+
+		List<AdjustmentsFilterOutput> sl = adjustmentsDAO.getFilterDataByCategoryIdProductId(adjustmentsFilterInput);
+		return sl;
+	}
+
+	@PostMapping("/getFilterDataByCategoryIdFrom")
+	public @ResponseBody List<AdjustmentsFilterOutput> getFilterDataByCategoryIdFrom(String filters, Model model) {
+		AdjustmentsFilterInput adjustmentsFilterInput = null;
+		ObjectMapper objectMapper = new ObjectMapper();
+		objectMapper.registerModule(new JavaTimeModule());
+		try {
+			adjustmentsFilterInput = objectMapper.readValue(filters, AdjustmentsFilterInput.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println(adjustmentsFilterInput);
+
+		List<AdjustmentsFilterOutput> sl = adjustmentsDAO.getFilterDataByCategoryIdFrom(adjustmentsFilterInput);
+		return sl;
+	}
+
+	@PostMapping("/getFilterDataByCategoryId")
+	public @ResponseBody List<AdjustmentsFilterOutput> getFilterDataByCategoryId(String filters, Model model) {
+		AdjustmentsFilterInput adjustmentsFilterInput = null;
+		ObjectMapper objectMapper = new ObjectMapper();
+		objectMapper.registerModule(new JavaTimeModule());
+		try {
+			adjustmentsFilterInput = objectMapper.readValue(filters, AdjustmentsFilterInput.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println(adjustmentsFilterInput);
+
+		List<AdjustmentsFilterOutput> sl = adjustmentsDAO.getFilterDataByCategoryId(adjustmentsFilterInput);
+		return sl;
+	}
+
+	@PostMapping("/getFilterDataByFrom")
+	public @ResponseBody List<AdjustmentsFilterOutput> getFilterDataByFrom(String filters, Model model) {
+		AdjustmentsFilterInput adjustmentsFilterInput = null;
+		ObjectMapper objectMapper = new ObjectMapper();
+		objectMapper.registerModule(new JavaTimeModule());
+		try {
+			adjustmentsFilterInput = objectMapper.readValue(filters, AdjustmentsFilterInput.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println(adjustmentsFilterInput);
+
+		List<AdjustmentsFilterOutput> sl = adjustmentsDAO.getFilterDataByFrom(adjustmentsFilterInput);
+		return sl;
+	}
+
+	@PostMapping("/getFilterDataByTo")
+	public @ResponseBody List<AdjustmentsFilterOutput> getFilterDataByTo(String filters, Model model) {
+		AdjustmentsFilterInput adjustmentsFilterInput = null;
+		ObjectMapper objectMapper = new ObjectMapper();
+		objectMapper.registerModule(new JavaTimeModule());
+		try {
+			adjustmentsFilterInput = objectMapper.readValue(filters, AdjustmentsFilterInput.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println(adjustmentsFilterInput);
+
+		List<AdjustmentsFilterOutput> sl = adjustmentsDAO.getFilterDataByTo(adjustmentsFilterInput);
+		return sl;
 	}
 
 }

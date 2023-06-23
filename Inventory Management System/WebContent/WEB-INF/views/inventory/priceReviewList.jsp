@@ -105,7 +105,110 @@
 } 
 
     </style>
-    <script>
+   
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        
+        <script>
+        
+    	function filterData()
+    	{
+    		var productCategoryId = $("#product-category-dropdown").val();
+    	    var productId =$("#product-name-dropdown").val()
+    	    var fromDate = document.getElementById("adjustment-date-dropdown-from").value;
+    	    var toDate = document.getElementById("adjustment-date-dropdown-to").value;
+
+    	    var url = null;
+    		if(productCategoryId)
+    		{
+    			if(productId)
+    			{
+    				if(fromDate)
+    				{
+    					url="getFilterDataByCategoryIdProductIdFrom1";				
+    				}
+    				else
+    				url="getFilterDataByCategoryIdProductId1";
+    			}
+    			else
+    			{
+    				if(fromDate)
+    				{	
+    					url="getFilterDataByCategoryIdFrom1";
+    				}
+    				else
+    				url="getFilterDataByCategoryId1";
+    			}
+    				
+    		}
+    		else
+    		{
+    			if(fromDate)
+    			{	
+    				url="getFilterDataByFrom1";
+    			}
+    			else
+    			url="getFilterDataByTo1";
+    				
+    		}
+    		
+    		
+    		
+    		
+    		console.log(productCategoryId);
+    		console.log(productId);
+    		console.log(fromDate);
+    		console.log(toDate);
+    		console.log(url);
+    	    $.ajax({
+    			
+    	    	url:url,
+    	    	method:"POST",
+    	    	dataType:"json",
+    	    	data:{
+    	    		"filters":JSON.stringify(
+    	    				{
+    	    					"productCategoryId":productCategoryId,
+    	    					"productId":productId,
+    	    					"fromDate":fromDate,
+    	    					"toDate":toDate
+    	    				})
+    	    	},
+    	    	success: function(response) {
+    	    		console.log(response);
+    	    		  // Remove existing issues blocks and "No Indents Found" message
+    	    		  $('.issues-block').remove();
+    	    		  $('.not-found-message').remove();
+
+    	    		  if (Object.keys(response).length === 0) {
+    	    		    // Response is empty, display "No Indents Found" message
+    	    		    var noDataMessage = $('<h5 class="not-found-message" style="color:red" align="center">No Price Reviews Found</h5>');
+    	    		    $('.container > h1').after(noDataMessage);
+    	    		  } else {
+    	    		    // Iterate over the response object
+    	    		    Object.values(response).forEach(function(priceReview) {
+           	       var issueBlock = $('<div class="issues-block"></div>');
+           	       var status = $('<h4 class="store-indent-id">Price Review Id: <span class="bold">' + priceReview.pr_id + '</span></h4>');
+           	       var issueDetails = $('<div class="issue-details"></div>');
+           	    <%-- var storeId = $('<span class="label">Store ID:</span><span>' + indent.storeId + '</span>');
+           	       var indentId = $('<span class="label">Status:</span><span>' + indent.indentStatus + '</span>'); --%>
+           	       var priceReviewDate = $('<span class="label">Adjustment Date:</span><span>' + new Date(priceReview.pr_date[0], priceReview.pr_date[1] - 1, priceReview.pr_date[2]).toLocaleDateString() + '</span>');
+           	       var viewProductsButton = $('<button type="button" class="btn-issues" onclick="loadAdjustmentsProducts(\'' + priceReview.pr_id + '\')">View Products</button>');
+
+           	       issueDetails.append( priceReviewDate);
+           	       issueBlock.append(status, issueDetails, viewProductsButton);
+     		      $('.container').append(issueBlock);
+
+    	    		    });
+    	    		  }
+    	    		}
+    	       });
+    	}  
+    
+    
+    
+    
     function loadPriceReviewProducts(pr_id) {
         var currentPageUrl = window.location.href;
         var data = {}
@@ -124,6 +227,74 @@
           }
         });
       }
+    
+	
+    $(document).ready(function(){
+ 	   
+ 	   
+ 	   
+ 	   
+ 	   $.ajax({
+ 		   url:"getProductCategories",
+ 		   method:"POST",
+ 		   dataType:"json",
+ 		   success:function(response){
+ 			   $('#product-category-dropdown').empty();
+
+ 		        $('#product-category-dropdown').append($('<option value="" selected disabled >Select Product Category</option>'));
+ 		        
+ 		        // Add options based on the response
+ 		        response.forEach(function(item) {
+ 		        	 $('<option>', {
+ 		        		    value: item.productCategoryId,
+ 		        		    text: item.productCategoryName+" ("+item.productCategoryId+")"
+ 		        		  }).appendTo('#product-category-dropdown');
+ 		        	 });
+ 		   },
+ 	   error:function(error){
+ 		   console.log(error);
+ 	   }
+ 	   });
+ 	  	
+
+     
+ 	   $("#product-category-dropdown").change(function(){
+ 			
+ 			
+ 		   	$.ajax({
+ 		   	     url :"getProductStockData",
+ 		   	     method :"post",
+ 		   	  data:{
+ 		   	    	
+ 		   	    categoryId : $("#product-category-dropdown").val()
+ 		   	     },
+           success: function (response) {
+         	  console.log(response);
+         	  $('#product-name-dropdown').empty();
+         	  $('#product-name-dropdown').append($('<option value="" selected >Select Product</option>'));
+        		 $.each(response, function(index, product) {
+                  var option = '<option value="' + product.productId + '">' + product.productName + '</option>';
+                  $('#product-name-dropdown').append(option);
+              });
+        	   }
+        	 });
+       });
+   });
+    
+    var currentDate = new Date();
+
+ 	// Format the date as YYYY-MM-DD
+ 	var formattedDate = currentDate.toISOString().split("T")[0];
+
+ 	// Set the max attribute to the date with one day added
+ 	document.getElementById("adjustment-date-dropdown-to").setAttribute("max", formattedDate);
+ 	document.getElementById("adjustment-date-dropdown-from").setAttribute("max", formattedDate);
+
+
+ 	   document.getElementById("adjustment-date-dropdown-to").setAttribute("value", formattedDate);
+   
+    
+    
 
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -136,13 +307,13 @@
 	<div class="dropdowns">
 		<div class="twoDropdowns">
 			<div class="dropdown">
-				<select id="store-id-dropdown">
-				<option value="" selected>Select Product Category</option>
+				<select id="product-category-dropdown" required>
+				
 				
 				</select>
 			</div>
 			<div class="dropdown">
-				<select id="indent-status-dropdown">
+				<select id="product-name-dropdown">
 					<option value="" selected>Select Product Name</option>
 					
 				</select>
@@ -151,12 +322,12 @@
 		<div class="twoDropdowns">
 			<div class="dropdown">
 				<label>From Date :</label>
-				<input type="date" id="indent-date-dropdown-from"
+				<input type="date" id="adjustment-date-dropdown-from"
 					placeholder="Select Indent Date">
 			</div>
 			<div class="dropdown">
 				<label>To  Date :</label>
-				<input type="date" id="indent-date-dropdown-to"
+				<input type="date" id="adjustment-date-dropdown-to"
 					placeholder="Select Indent Date">
 			</div>
 		</div>
@@ -164,20 +335,23 @@
 		<div class="twoDropdowns">
 			<input type="reset">
 			<button type="submit" >Apply Filters</button>
+			
 		</div>
 	</div>
+	
 </form>
+
 
 <form method="post" action="">
     <div class="container">
         <h1 class="text-center mb-4">Price Review List</h1>
-        <c:forEach items="${priceReview}" var="pricereview">
+        <c:forEach items="${priceReview}" var="priceReview">
             <div class="issues-block" >
-                <h4 class="store-indent-id">Price Review ID: <span class="bold">${pricereview.priceReviewId}</span></h4>
+                <h4 class="store-indent-id">Price Review ID: <span class="bold">${priceReview.priceReviewId}</span></h4>
                 <div class="issue-details" >
-                    <span class="label">Price Review Date :  </span><span>${pricereview.priceReviewDate}</span>
+                    <span class="label">Price Review Date :  </span><span>${priceReview.priceReviewDate}</span>
                 
-                    <button type="button" class="btn-issues" onclick="loadPriceReviewProducts(${pricereview.priceReviewId})">View Products</button>
+                    <button type="button" class="btn-issues" onclick="loadPriceReviewProducts(${priceReview.priceReviewId})">View Products</button>
                 </div>
             </div>
         </c:forEach>
