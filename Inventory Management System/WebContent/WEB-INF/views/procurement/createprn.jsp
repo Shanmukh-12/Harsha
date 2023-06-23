@@ -199,6 +199,38 @@
   <br><br><br><br>
  <input type="button"  value="Confirm Returns" class="prnClass" onclick="createpurchasereturn()">
   <script>
+  function clearSelection() {
+		 $("#vendorId").val("");
+		    $("#cost").val("");
+		    $("#fromDate").val("");
+		    $("#toDate").val("");
+		
+	}
+  $(document).ready(function() {
+ 	 function showVendors() {
+ 		    $.ajax({
+ 		      url: "showVendors",
+ 		      type: "GET",
+ 		      dataType: "json",
+ 		      success: function(response) {
+ 		        console.log(response);
+ 		        var dropdown = $('#vendorId');
+ 		       $("#vendorId option:not(:first)").remove();
+ 		        $.each(response, function(index, vendor) {
+ 		          var option = $('<option>').val(vendor.vendorId).text(vendor.vendorId +"(" + vendor.vendorName+")");
+ 		          dropdown.append(option);
+ 		        });
+ 		       
+ 		      },
+ 		      error: function(xhr, status, error) {
+ 		        console.log("Error:", error);
+ 		      }
+ 		    });
+ 		  }
+
+ 		  // Call the function to initiate the AJAX request
+ 		  showVendors();
+ 		  });
   function addRecordsToTable(records) {
 	  var dropdown = document.getElementById("prnId");
 	  var selectedOption2 = dropdown.options[dropdown.selectedIndex].text;
