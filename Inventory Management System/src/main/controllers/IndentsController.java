@@ -92,7 +92,7 @@ public class IndentsController {
 		try {
 			filterInput = objectMapper.readValue(filters, FilterInput.class);
 		} catch (Exception e) {e.printStackTrace();}
-		
+		System.out.println(filterInput);
 		List<FilteredIndent> sl =procurementIndentsDAL.getfilterIndents(filterInput);
 		return sl;
 	}

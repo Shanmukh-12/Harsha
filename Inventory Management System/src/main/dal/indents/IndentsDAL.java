@@ -72,8 +72,8 @@ public class IndentsDAL {
 
 	    String hql = "SELECT NEW main.models.indentModels.outputModels.FilteredIndent(i.indentID, i.d, i.indentsStatus) FROM IndentsList i WHERE 1 = 1";
 
-	    if (filterInput.getIndentId() != 0) {
-	        hql += " AND i.indentID = :indentId";
+	    if (filterInput.getIndentStatus()!= null) {
+	        hql += " AND i.indentsStatus = :indentStatus";
 	    }
 
 	    if (filterInput.getFromDate() != null) {
@@ -86,8 +86,8 @@ public class IndentsDAL {
 
 	    TypedQuery<FilteredIndent> query = entityManager.createQuery(hql, FilteredIndent.class);
 
-	    if (filterInput.getIndentId() != 0) {
-	        query.setParameter("indentId", filterInput.getIndentId());
+	    if (filterInput.getIndentStatus()!= null) {
+	        query.setParameter("indentStatus", filterInput.getIndentStatus());
 	    }
 
 	    if (filterInput.getFromDate() != null) {

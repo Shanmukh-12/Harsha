@@ -103,9 +103,9 @@
             <div class="issues-block">
                 <h4 class="store-indent-id">Stock Issue ID: <span class="bold">10023</span></h4>
                 <div class="issue-details">
-                    <span class="label">IndentID:</span><span >A2345</span></p>
-                        <span class="label">Issued Date:</span><span >2023-12-29</span></p>
-                        <span class="label ">Store ID:</span> <span >123EW</span></p>
+                    <span class="label">IndentID:</span><span >A2345</span>
+                        <span class="label">Issued Date:</span><span >2023-12-29</span>
+                        <span class="label ">Store ID:</span> <span >123EW</span>
                 </div>
                 
                 

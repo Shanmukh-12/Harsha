@@ -8,8 +8,8 @@
     <style>
         /* Styles for the page */
         .container {
-            max-width: 900px;
-            margin: 100px auto;
+            max-width: 800px;
+           margin-top:20px;
             padding-top: 10px;
             margin-left: 170px;
         }
@@ -29,7 +29,6 @@
 
         .issue-details {
             display: flex;
-            justify-content: space-between;
             align-items: center;
             margin-bottom: 10px;
         }
@@ -79,10 +78,14 @@
             padding: 20px;
         }
         .filters{
-        max-width: 900px;
-            margin: 100px auto;
+            max-width: 900px;
+            margin-top:20px;
             padding-top: 10px;
             margin-left: 250px;
+        }
+        .search-container{
+        margin-top:20px;
+        margin-left:800px;
         }
     </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -90,39 +93,16 @@
 
 
     <script>
-        function loadIndentProducts(indentId) {
-            var currentPageUrl = window.location.href;
-            console.log(indentId);
-            var data = { "indentId": indentId };
-            console.log(data);
-            $.ajax({
-                url: "getProcurementIndentProductsList",
-                method: "post",
-                data:{"indentId":JSON.stringify(data)},
-                success: function (response) {
-                	 $("#modalContent").html(response);
-                     $("#productsModal").modal("show");
-                     history.pushState(null, null, currentPageUrl);
-                     
-                     
-                },
-                error: function () {
-                    console.log("Failed to load static page");
-                }
-            });
-        }
-        
-
 
         $(document).ready(function () {
             $(".filterButton").click(function () {
                 console.log("sjnsjns");
-                var selectedIndentId = $("#indentId").val();
+                var indentStatus = $("#indentStatus").val();
                 var fromDate = $("#fromDate").val();
                 var toDate = $("#toDate").val();
 
                 var data = {
-                    indentId: selectedIndentId,
+                    indentStatus: indentStatus,
                     fromDate: fromDate,
                     toDate: toDate
                 };
@@ -147,9 +127,9 @@
         	    		    // Iterate over the response object
         	    		    Object.values(response).forEach(function(indent) {
         	    		      var issueBlock = $('<div class="issues-block"></div>');
-        	    		      var status = $('<h4 class="procurement-indent-id">Status: <span class="bold">' +indent.indentStatus+ '</span></h4>');
+        	    		      var status = $('<h4 class="procurement-indent-id">Indent ID:<span class="bold">' +indent.indentId+ '</span></h4>');
         	    		      var issueDetails = $('<div class="issue-details"></div>');
-        	    		      var indentId = $('<span class="label">Indent ID:</span><span>' + indent.indentId + '</span>');
+        	    		      var indentId = $('<span class="label">Status :</span><span>' + indent.indentStatus + '</span>');
         	    		      var indentDate = $('<span class="label">Indent Date:</span><span>' + formatDate(indent.indentDate)+ '</span>');
 
         	    		      var viewProductsButton = $('<button type="button" class="btn-issues" onclick="loadIndentProducts(\'' + indent.indentId + '\')">View Products</button>');
@@ -180,37 +160,68 @@
   
             
         });
-    </script>
+        
+        
+        function performSearch() {
+            var searchTerm = document.getElementById("searchInput").value.toLowerCase();
+            var issuesBlocks = document.getElementsByClassName("issues-block");
+
+            // Iterate over the issues blocks and show/hide based on the search term
+            for (var i = 0; i < issuesBlocks.length; i++) {
+                var indentId = issuesBlocks[i].querySelector(".-indent-id .bold").textContent.toLowerCase();
+
+                if (indentId.includes(searchTerm)) {
+                    issuesBlocks[i].style.display = "block";  // Show the matching block
+                } else {
+                    issuesBlocks[i].style.display = "none";   // Hide the non-matching block
+                }
+            }
+
+            // Show "No data" message if no matching blocks found
+            var noDataMessage = document.getElementById("noDataMessage");
+            noDataMessage.style.display = "none";   // Hide the message by default
+
+            if (document.querySelectorAll(".issues-block[style*='display: block']").length === 0) {
+                noDataMessage.style.display = "block";  // Show the message if no matching blocks found
+            }
+        }
+
+        // Add event listener to the search button
+     document.getElementById("searchInput").addEventListener("input", performSearch);
+        
+        </script>
 </head>
 <body>
     <form method="post" action="">
             <h1 class="text-center">Indents List</h1>
             <div class="filters">
-                <label for="indentId">Indent ID:</label>
-                <select id="indentId" name="indentId">
-                    <option value="">Select Indent</option>
-                    <c:forEach items="${indents}" var="indent">
-                  <option value="${indent.indentID}">${indent.indentID}</option>
-                     </c:forEach>
-                    
+                <label for="indentStatus">Indent Status:</label>
+                <select id="indentStatus" name="indentStatus">
+                    <option value="Active">Active</option>
+                    <option value="Closed"> Closed</option>
                     <!-- Add options dynamically from your data source -->
                 </select>
-
                 <label for="fromDate">From Date:</label>
                 <input type="date" id="fromDate" name="fromDate">
 
                 <label for="toDate">To Date:</label>
                 <input type="date" id="toDate" name="toDate">
-
+                
                 <button type="button" class="filterButton">Apply Filters</button>
+                <input type="reset">
             </div>
+     
+           <div class="search-container">
+		     <input type="text" id="searchInput" placeholder="Search Indent ID">
+		     <button type="button" id="searchButton">Search</button>
+	       </div>
             <div class="container">
             <c:forEach items="${indents}" var="indent">
                 <div class="issues-block">
-                    <h4 class="procurement-indent-id">Status: <span class="bold">${indent.indentsStatus}</span></h4>
+                    <h4 class="procurement-indent-id" style="margin-left:10px">Indent ID:<span class="bold">${indent.indentID}</span></h4>
                     <div class="issue-details">
-                        <span class="label">Indent ID:</span><span>${indent.indentID}</span>
-                        <span class="label">Indent Date:</span><span>${indent.d}</span>
+                       <div> <span class="label">Status:</span><span style="margin-left:10px">${indent.indentsStatus}</span></div>
+                       <div  style="margin-left:100px"> <span class="label">Indent Date:</span><span style="margin-left:10px">${indent.d}</span></div>
                     </div>
                     <div>
                         <button type="button" class="btn-issues" onclick="loadIndentProducts(${indent.indentID})">View Products</button>
