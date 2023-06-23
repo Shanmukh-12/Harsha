@@ -110,11 +110,20 @@
     <tr>
     <td colspan="2"><label><b><h6>Add Products</h6></b></label></td>
     </tr>
+    <tr>
+     <td><label for="prcat" >Product Categories</label></td>
+        <td>
+			<select id="prcat" class="prClass" align="center" >
+			    <option value="" disabled selected>Select a product Category</option>
+			
+			</select>
+		</td>
+    </tr>
       <tr>
         <td><label for="prid">Product Id</label></td>
         <td>
 			<select id="prid" class="prClass" align="center" >
-			    <option value="" disabled selected>Select a product</option>
+			    <option value="" disabled selected>Select a product id</option>
 			
 				<option>1</option>
 				<option>2</option>
@@ -189,7 +198,150 @@
 
 
     });
-   
+    $(document).ready(function() {
+    	 function showVendors() {
+    		    $.ajax({
+    		      url: "showVendors",
+    		      type: "GET",
+    		      dataType: "json",
+    		      success: function(response) {
+    		        console.log(response);
+    		        var dropdown = $('#vid');
+    		        dropdown.empty();
+    		        dropdown.append($('<option>').text("Select an option").prop('disabled', true).prop('selected', true));
+    		        $.each(response, function(index, vendor) {
+    		          var option = $('<option>').val(vendor.vendorId).text(vendor.vendorId +"(" + vendor.vendorName+")");
+    		          dropdown.append(option);
+    		        });
+    		       
+    		      },
+    		      error: function(xhr, status, error) {
+    		        console.log("Error:", error);
+    		      }
+    		    });
+    		  }
+
+    		  // Call the function to initiate the AJAX request
+    		  showVendors();
+    	  function getProductCategories() {
+    		 
+    	    $.ajax({
+    	      url: "getProductCategories",
+    	      type: "POST",
+    	      dataType: "json",
+    	      success: function(response) {
+    	        console.log(response);
+    	        var dropdown = $('#prcat');
+    	        // Clear existing options
+        dropdown.find('option:not(:first)').remove();
+    	        // Iterate over the response data and create dropdown options
+    	        for (var i = 0; i < response.length; i++) {
+    	          var category = response[i];
+    	          var optionValue = category.productCategoryId;
+    	          var optionLabel = category.productCategoryName + ' (' + category.productCategoryId + ')';
+    	          var option = $('<option>').val(optionValue).text(optionLabel);
+    	          dropdown.append(option);
+    	        }
+    	        
+    	      },
+    	      
+    	      error: function(xhr, status, error) {
+    	        console.log("Error:", error);
+    	      }
+    	    });
+    	  }
+
+    	  getProductCategories();
+    	  function getProducts() {
+    	        // ...
+    	       
+    	        var dropdown = $('#prcat');
+
+    	        // Event listener for the dropdown change event
+    	        dropdown.on('change', function() {
+    	          // Get the selected option value from the dropdown
+    	          var selectedOption = $(this).val();
+                  console.log(selectedOption);
+    	          // Extract the category ID from the selected option
+    	          var categoryId = selectedOption
+                    
+    	          // Make the AJAX request to the "/getProducts" endpoint
+    	          $.ajax({
+    	            url: "getProductStockData",
+    	            method: "POST",
+    	            data:{
+    	              "categoryId" : categoryId
+    	            },
+    	            success: function(response) {
+    	              // Handle the response data here
+    	              console.log(response);
+    	              console.log(this.data);
+    	              var dropdown = $('#prid');
+    	              var addedOptions = {};
+    	              dropdown.empty();
+    	              dropdown.append($('<option>').text("Select a product").prop('disabled', true).prop('selected', true));
+    	              $.each(response, function(index, product) {
+    	                var productId = product.productId.toString();
+    	                var productName = product.productName;
+    	                var optionText = productName + " (" + productId+ ")";
+    	                if (!addedOptions[optionText]) {
+    	                  var option = $('<option>').val(productId).text(optionText);
+    	                  dropdown.append(option);
+    	                  addedOptions[optionText] = true;
+    	                }
+    	              });
+    	              // ...
+    	            },
+    	            error: function(xhr, status, error) {
+    	              // Handle error responses here
+    	              console.log("Error:", error);
+    	              console.log(this.data);
+
+    	            }
+    	          });
+    	        });
+
+    	        // ...
+    	      }
+    	  getProducts();
+
+    	});
+    
+    function getProducts() {
+        // ...
+       
+        var dropdown = $('#prcat');
+
+        // Event listener for the dropdown change event
+        dropdown.on('change', function() {
+          // Get the selected option value from the dropdown
+          var selectedOption = $(this).val();
+
+          // Extract the category ID from the selected option
+          var categoryId = selectedOption.match(/\((\d+)\)/)[1];
+
+          // Make the AJAX request to the "/getProducts" endpoint
+          $.ajax({
+            url: "getProducts",
+            type: "POST",
+            data: {
+              categoryId: categoryId
+            },
+            dataType: "json",
+            success: function(response) {
+              // Handle the response data here
+              console.log(response);
+              // ...
+            },
+            error: function(xhr, status, error) {
+              // Handle error responses here
+              console.log("Error:", error);
+            }
+          });
+        });
+
+        // ...
+      }
     function deleteRow(button) {
       var row = button.parentNode.parentNode;
       row.parentNode.removeChild(row);

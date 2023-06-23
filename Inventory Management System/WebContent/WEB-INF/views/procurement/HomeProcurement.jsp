@@ -175,6 +175,13 @@ $("document").ready(
                     
                  }
              });
+			 $.ajax({
+                 url: "https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js",
+                 dataType: "script",
+                 success: function() {
+                    
+                 }
+             });
 			  $.ajax({
                   url: "https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css",
                   dataType: "script",
@@ -197,13 +204,7 @@ $("document").ready(
                      
                   }
               });
-			  $.ajax({
-                  url: "https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js",
-                  dataType: "script",
-                  success: function() {
-                     
-                  }
-              });
+			 
 	
 		
 		}
@@ -316,7 +317,6 @@ $("document").ready(
          		     height: 100,
             		  options: {
             		    scales: {
-            		    	
             		      y: {
             		        beginAtZero: true
             		      }
