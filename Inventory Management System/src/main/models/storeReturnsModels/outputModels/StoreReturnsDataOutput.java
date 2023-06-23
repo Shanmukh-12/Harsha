@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class StoreReturnsDataOutput {
 	int returnId;
-
+	int storeId;
 	LocalDate date = LocalDate.now();
 
 	int storeIssueId;
@@ -33,9 +33,31 @@ public class StoreReturnsDataOutput {
 		this.storeIssueId = storeIssueId;
 	}
 
+	public StoreReturnsDataOutput() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public StoreReturnsDataOutput(int returnId, int storeId, LocalDate date, int storeIssueId) {
+		super();
+		this.returnId = returnId;
+		this.storeId = storeId;
+		this.date = date;
+		this.storeIssueId = storeIssueId;
+	}
+
+	public int getStoreId() {
+		return storeId;
+	}
+
+	public void setStoreId(int storeId) {
+		this.storeId = storeId;
+	}
+
 	@Override
 	public String toString() {
-		return "StoreReturnsList [returnId=" + returnId + ", date=" + date + ", storeIssueId=" + storeIssueId + "]";
+		return "StoreReturnsDataOutput [returnId=" + returnId + ", storeId=" + storeId + ", date=" + date
+				+ ", storeIssueId=" + storeIssueId + "]";
 	}
 
 }
