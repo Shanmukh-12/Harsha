@@ -2,6 +2,25 @@
 <head>
     
 	<style>
+	.grnClass1
+         {
+         position:relative;
+         right:290px;	
+         top:50px;
+         font-size: 18px;
+         font-weight: bold;
+         color: #333;
+         text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+         }
+         .grnClass2
+         {
+         position:relative;
+         left:440px;
+         font-size: 18px;
+         font-weight: bold;
+         color: #333;
+         text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+         }
 	.table {
         border-collapse: collapse;
         width: 90%;
@@ -56,40 +75,64 @@
 	.prnfilterClass2
 	{
 	position:relative;
-	left:850px;
+	left:950px;
 	
 	
 	}
+
+.prnClass3
+	{
+	position:relative;
+	left:300px;
+	 font-size: 18px;
+         font-weight: bold;
+         color: #333;
+         text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+	}
+	.pr
+	
 	</style>
     
 </head>
 
 <body>
-    <h1 align="center">Create PRN</h1>
-	<br><br>
-		<label class="prnClass">Order Recieved date</label>
-	<input type="date" id="ordrecdate" class="prnClass">
-	
-	<label class="prnClass">Vendor Id</label>
-	<select id="vendorId" class="prnClass" >
-		<option>20001</option>
-	</select>
 
-	<label class="prnClass">Grn value</label>
-	<select id="grnvalue" class="prnClass" >
-		<option>34567</option>
-		
-	</select>
+
+    <label class="grnClass2">Select VendorID:</label>
+      <select id="vendorId" class="grnClass2"  >
+         <option value="">Select Vendor</option>
+         <option>20001</option>
+         <option>20002</option>
+         <option>20003</option>
+      </select>
+      <label class="grnClass2">GRN Cost</label>
+      <select id="cost" class="grnClass2"  >
+         <option value="">Select Cost</option>
+         <option>2000000</option>
+         <option>2000001</option>
+         <option>2000002</option>
+      </select>
+      
+      <label class="grnClass1">Select Order Received From Date:</label>
+      <input type="date" id="fromDate" class="grnClass1">
+      <label class="grnClass1">Select Order Received To Date:</label>
+      <input type="date" id="toDate" class="grnClass1">
+      <input type="button" value="filter" onclick="tk()" class="grnClass1" style="color: white; background-color: green;">
+      <input type="button" value="clear" onclick="clearSelection()" class="grnClass1" style="color: white; background-color: green;">
+          <br><br><br><br>
 	<br><br>
 	<label class="prnClass">Select GRN ID:</label>
 	<select id="prnId" class="prnClass" align="center" >
+	<option value="">Select GRNID</option>
 		<option>3001</option>
 		<option>3002</option>
 	</select>
 	<br><br><br>
-
-	<label class="prnClass2"><h4>GRN Data</h4></label>
-	<table class="table bg-white rounded shadow-sm  table-hover">
+    	
+	<label align="center" class="prnClass2"><h4>GRN Data</h4></label>
+	<label  class="prnfilterClass2">Vendor id</label>
+         <input type="text" id="vid"  class="prnfilterClass2">
+	<table class="table bg-white rounded shadow-sm  table-hover" id="myTable">
                             <thead>
                                 <tr>
                                     <th scope="col">Product Id</th>
@@ -156,7 +199,134 @@
   <br><br><br><br>
  <input type="button"  value="Confirm Returns" class="prnClass" onclick="createpurchasereturn()">
   <script>
-  function ButtonAction(button) {
+  function addRecordsToTable(records) {
+	  var dropdown = document.getElementById("prnId");
+	  var selectedOption2 = dropdown.options[dropdown.selectedIndex].text;
+	  var extractedText = selectedOption2.match(/\(([^)]+)\)/)[1];
+	  $("#vid").val(extractedText);
+	
+	  var tableBody = $("#myTable tbody");
+	  tableBody.empty();
+	  $.each(records, function(index, record) {
+	    var productId = record.product_id;
+	    var batchNo = record.batch_no;
+	    var orderedQuantity = record.quantity;
+	    var receivedQuantity = record.quantity; // Set initial received quantity to 0
+	    var bonus = record.bonus;
+	    var totalQuantity = record.totalQuantity;
+	    var cost = record.price;
+
+	    var row = $("<tr>");
+	    row.append("<td>" + productId + "</td>");
+	    row.append("<td>" + batchNo + "</td>");
+	    row.append("<td>" + orderedQuantity + "</td>");
+	    row.append("<td>" + receivedQuantity + "</td>");
+	    row.append("<td>" + bonus + "</td>");
+	    row.append("<td>" + totalQuantity + "</td>");
+	    row.append("<td>" + cost + "</td>");
+
+	    var addButton = $("<button>").text("Add").click(function() {
+	      moveToTable2(this);
+	    });
+
+	    var actionCell = $("<td>").append(addButton);
+	    row.append(actionCell);
+
+	    tableBody.append(row);
+	  });
+	}
+
+
+
+
+	$(document).ready(function() {
+		tk();
+		$("#prnId").change(tk2);
+		 $("#prnId").val();
+		function tk2() {
+			var grnId=$("#prnId").val();
+
+			console.log(vendorId);
+			
+			$.ajax({
+				url : "getGrnProducts",
+				method : "GET",
+
+				data : {
+
+					"grnId" : grnId
+				},
+
+				success : function(response) {
+
+					console.log(this.url);
+					console.log(response);
+					addRecordsToTable(response);
+					
+
+				}
+
+				,
+				error : function() {
+					console.log(this.url);
+					console.log("AJAX call error");
+				}
+
+			});
+
+		};
+
+		
+	});
+	
+	function tk() {
+
+		var vendorIdf = $("#vendorId option:selected").val();
+		var vendorId = parseInt(vendorIdf || 0);
+		var costidf = $("#cost option:selected").val();
+		var cost = parseInt(costidf || 0);
+		var fromDate = $("#fromDate").val();
+		var toDate = $("#toDate").val();
+		console.log(fromDate)
+
+		console.log(vendorId);
+		console.log(toDate);
+		$.ajax({
+			url : "getGrnList",
+			method : "GET",
+			dataType: "json",
+			data : {
+				"vendor_id" : vendorId,
+				"grn_amount" : cost,
+				"grnFromDate" : fromDate,
+				"grnToDate" : toDate
+
+			},
+
+			success : function(response) {
+
+				console.log(this.url);
+				console.log(response);
+				var PurchasesId = $("#PurchasesId");
+				  var prnId = $("#prnId");
+				  prnId.empty(); // Clear existing options
+				  prnId.append($('<option>').text("Select GRNId").prop('disabled', true).prop('selected', true));
+				 
+				  $.each(response, function(index, grn) {
+				    prnId.append('<option value="' + grn.grnId + '">' + grn.grnId +"("+ grn.vendor_id+")"+ '</option>');
+				  });
+				},
+
+			
+			error : function() {
+				console.log(this.url);
+				console.log("AJAX call error");
+			}
+
+		});
+
+	}
+	function ButtonAction(button) {
 		console.log("hello");
 	    var row = button.parentNode.parentNode;
 	    row.parentNode.removeChild(row);
@@ -311,18 +481,19 @@
   }
   console.log(tableData);
   const grn_no = document.getElementById("prnId");
-  const selectedOption = grn_no.options[grn_no.selectedIndex].text;
+  const selectedOption = grn_no.options[grn_no.selectedIndex].value;
   console.log(selectedOption);
-  const vendor_id = document.getElementById("vendorId");
-  const selectedOption2 = vendor_id.options[vendor_id.selectedIndex].text;
-  console.log(selectedOption2);
+  var dropdown = document.getElementById("prnId");
+  var selectedOption2 = dropdown.options[dropdown.selectedIndex].text;
+  var extractedText = selectedOption2.match(/\(([^)]+)\)/)[1];
+  console.log(extractedText);
   var reasonInput = document.getElementById("reason");
   var reasonValue = reasonInput.value;
   console.log(reasonValue);
 
   var data={};
   data["grn_cost"]=4000;
-  data["vendor_id"]=selectedOption2;
+  data["vendor_id"]=extractedText;
   data["grn_no"]=selectedOption;
   data["purchase_return_description"]=reasonValue;
   data["pi"]=tableData;

@@ -316,7 +316,6 @@ $("document").ready(
          		     height: 100,
             		  options: {
             		    scales: {
-            		    	
             		      y: {
             		        beginAtZero: true
             		      }
