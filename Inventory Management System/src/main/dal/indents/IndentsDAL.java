@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Component;
@@ -13,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import main.models.indentModels.entities.IndentsList;
 import main.models.indentModels.entities.ProcurementIndentProductsList;
 import main.models.indentModels.entities.ProcurementIndentsList;
 import main.models.indentModels.outputModels.ProcurementIndentProductListData;
@@ -67,60 +69,39 @@ public class IndentsDAL {
 		return s;
 
 	}
-	@Transactional
-	 public List<ProcurementIndentsList> filterIndents(int selectedIndentId, String fromDate, String toDate) {
-	        List<ProcurementIndentsList> filteredIndents;
+	public List<IndentsList> filterIndents(int indentId, String fromDate, String toDate) {
+        String jpql = "SELECT i FROM IndentsList i WHERE 1=1";
 
+        if (indentId != 0) {
+            jpql += " AND i.indentID = :indentId";
+        }
 
-	            // Create the JPA query to filter indents
-	            StringBuilder queryString = new StringBuilder("SELECT i FROM ProcurementIndentsList i WHERE 1=1");
+        if (fromDate != null && !fromDate.isEmpty()) {
+            jpql += " AND i.d >= :fromDate";
+        }
 
-	            // Filter by Indent ID
-	            if (selectedIndentId!=0) {
-	                queryString.append(" AND i.indentID IN :indentIds");
-	            }
+        if (toDate != null && !toDate.isEmpty()) {
+            jpql += " AND i.d <= :toDate";
+        }
 
-	            // Filter by Date range
-	            if (fromDate != null && toDate != null) {
-	                queryString.append(" AND i.d BETWEEN :fromDate AND :toDate");
-	            } else if (fromDate != null) {
-	                queryString.append(" AND i.d >= :fromDate");
-	            } else if (toDate != null) {
-	                queryString.append(" AND i.d <= :toDate");
-	            }
+        TypedQuery<IndentsList> query = entityManager.createQuery(jpql, IndentsList.class);
 
-	            // Create the typed query
-	            javax.persistence.TypedQuery<ProcurementIndentsList> query = entityManager.createQuery(queryString.toString(), ProcurementIndentsList.class);
+        if (indentId != 0) {
+            query.setParameter("indentId", indentId);
+        }
 
-	            // Set parameters for Indent IDs
-	            if (selectedIndentId!=0) {
-	                query.setParameter("indentIds", selectedIndentId);
-	            }
+        if (fromDate != null && !fromDate.isEmpty()) {
+            query.setParameter("fromDate", fromDate);
+        }
 
-	            // Set parameters for Date range
-	            if (fromDate != null) {
-	                query.setParameter("fromDate", parseDate(fromDate));
-	            }
-	            if (toDate != null) {
-	                query.setParameter("toDate", parseDate(toDate));
-	            }
+        if (toDate != null && !toDate.isEmpty()) {
+            query.setParameter("toDate", toDate);
+        }
 
-	            // Execute the query and get the filtered indents
-	            filteredIndents = query.getResultList();
-
-	        return filteredIndents;
-	    }
-
-	    private java.util.Date parseDate(String dateString) {
-	        // Basic assumption: Parsing date from string as yyyy-MM-dd format
-	        try {
-	            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-	            return dateFormat.parse(dateString);
-	        } catch (ParseException e) {
-	            e.printStackTrace();
-	            return null;
-	        }
-	    }
+        List<IndentsList> filteredIndents = query.getResultList();
+         System.out.println(filteredIndents);
+        return filteredIndents;
+    }
 	    
 	   
 	    

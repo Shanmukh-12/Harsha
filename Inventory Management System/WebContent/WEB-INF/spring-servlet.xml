@@ -25,21 +25,21 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
-    
+ <!--   
    <beans:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 	<beans:property name="driverClassName" value="org.postgresql.Driver" />
 	<beans:property name="url" value="jdbc:postgresql://192.168.110.48:5432/plf_training" />
 	<beans:property name="username" value="plf_training_admin" />
 	<beans:property name="password" value="pff123" />
 </beans:bean>
-
-<!-- <beans:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+-->
+ <beans:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 	<beans:property name="driverClassName" value="org.postgresql.Driver" />
-	<beans:property name="url" value="jdbc:postgresql://localhost:5432/postgres" />
+	<beans:property name="url" value="jdbc:postgresql://localhost:5432/Gowri Shankar" />
 	<beans:property name="username" value="postgres" />
-	<beans:property name="password" value="tharak123" />
+	<beans:property name="password" value="Shankar" />
 </beans:bean>
- --> 
+
 <!--   <beans:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 	<beans:property name="driverClassName" value="org.postgresql.Driver" />
 	<beans:property name="url" value="jdbc:postgresql://localhost:5432/postgres" />
