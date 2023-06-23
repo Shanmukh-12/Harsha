@@ -72,9 +72,10 @@
 
 .dropdowns {
 	display: flex;
-	padding-left: 300px;
+	padding-right: 235px;
     height: 100px;
-}
+    flex-direction: column;
+    align-items: center;
 
 .dropdown {
 	display: inline-block;
@@ -104,66 +105,32 @@ select, button, #searchInput, input {
 	function filterData()
 	{
 		var storeId = document.getElementById("store-id-dropdown").value;
-	    var indentStatus = document.getElementById("indent-status-dropdown").value;
-	    var fromDate = document.getElementById("indent-date-dropdown-from").value;
-	    var toDate = document.getElementById("indent-date-dropdown-to").value;
+	    var fromDate = document.getElementById("return-date-dropdown-from").value;
+	    var toDate = document.getElementById("return-date-dropdown-to").value;
 	    var url = null;
 		if(storeId)
 		{
-			if(indentStatus)
+			if(fromDate)
 			{
-				if(fromDate)
-				{
-					url="getFilterDataIdStatusFrom";				
-				}
-				else
-				{
-					url="getFilterDataIdStatus";
-				}
+				url="getStoreReturnsFilterDataIdFrom";
 			}
 			else
 			{
-				if(fromDate)
-				{
-					url="getFilterDataIdFrom";
-				}
-				else
-				{
-					url="getFilterDataId";
-				}
-				
+				url="getStoreReturnsFilterDataId";
 			}
 		}
 		else
 		{
-			if(indentStatus)
+			if(fromDate)
 			{
-				if(fromDate)
-				{
-					url="getFilterDataStatusFrom";				
-				}
-				else
-				{
-					url="getFilterDataStatus";
-				}
+				url="getStoreReturnsFilterDataFrom";				
 			}
 			else
 			{
-				if(fromDate)
-				{
-					url="getFilterDataFrom";
-				}
-				else
-				{
-					console.log("TO only");
-					url="getFilterDataTo";
-				}
-				
-			}
-			
+				url="getStoreReturnsFilterDataTo";
+			}			
 		}
 		console.log(storeId);
-		console.log(indentStatus);
 		console.log(fromDate);
 		console.log(toDate);
 		console.log(url);
@@ -176,39 +143,38 @@ select, button, #searchInput, input {
 	    		"filters":JSON.stringify(
 	    				{
 	    					"storeId":storeId,
-	    					"indentStatus":indentStatus,
 	    					"fromDate":fromDate,
 	    					"toDate":toDate
 	    				})
 	    	},
-	    	success: function(response) {
-	    		console.log(response);
-	    		  // Remove existing issues blocks and "No Indents Found" message
-	    		  $('.issues-block').remove();
-	    		  $('.not-found-message').remove();
+	           success: function(response) {
+	        	   console.log(response);
+	        	   // Remove existing issues blocks and "No Indents Found" message
+	        	   $('.issues-block').remove();
+	        	   $('.not-found-message').remove();
 
-	    		  if (Object.keys(response).length === 0) {
-	    		    // Response is empty, display "No Indents Found" message
-	    		    var noDataMessage = $('<h5 class="not-found-message" style="color:red" align="center">No Indents Found</h5>');
-	    		    $('.container > h1').after(noDataMessage);
-	    		  } else {
-	    		    // Iterate over the response object
-	    		    Object.values(response).forEach(function(indent) {
-	    		      var issueBlock = $('<div class="issues-block"></div>');
-	    		      var status = $('<h4 class="store-indent-id">Indent Id: <span class="bold">' + indent.indentId + '</span></h4>');
-	    		      var issueDetails = $('<div class="issue-details"></div>');
-	    		      var storeId = $('<span class="label">Store ID:</span><span>' + indent.storeId + '</span>');
-	    		      var indentId = $('<span class="label">Status:</span><span>' + indent.indentStatus + '</span>');
-	    		      var indentDate = $('<span class="label">Indent Date:</span><span>' + new Date(indent.date[0], indent.date[1] - 1, indent.date[2]).toLocaleDateString() + '</span>');
-	    		      var viewProductsButton = $('<button type="button" class="btn-issues" onclick="loadIndentProducts(\'' + indent.indentId + '\')">View Products</button>');
+	        	   if (Object.keys(response).length === 0) {
+	        	     // Response is empty, display "No Indents Found" message
+	        	     var noDataMessage = $('<h5 class="not-found-message" style="color:red" align="center">No Indents Found</h5>');
+	        	     $('.container > h1').after(noDataMessage);
+	        	   } else {
+	        	     // Iterate over the response object
+	        	     Object.values(response).forEach(function(returns) {
+	        	       var issueBlock = $('<div class="issues-block"></div>');
+	        	       var status = $('<h4 class="store-return-id">Return Id: <span class="bold">' + returns.returnId + '</span></h4>');
+	        	       var issueDetails = $('<div class="issue-details"></div>');
+	        	       var storeId = $('<span class="label">Store Id:</span><span>' + returns.storeId + '</span>');
+	        	       var indentId = $('<span class="label">Store Issue Id:</span><span>' + returns.storeIssueId + '</span>');
+	        	       var indentDate = $('<span class="label">Return Date:</span><span>' + new Date(returns.date[0], returns.date[1] - 1, returns.date[2]).toLocaleDateString() + '</span>');
+	        	       var viewProductsButton = $('<button type="button" class="btn-issues" onclick="loadReturnProducts(\'' + returns.returnId + '\')">View Products</button>');
 
-	    		      issueDetails.append(storeId, indentId, indentDate);
-	    		      issueBlock.append(status, issueDetails, viewProductsButton);
-	    		      // Insert the issue block after the h1 tag
-	    		      $('.container').append(issueBlock);
-	    		    });
-	    		  }
-	    		}
+	        	       issueDetails.append(storeId,indentId, indentDate);
+	        	       issueBlock.append(status, issueDetails, viewProductsButton);
+	        	       // Insert the issue block after the h1 tag
+	        	       $('.container').append(issueBlock);
+	        	     });
+	        	   }
+	        	 }
 	       });
 	}
 	
@@ -257,13 +223,14 @@ select, button, #searchInput, input {
         	     // Iterate over the response object
         	     Object.values(response).forEach(function(returns) {
         	       var issueBlock = $('<div class="issues-block"></div>');
-        	       var status = $('<h4 class="store-return-id">Indent Id: <span class="bold">' + returns.returnId + '</span></h4>');
-        	       var issueDetails = $('<div class="return-details"></div>');
-        	       var indentId = $('<span class="label">Issue Id:</span><span>' + returns.storeIssueId + '</span>');
+        	       var status = $('<h4 class="store-return-id">Return Id: <span class="bold">' + returns.returnId + '</span></h4>');
+        	       var issueDetails = $('<div class="issue-details"></div>');
+        	       var storeId = $('<span class="label">Store Id:</span><span>' + returns.storeId + '</span>');
+        	       var indentId = $('<span class="label">Store Issue Id:</span><span>' + returns.storeIssueId + '</span>');
         	       var indentDate = $('<span class="label">Return Date:</span><span>' + new Date(returns.date[0], returns.date[1] - 1, returns.date[2]).toLocaleDateString() + '</span>');
-        	       var viewProductsButton = $('<button type="button" class="btn-issues" onclick="loadIndentProducts(\'' + returns.returnId + '\')">View Products</button>');
+        	       var viewProductsButton = $('<button type="button" class="btn-issues" onclick="loadReturnProducts(\'' + returns.returnId + '\')">View Products</button>');
 
-        	       issueDetails.append(indentId, indentDate);
+        	       issueDetails.append(storeId,indentId, indentDate);
         	       issueBlock.append(status, issueDetails, viewProductsButton);
         	       // Insert the issue block after the h1 tag
         	       $('.container').append(issueBlock);
@@ -280,7 +247,7 @@ select, button, #searchInput, input {
 
        // Iterate over the issues blocks and show/hide based on the search term
        for (var i = 0; i < issuesBlocks.length; i++) {
-           var indentId = issuesBlocks[i].querySelector(".store-indent-id .bold").textContent.toLowerCase();
+           var indentId = issuesBlocks[i].querySelector(".store-return-id .bold").textContent.toLowerCase();
 
            if (indentId.includes(searchTerm)) {
                issuesBlocks[i].style.display = "block";  // Show the matching block
@@ -301,7 +268,7 @@ select, button, #searchInput, input {
    // Add event listener to the search button
 document.getElementById("searchInput").addEventListener("input", performSearch);
    
-   function loadIndentProducts(returnId) {
+   function loadReturnProducts(returnId) {
        var currentPageUrl = window.location.href;
        console.log(returnId);
        var data = {}
@@ -328,41 +295,32 @@ var currentDate = new Date();
 var formattedDate = currentDate.toISOString().split("T")[0];
 
 // Set the max attribute to the date with one day added
-document.getElementById("indent-date-dropdown-to").setAttribute("max", formattedDate);
-document.getElementById("indent-date-dropdown-from").setAttribute("max", formattedDate);
+document.getElementById("return-date-dropdown-to").setAttribute("max", formattedDate);
+document.getElementById("return-date-dropdown-from").setAttribute("max", formattedDate);
 
 
-   document.getElementById("indent-date-dropdown-to").setAttribute("value", formattedDate);
+   document.getElementById("return-date-dropdown-to").setAttribute("value", formattedDate);
 </script>
 <form method=post onsubmit="filterData(); return false">
 	<div class="dropdowns">
-		<div class="twoDropdowns">
+		<div class="threeDropdowns">
 			<div class="dropdown">
 				<select id="store-id-dropdown">
 				</select>
 			</div>
 			<div class="dropdown">
-				<select id="indent-status-dropdown">
-					<option value="" selected>Select Indent Status</option>
-					<option value="Active">Active</option>
-					<option value="Inactive">Inactive</option>
-				</select>
-			</div>
-		</div>
-		<div class="twoDropdowns">
-			<div class="dropdown">
 				<label>From Date :</label>
-				<input type="date" id="indent-date-dropdown-from"
+				<input type="date" id="return-date-dropdown-from"
 					placeholder="Select Indent Date">
 			</div>
 			<div class="dropdown">
 				<label>To  Date :</label>
-				<input type="date" id="indent-date-dropdown-to"
+				<input type="date" id="return-date-dropdown-to"
 					placeholder="Select Indent Date">
 			</div>
 		</div>
 		
-		<div class="twoDropdowns">
+		<div class="threeDropdowns">
 			<input type="reset">
 			<button type="submit" >Apply Filters</button>
 		</div>
@@ -371,7 +329,7 @@ document.getElementById("indent-date-dropdown-from").setAttribute("max", formatt
 
 <div class="container">
 
-	<h1 class="text-center mb-4">Store Indents List</h1>
+	<h1 class="text-center mb-4">Store Returns List</h1>
 
 	<div class="search-container" align="right">
 		<input type="text" id="searchInput" placeholder="Search Store Return ID">

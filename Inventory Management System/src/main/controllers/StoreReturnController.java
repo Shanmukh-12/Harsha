@@ -17,7 +17,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import main.dao.storeReturns.StoreReturnsDao;
 import main.models.storeModels.inputmodels.ReturnId;
 import main.models.storeReturnsModels.entities.StoreReturnProductsList;
-import main.models.storeReturnsModels.entities.StoreReturnsData;
 import main.models.storeReturnsModels.entities.StoreReturnsList;
 import main.models.storeReturnsModels.inputModels.StoreReturnProducts;
 import main.models.storeReturnsModels.inputModels.StoreReturns;
@@ -33,18 +32,14 @@ public class StoreReturnController {
 	ModelMapper modelMapper;
 	ObjectMapper objectMapper = new ObjectMapper();
 
-	
 	@PostMapping("/getStoreReturnsList")
-	public @ResponseBody List<StoreReturnsData> getStoreReturnsList(Model m) {
+	public @ResponseBody List<StoreReturnsDataOutput> getStoreReturnsList(Model m) {
 		System.out.println("Returns");
-		List<StoreReturnsData> sl = storeReturnsDao.getStoreReturnsList();
-		List<StoreReturnsDataOutput> res = new ArrayList<>();
-		for (StoreReturnsData s : sl)
-		{
-			res.add(modelMapper.map(s, StoreReturnsDataOutput.class));
-			System.out.println(s);
-		}
-		return sl;
+		List<StoreReturnsDataOutput> sl = storeReturnsDao.getStoreReturnsList();
+		/*
+		 * List<StoreReturnsDataOutput> res = new ArrayList<>(); for (StoreReturnsData s : sl) {
+		 * res.add(modelMapper.map(s, StoreReturnsDataOutput.class)); System.out.println(s); }
+		 */ return sl;
 	}
 
 	@PostMapping("/getStoreReturnProductsList")
@@ -59,10 +54,10 @@ public class StoreReturnController {
 
 		List<StoreReturnProductsList> storeReturnProductsList = storeReturnsDao.getStoreReturnsProductsList(returnid);
 
-		 List<StoreReturnProducts> storeReturnProducts = new ArrayList();
-		 for (StoreReturnProductsList s : storeReturnProductsList)
-			 storeReturnProducts.add(modelMapper.map(s, StoreReturnProducts.class));
-		
+		List<StoreReturnProducts> storeReturnProducts = new ArrayList();
+		for (StoreReturnProductsList s : storeReturnProductsList)
+			storeReturnProducts.add(modelMapper.map(s, StoreReturnProducts.class));
+
 		m.addAttribute("productsList", storeReturnProducts);
 
 		for (StoreReturnProductsList s : storeReturnProductsList)
@@ -70,10 +65,7 @@ public class StoreReturnController {
 
 		return "store/storeReturnProducts";
 	}
-	
-	
-	
-	
+
 	@PostMapping("/newCreateStoreReturn")
 	public String createStoreReturn(@RequestBody String data, Model m) {
 		System.out.println("Inside");
@@ -82,7 +74,6 @@ public class StoreReturnController {
 		try {
 			storeReturns = objectMapper.readValue(data, StoreReturns.class);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		StoreReturnsList storeReturnsList = modelMapper.map(storeReturns, StoreReturnsList.class);
