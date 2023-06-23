@@ -72,7 +72,10 @@
          {
          color : green;
          }
-         
+           .refresh-icon {
+  display: inline-block;
+  cursor: pointer;
+}
          th {
          padding: 8px;
          border-bottom: 1px solid #ccc; /* Add border-bottom for table header */
@@ -119,14 +122,14 @@
                <td>1</td>
                <td>Television</td>
                <td>200</td>
-              <td><button onclick="moveToTable2(this)">Add</button></td>
+              <td><button onclick="moveToTable2(this)" disabled="true">Add</button></td>
             </tr>
             <tr>
              
                <td>2</td>
                <td>santoor</td>
                <td>200</td>
-              <td><button onclick="moveToTable2(this)">Add</button></td>
+              <td><button onclick="moveToTable2(this)" disabled="true">Add</button></td>
             </tr>
          </tbody>
       </table>

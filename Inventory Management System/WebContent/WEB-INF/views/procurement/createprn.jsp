@@ -155,7 +155,7 @@
 									<td>2</td>
 									<td>32</td>
 									<td>76836</td>
-									<td><button onclick="moveToTable2(this)">Add</button></td>
+									<td><button onclick="moveToTable2(this)" disabled="true">Add</button></td>
                                 </tr>
                                   <tr>
                                     <td>2</td>
@@ -165,7 +165,7 @@
 									<td>2</td>
 									<td>32</td>
 									<td>768</td>
-									<td><button onclick="moveToTable2(this)">Add</button></td>
+									<td><button onclick="moveToTable2(this)" disabled="true">Add</button></td>
                                 </tr>
                             </tbody>
                         </table><br><br>
