@@ -52,7 +52,7 @@
         .prnClass2
 	{
 	position:relative;
-	left:560px;
+	left:650px;
 	 font-size: 18px;
          font-weight: bold;
          color: #333;
@@ -61,7 +61,7 @@
 	.prnClass
 	{
 	position:relative;
-	left:500px;
+	left:600px;
 	 font-size: 18px;
          font-weight: bold;
          color: #333;
@@ -97,7 +97,8 @@
 
 <body>
 
-
+      <h1 align="center">Create Purchase Return</h1>
+<br>
     <label class="grnClass2">Select VendorID:</label>
       <select id="vendorId" class="grnClass2"  >
          <option value="">Select Vendor</option>
@@ -119,7 +120,7 @@
       <input type="date" id="toDate" class="grnClass1">
       <input type="button" value="filter" onclick="tk()" class="grnClass1" style="color: white; background-color: green;">
       <input type="button" value="clear" onclick="clearSelection()" class="grnClass1" style="color: white; background-color: green;">
-          <br><br><br><br>
+          <br><br><br>
 	<br><br>
 	<label class="prnClass">Select GRN ID:</label>
 	<select id="prnId" class="prnClass" align="center" >

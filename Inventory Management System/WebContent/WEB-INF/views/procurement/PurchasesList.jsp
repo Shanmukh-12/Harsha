@@ -23,7 +23,7 @@
 	.purchaseClass1
          {
          position:relative;
-        right:100px;	
+        right:70px;	
          top:50px;
         
 	     font-size: 18px;
@@ -34,19 +34,21 @@
          .purchaseClass2
          {
           position:relative;
-         left:440px;
+         left:550px;
 	     font-size: 18px;
          font-weight: bold;
          color: #333;
          text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
          }
         
-        .container {
-            max-width: 800px;
-            margin: 100 auto;
-            padding-top: 10px;
-            margin-left:170px;
-        }
+         .container {
+         position:relative;
+         left:130px;
+         max-width: 800px;
+         margin: 100 auto;
+         padding-top: 10px;
+         margin-left:170px;
+         }
 
         .issues-block {
             border: 1px solid #ccc;
@@ -103,7 +105,7 @@
          .searchClass
   {
   position:relative;
- left:740px;
+ left:900px;
  top:55px;
   }
   
@@ -455,6 +457,7 @@ $(document).ready(function() {
 	    $('#vendorId').val('');
 	    $('#expectedDate').val('');
 	    $('#expectedDate1').val('');
+	    tk();
 	  }
 function tk2(PurchasesId) {
       

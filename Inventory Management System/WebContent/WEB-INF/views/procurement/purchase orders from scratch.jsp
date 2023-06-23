@@ -144,7 +144,7 @@
             <option>20001</option>
             <option>20002</option>
           </select>
-            <span class="refresh-icon searchClass" onclick="enableOptions()">&#x21bb;</span>
+            <span class="refresh-icon searchClass" onclick="enableOptions2()">&#x21bb;</span>
         </td>
     
         
@@ -168,6 +168,7 @@
  
   <script>
     document.getElementById("addProductsId").addEventListener("click", function(event) {
+    	clear();
     	handleSelectChangeprid()
       event.preventDefault();
       var prid = document.getElementById("prid").value;
@@ -377,6 +378,28 @@
       }
     }
     function enableOptions() {
+        var selectElement = document.getElementById("vid");
+       
+        var options = selectElement.options;
+        
+        for (var i = 0; i < options.length; i++) {
+          options[i].disabled = false;
+        }
+        selectElement.selectedIndex = 0;
+      }
+    function clear()
+    {
+    	$("#prcat").val("");
+    	
+    }
+    
+    function enableOptions2() {
+    	
+    	enableOptionspr();
+    	const table = document.getElementById('dataTable1');
+    	table.innerHTML="";
+    	
+    	
         var selectElement = document.getElementById("vid");
        
         var options = selectElement.options;
