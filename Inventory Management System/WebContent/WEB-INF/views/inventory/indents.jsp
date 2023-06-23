@@ -11,7 +11,7 @@
             max-width: 900px;
             margin: 100px auto;
             padding-top: 10px;
-            margin-left: 170px;;
+            margin-left: 170px;
         }
 
         .issues-block {
@@ -79,8 +79,10 @@
             padding: 20px;
         }
         .filters{
-        margin-bottom:30px;
-        margin-left:50px;
+        max-width: 900px;
+            margin: 100px auto;
+            padding-top: 10px;
+            margin-left: 250px;
         }
     </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -129,36 +131,36 @@
                 $.ajax({
                     url: "filterIndents",
                     method: "post",
-                    data: JSON.stringify(data),
-                    contentType: "application/json",
+                    data: {"filters" :JSON.stringify(data)},
+                    success: function(response) {
+        	    		console.log(response);
+        	    		  // Remove existing issues blocks and "No Indents Found" message
+        	    		  $('.issues-block').remove();
+        	    		  $('.not-found-message').remove();
 
-                    	success: function(response) {
-            	    		console.log(response);
-            	    		  // Remove existing issues blocks and "No Indents Found" message
-            	    		  $('.issues-block').remove();
-            	    		  $('.not-found-message').remove();
 
-            	    		  if (Object.keys(response).length === 0) {
-            	    		    // Response is empty, display "No Indents Found" message
-            	    		    var noDataMessage = $('<h5 class="not-found-message" style="color:red" align="center">No Indents Found</h5>');
-            	    		    $('.container > h1').after(noDataMessage);
-            	    		  } else {
-            	    		    // Iterate over the response object
-            	    		    Object.values(response).forEach(function(indent) {
-            	    		      var issueBlock = $('<div class="issues-block"></div>');
-            	    		      var indentId = $('<span class="label">Status:</span><span>' + indent.indentStatus + '</span>');
-            	    		      var issueDetails = $('<div class="issue-details"></div>');
-            	    		      var status = $('<h4 class="procurement-indent-id">Indent Id: <span class="bold">' + indent.indentId + '</span></h4>');
-            	    		      var indentDate = $('<span class="label">Indent Date:</span><span>' + new Date(indent.d[0], indent.d[1] - 1, indent.d[2]).toLocaleDateString() + '</span>');
-            	    		      var viewProductsButton = $('<button type="button" class="btn-issues" onclick="loadIndentProducts(\'' + indent.indentId + '\')">View Products</button>');
+        	                if (Object.keys(response).length === 0) {
+        	                    // Response is empty, display "No Indents Found" message
+        	                    var noDataMessage = $('<h5 class="not-found-message" style="color:red" align="center">No Indents Found</h5>');
+        	                    $('.container').html(noDataMessage);
+        	                } else {
+        	    		    // Iterate over the response object
+        	    		    Object.values(response).forEach(function(indent) {
+        	    		      var issueBlock = $('<div class="issues-block"></div>');
+        	    		      var status = $('<h4 class="procurement-indent-id">Status: <span class="bold">' +indent.indentStatus+ '</span></h4>');
+        	    		      var issueDetails = $('<div class="issue-details"></div>');
+        	    		      var indentId = $('<span class="label">Indent ID:</span><span>' + indent.indentId + '</span>');
+        	    		      var indentDate = $('<span class="label">Indent Date:</span><span>' + formatDate(indent.indentDate)+ '</span>');
 
-            	    		      issueDetails.append(storeId, indentId, indentDate);
-            	    		      issueBlock.append(status, issueDetails, viewProductsButton);
-            	    		      // Insert the issue block after the h1 tag
-            	    		      $('.container').append(issueBlock);
-            	    		    });
-            	    		  }
-            	    		},
+        	    		      var viewProductsButton = $('<button type="button" class="btn-issues" onclick="loadIndentProducts(\'' + indent.indentId + '\')">View Products</button>');
+
+        	    		      issueDetails.append( indentId, indentDate);
+        	    		      issueBlock.append(status, issueDetails, viewProductsButton);
+        	    		      // Insert the issue block after the h1 tag
+        	    		      $('.container').append(issueBlock);
+        	    		    });
+        	    		  }
+        	    		},
                     error: function () {
                         console.log("Failed to apply filters");
                     }
@@ -167,20 +169,22 @@
                 
             });
             
-          
-            
-            
-            
-            
-            
-            
+            function formatDate(date) {
+                var formattedDate = new Intl.DateTimeFormat('en-US', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit'
+                }).format(new Date(date[0], date[1] - 1, date[2]));
+                return formattedDate.replace(/\//g, '-');
+            }
+  
             
         });
     </script>
 </head>
 <body>
     <form method="post" action="">
-            <h1 class="text-center mb-4">Indents List</h1>
+            <h1 class="text-center">Indents List</h1>
             <div class="filters">
                 <label for="indentId">Indent ID:</label>
                 <select id="indentId" name="indentId">

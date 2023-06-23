@@ -21,10 +21,10 @@ public class IndentsList {
 	int indentID;
 
 	@Column(name = "indents_date")
-	LocalDate d = LocalDate.now();
+	LocalDate d;
 
 	@Column(name = "indents_status")
-	String indentsStatus = "Active";
+	String indentsStatus;
 
 
 	public int getIndentID() {

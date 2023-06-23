@@ -1,7 +1,5 @@
 package main.dal.indents;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -10,13 +8,11 @@ import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Component;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import main.models.indentModels.entities.IndentsList;
 import main.models.indentModels.entities.ProcurementIndentProductsList;
 import main.models.indentModels.entities.ProcurementIndentsList;
+import main.models.indentModels.inputModels.FilterInput;
+import main.models.indentModels.outputModels.FilteredIndent;
 import main.models.indentModels.outputModels.ProcurementIndentProductListData;
 import main.models.storeModels.inputmodels.IndentId;
 
@@ -69,41 +65,42 @@ public class IndentsDAL {
 		return s;
 
 	}
-	public List<IndentsList> filterIndents(int indentId, String fromDate, String toDate) {
-        String jpql = "SELECT i FROM IndentsList i WHERE 1=1";
+	
+	@Transactional
+	public List<FilteredIndent> getfilterIndents(FilterInput filterInput) {
+	    // ...
 
-        if (indentId != 0) {
-            jpql += " AND i.indentID = :indentId";
-        }
+	    String hql = "SELECT NEW main.models.indentModels.outputModels.FilteredIndent(i.indentID, i.d, i.indentsStatus) FROM IndentsList i WHERE 1 = 1";
 
-        if (fromDate != null && !fromDate.isEmpty()) {
-            jpql += " AND i.d >= :fromDate";
-        }
+	    if (filterInput.getIndentId() != 0) {
+	        hql += " AND i.indentID = :indentId";
+	    }
 
-        if (toDate != null && !toDate.isEmpty()) {
-            jpql += " AND i.d <= :toDate";
-        }
+	    if (filterInput.getFromDate() != null) {
+	        hql += " AND i.d >= :fromDate";
+	    }
 
-        TypedQuery<IndentsList> query = entityManager.createQuery(jpql, IndentsList.class);
+	    if (filterInput.getToDate() != null) {
+	        hql += " AND i.d <= :toDate";
+	    }
 
-        if (indentId != 0) {
-            query.setParameter("indentId", indentId);
-        }
+	    TypedQuery<FilteredIndent> query = entityManager.createQuery(hql, FilteredIndent.class);
 
-        if (fromDate != null && !fromDate.isEmpty()) {
-            query.setParameter("fromDate", fromDate);
-        }
+	    if (filterInput.getIndentId() != 0) {
+	        query.setParameter("indentId", filterInput.getIndentId());
+	    }
 
-        if (toDate != null && !toDate.isEmpty()) {
-            query.setParameter("toDate", toDate);
-        }
+	    if (filterInput.getFromDate() != null) {
+	        query.setParameter("fromDate", filterInput.getFromDate());
+	    }
 
-        List<IndentsList> filteredIndents = query.getResultList();
-         System.out.println(filteredIndents);
-        return filteredIndents;
-    }
-	    
-	   
+	    if (filterInput.getToDate() != null) {
+	        query.setParameter("toDate", filterInput.getToDate());
+	    }
+
+	    return query.getResultList();
+	}
+
 	    
 
 	    

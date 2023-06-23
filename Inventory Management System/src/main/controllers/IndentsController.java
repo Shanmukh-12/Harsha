@@ -6,25 +6,24 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import main.dal.indents.IndentsDAL;
-import main.dao.storeIndents.StoreIndentsDao;
-import main.models.indentModels.entities.IndentsList;
+
 import main.models.indentModels.entities.ProcurementIndentsList;
 import main.models.indentModels.inputModels.FilterInput;
 import main.models.indentModels.inputModels.ProcurementIndentsInputList;
+import main.models.indentModels.outputModels.FilteredIndent;
 import main.models.indentModels.outputModels.ProcurementIndentProductListData;
-import main.models.productModels.entities.ProductsCategory;
-import main.models.productModels.inputModels.CategoryRequest;
+
 import main.models.storeModels.inputmodels.IndentId;
+
 
 @Controller
 public class IndentsController {
@@ -32,8 +31,7 @@ public class IndentsController {
 	@Autowired
 	IndentsDAL procurementIndentsDAL;
 
-	@Autowired
-	StoreIndentsDao storeIndentsDao;
+
 
 	@PostMapping("/createProcurementIndent")
 	public String createStoreIndent(String jsonData, Model m) {
@@ -87,12 +85,16 @@ public class IndentsController {
 	}
 	@PostMapping("/filterIndents")
     @ResponseBody
-    public List<IndentsList> filterIndents(@RequestBody FilterInput filterInput) {
-        int indentId = filterInput.getIndentId();
-        String fromDate = filterInput.getFromDate();
-        String toDate = filterInput.getToDate();
-            return procurementIndentsDAL.filterIndents(indentId, fromDate, toDate);
-}
-	
+    public List<FilteredIndent> filterIndents(String filters) {
+		FilterInput filterInput = null;
+		ObjectMapper objectMapper=new ObjectMapper();
+		objectMapper.registerModule(new JavaTimeModule());
+		try {
+			filterInput = objectMapper.readValue(filters, FilterInput.class);
+		} catch (Exception e) {e.printStackTrace();}
+		
+		List<FilteredIndent> sl =procurementIndentsDAL.getfilterIndents(filterInput);
+		return sl;
+	}
 	
     }
