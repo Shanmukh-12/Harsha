@@ -47,6 +47,7 @@ public class StoreIssuesDataController {
 	@PostMapping("/getBatchNumbers")
 	public @ResponseBody List<ProductOutput> getBatchNumbers(@RequestBody ProductsProductIdInputModel productId) {
 		System.out.println(productId);
+		System.out.println("Getting product Id");
 
 		List<ProductStock> productsStockList = storeIssueDao.getBatchNumbers(productId);
 
