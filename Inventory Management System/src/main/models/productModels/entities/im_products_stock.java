@@ -20,9 +20,9 @@ public class im_products_stock implements Serializable {
 	@Id
 	private int batch_no;
 	private int product_stock;
-	private double product_mrp;
-	private double product_cost;
-	private double product_sale_price;
+	private int product_mrp;
+	private int product_cost;
+	private int product_sale_price;
 	private String last_updated_user;
 	private Date last_updated_date;
 
@@ -54,27 +54,27 @@ public class im_products_stock implements Serializable {
 		this.product_stock = product_stock;
 	}
 
-	public double getProduct_mrp() {
+	public int getProduct_mrp() {
 		return product_mrp;
 	}
 
-	public void setProduct_mrp(double product_mrp) {
+	public void setProduct_mrp(int product_mrp) {
 		this.product_mrp = product_mrp;
 	}
 
-	public double getProduct_cost() {
+	public int getProduct_cost() {
 		return product_cost;
 	}
 
-	public void setProduct_cost(double product_cost) {
+	public void setProduct_cost(int product_cost) {
 		this.product_cost = product_cost;
 	}
 
-	public double getProduct_sale_price() {
+	public int getProduct_sale_price() {
 		return product_sale_price;
 	}
 
-	public void setProduct_sale_price(double product_sale_price) {
+	public void setProduct_sale_price(int product_sale_price) {
 		this.product_sale_price = product_sale_price;
 	}
 
@@ -94,20 +94,8 @@ public class im_products_stock implements Serializable {
 		this.last_updated_date = last_updated_date;
 	}
 
-	public im_products getProduct() {
-		return product;
-	}
-
-	public void setProduct(im_products product) {
-		this.product = product;
-	}
-
-	@Override
-	public String toString() {
-		return "im_products_stock [product_id=" + product_id + ", batch_no=" + batch_no + ", product_stock="
-				+ product_stock + ", product_mrp=" + product_mrp + ", product_cost=" + product_cost
-				+ ", product_sale_price=" + product_sale_price + ", last_updated_user=" + last_updated_user
-				+ ", last_updated_date=" + last_updated_date + " ]";
+	public im_products_stock() {
+		super();
 	}
 
 }

@@ -167,8 +167,11 @@
  <input type="button"  value="Create Purchase" class="indentClass1" onclick="createpurchase()">
  
   <script>
+  const selectedOptions = [];
+
     document.getElementById("addProductsId").addEventListener("click", function(event) {
-    	clear();
+    	console.log(selectedOptions);
+
     	handleSelectChangeprid()
       event.preventDefault();
       var prid = document.getElementById("prid").value;
@@ -195,7 +198,7 @@
   	document.getElementById("qnty").value='';
   	var selectElement = document.getElementById("prid");
     selectElement.selectedIndex = 0;
-    
+    clear();
 
 
     });
@@ -263,6 +266,8 @@
     	          // Get the selected option value from the dropdown
     	          var selectedOption = $(this).val();
                   console.log(selectedOption);
+              	console.log("hi"+selectedOptions);
+
     	          // Extract the category ID from the selected option
     	          var categoryId = selectedOption
                     
@@ -291,6 +296,8 @@
     	                  addedOptions[optionText] = true;
     	                }
     	              });
+    	          	handleSelectChangeprid()
+
     	              // ...
     	            },
     	            error: function(xhr, status, error) {
@@ -317,6 +324,8 @@
         dropdown.on('change', function() {
           // Get the selected option value from the dropdown
           var selectedOption = $(this).val();
+      	console.log("hi"+selectedOptions);
+
 
           // Extract the category ID from the selected option
           var categoryId = selectedOption.match(/\((\d+)\)/)[1];
@@ -358,7 +367,6 @@
           }
         }
       }
-    var selectedOptions = [];
 
     function handleSelectChangeprid() {
       var selectElement = document.getElementById("prid");
@@ -378,6 +386,7 @@
       }
     }
     function enableOptions() {
+    	console.log(selectedOptions);
         var selectElement = document.getElementById("vid");
        
         var options = selectElement.options;
@@ -389,13 +398,16 @@
       }
     function clear()
     {
-    	$("#prcat").val("");
+    	$("#prid").val("");
+
     	
     }
     
     function enableOptions2() {
     	
     	enableOptionspr();
+    	$("#prcat").val("");
+    	$("#prid").val("");
     	const table = document.getElementById('dataTable1');
     	table.innerHTML="";
     	

@@ -26,7 +26,6 @@ public class im_products {
 	private int product_reorder_level;
 	private int ecommerce_reorder_level;
 	private String product_status;
-	private double profit_percentage;
 	@OneToMany(mappedBy = "product")
 	private List<im_products_stock> ps;
 
@@ -122,22 +121,13 @@ public class im_products {
 		this.ps = ps;
 	}
 
-	public double getProfit_percentage() {
-		return profit_percentage;
-	}
-
-	public void setProfit_percentage(double profit_percentage) {
-		this.profit_percentage = profit_percentage;
-	}
-
 	@Override
 	public String toString() {
 		return "im_products [product_id=" + product_id + ", product_name=" + product_name + ", product_image="
 				+ product_image + ", product_description=" + product_description + ", product_category_id="
 				+ product_category_id + ", product_hsn_code=" + product_hsn_code + ", product_type=" + product_type
 				+ ", product_reorder_level=" + product_reorder_level + ", ecommerce_reorder_level="
-				+ ecommerce_reorder_level + ", product_status=" + product_status + ", profit_percentage="
-				+ profit_percentage + ", ps=" + ps + "]";
+				+ ecommerce_reorder_level + ", product_status=" + product_status + ", ps=" + ps + "]";
 	}
 
 }

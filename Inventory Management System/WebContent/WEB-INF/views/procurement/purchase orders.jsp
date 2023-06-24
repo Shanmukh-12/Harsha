@@ -8,7 +8,10 @@
         border: 1px solid #ccc; /* Add border for the table */
         border-radius: 4px; /* Add border-radius for a rounded look */
     }
-  
+  .filterButton{
+  color: white;
+  background-color: green;
+}
 	 th,
         td {
             padding: 8px;
@@ -33,16 +36,33 @@
          .indentClass
          {
          position:relative;
-         left:360px;
+         left:290px;
           font-size: 18px;
          font-weight: bold;
          color: #333;
          text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
          }
+         .indentClass6
+         {
+         position:relative;
+         left:290px;
+          font-size: 18px;
+         font-weight: bold;
+         text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+         }
          .indentClass1
          {
          position:relative;
-         left:560px;
+         left:600px;
+           font-size: 18px;
+         font-weight: bold;
+         color: #333;
+         text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+         }
+         .indentClass5
+         {
+         position:relative;
+         left:650px;
            font-size: 18px;
          font-weight: bold;
          color: #333;
@@ -83,8 +103,14 @@
       </style>
    </head>
    <body>
-      <h1 align="center">Create Purchase</h1>
-      <br>
+      <h1 align="center">Create Purchase</h1><br>
+       <label for="indentStatus" class="indentClass5">Indent Status:</label>
+                <select id="indentStatus" name="indentStatus" class="indentClass5">
+                    <option value="Active">Active</option>
+                    <option value="Closed"> Closed</option>
+                    <!-- Add options dynamically from your data source -->
+                </select>
+      <br><br>
       <label class="indentClass">Select Indent From Date:</label>
       <input type="date" id="fromDate" class="indentClass">
 	
@@ -94,8 +120,10 @@
 
                 <label for="toDate" class="indentClass">Select Indent To Date:</label>
                 <input type="date" id="toDate" name="toDate" class="indentClass">
-                <button type="button" class="filterButton indentClass">Apply Filters</button>
-                <br><br>
+                <button type="button" class="filterButton indentClass6">Apply Filters</button>
+                <button onclick="clearSelections()" class="filterButton indentClass6">Clear</button>
+                
+                <br><br><br>
       
       <label class="indentClass1">Select Indent ID:</label>
       <select id="indentId" class="indentClass1" align="center">
@@ -166,6 +194,16 @@
       <input type="button"  value="Create Purchase" class="indentClass4" onclick="createpurchase()">
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
       <script>
+      function clearSelections() {
+    	  // Clear the selected option of the <select> element
+    	  tk();
+    	  document.getElementById("indentStatus").selectedIndex = 0;
+
+    	  // Clear the value of the <input> elements
+    	  document.getElementById("fromDate").value = "";
+    	  document.getElementById("toDate").value = "";
+    	}
+
       $(document).ready(function() {
     		 function showVendors() {
     			    $.ajax({
@@ -305,12 +343,12 @@
     	  $("#indentId").change(loadIndentProducts)
     	    $(".filterButton").click(function() {
     	        console.log("sjnsjns");
-
+                var indentStatus=$("#indentStatus").val();
     	        var fromDate = $("#fromDate").val();
     	        var toDate = $("#toDate").val();
 
     	        var data = {
-    	            indentId: 0,
+    	        		indentStatus: indentStatus,
     	            fromDate: fromDate,
     	            toDate: toDate
     	        };
@@ -341,18 +379,19 @@
     	            },
     	            error: function() {
     	                console.log("Failed to apply filters");
+    	                console.log(this.data);
     	            }
     	        });
     	    });
     	});
       function tk() {
 	        console.log("sjnsjns");
-
+	        var indentStatus=$("#indentStatus").val();
 	        var fromDate = $("#fromDate").val();
 	        var toDate = $("#toDate").val();
 
 	        var data = {
-	            indentId: 0,
+	        		indentStatus: indentStatus,
 	            fromDate: fromDate,
 	            toDate: toDate
 	        };
@@ -366,7 +405,7 @@
 	                console.log(response);
 
 	                var indentIdSelect = $("#indentId"); // Get the select element
-
+	                $("#indentId option:not(:first)").remove();
 	                // Iterate over the response data and append the indentId values as options
 	                for (var key in response) {
 	                    if (response.hasOwnProperty(key)) {
@@ -383,7 +422,8 @@
 	            },
 	            error: function() {
 	                console.log("Failed to apply filters");
-	            }
+	                console.log(this.data);
+	                }
 	        });
       }
         function ButtonAction(button) {

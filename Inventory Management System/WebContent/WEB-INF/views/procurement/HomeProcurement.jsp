@@ -155,26 +155,7 @@ function logout() {
 $("document").ready(
 		function()
 		{
-			 $.ajax({
-                 url: "multiple",
-                 method:"POST",
-                 contentType: "application/json",
-                	
-                	    data: JSON.stringify([{
-                	    	"username": "maddalatharakesh@gmail.com",
-                	    	"password":"tharak"
-                	       
-                	    },
-                	    {
-                	    	"username": "maddalatharakesh@gmail.com",
-                	    	"password":"tharak"
-                	    }
-                	    
-                	    ]),
-                 success: function() {
-                    
-                 }
-             });
+		
 			 $.ajax({
                  url: "https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js",
                  dataType: "script",

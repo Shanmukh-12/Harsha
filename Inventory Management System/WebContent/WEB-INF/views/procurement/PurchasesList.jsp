@@ -105,6 +105,7 @@
          .searchClass
   {
   position:relative;
+  z-index: 1;
  left:900px;
  top:55px;
   }
@@ -113,7 +114,10 @@
   display: inline-block;
   cursor: pointer;
 }
-  
+  .myElement {
+  width: 200px; /* Adjust the width as desired */
+  height: 100px; /* Adjust the height as desired */
+}
         
 
     </style>

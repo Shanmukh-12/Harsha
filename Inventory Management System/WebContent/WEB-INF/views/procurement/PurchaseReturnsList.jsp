@@ -56,6 +56,7 @@
   .searchClass
   {
   position:relative;
+  z-index: 1;
  left:920px;
  top:55px;
   }

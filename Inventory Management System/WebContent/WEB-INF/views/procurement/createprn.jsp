@@ -5,7 +5,7 @@
 	.grnClass1
          {
          position:relative;
-         right:290px;	
+         right:300px;	
          top:50px;
          font-size: 18px;
          font-weight: bold;
@@ -17,6 +17,15 @@
          position:relative;
          left:440px;
          font-size: 18px;
+         font-weight: bold;
+         color: #333;
+         text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+         }
+         .grnClass3
+         {
+         position:relative;
+         left:1150px;	
+         top:20px;
          font-weight: bold;
          color: #333;
          text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
@@ -118,8 +127,8 @@
       <input type="date" id="fromDate" class="grnClass1">
       <label class="grnClass1">Select Order Received To Date:</label>
       <input type="date" id="toDate" class="grnClass1">
-      <input type="button" value="filter" onclick="tk()" class="grnClass1" style="color: white; background-color: green;">
-      <input type="button" value="clear" onclick="clearSelection()" class="grnClass1" style="color: white; background-color: green;">
+      <input type="button" value="filter" onclick="tk()" class="grnClass3" style="color: white; background-color: green;">
+      <input type="button" value="clear" onclick="clearSelection()" class="grnClass3" style="color: white; background-color: green;">
           <br><br><br>
 	<br><br>
 	<label class="prnClass">Select GRN ID:</label>
