@@ -17,4 +17,9 @@ public class ProductsProductIdInputModel {
 		this.productId = productId;
 	}
 
+	public ProductsProductIdInputModel() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 }
