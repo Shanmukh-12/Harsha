@@ -1,5 +1,7 @@
 package main.models.storeIssueModels.entities;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -9,14 +11,17 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "im_storeissues_products")
-public class StoreIssueProducts {
+public class StoreIssueProducts implements Serializable {
 
 	@Id
 	@Column(name = "storeIssue_id")
 	int storeIssueId;
-
+	@Id
 	@Column(name = "product_id")
 	int productId;
+	@Id
+	@Column(name = "batch_no")
+	int batchNo;
 
 	@Column(name = "quantity")
 	int quantity;
@@ -41,6 +46,14 @@ public class StoreIssueProducts {
 		this.productId = productId;
 	}
 
+	public int getBatchNo() {
+		return batchNo;
+	}
+
+	public void setBatchNo(int batchNo) {
+		this.batchNo = batchNo;
+	}
+
 	public int getQuantity() {
 		return quantity;
 	}
@@ -57,10 +70,18 @@ public class StoreIssueProducts {
 		this.storeIssues = storeIssues;
 	}
 
-	@Override
-	public String toString() {
-		return "StoreIssueProducts [storeIssueId=" + storeIssueId + ", productId=" + productId + ", quantity="
-				+ quantity + ", storeIssues=" + storeIssues + "]";
+	public StoreIssueProducts(int storeIssueId, int productId, int batchNo, int quantity, StoreIssues storeIssues) {
+		super();
+		this.storeIssueId = storeIssueId;
+		this.productId = productId;
+		this.batchNo = batchNo;
+		this.quantity = quantity;
+		this.storeIssues = storeIssues;
+	}
+
+	public StoreIssueProducts() {
+		super();
+		// TODO Auto-generated constructor stub
 	}
 
 }

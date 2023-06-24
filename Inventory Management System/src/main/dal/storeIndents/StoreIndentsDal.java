@@ -150,4 +150,11 @@ public class StoreIndentsDal implements StoreIndentsDao {
 		return lst;
 	}
 
+	@Override
+	public List<StoreIndentData> getIndentsByStoreID(int storeId) {
+		return entityManager
+				.createQuery("SELECT si FROM StoreIndentData si WHERE si.storeId = :storeId", StoreIndentData.class)
+				.setParameter("storeId", storeId).getResultList();
+	}
+
 }
