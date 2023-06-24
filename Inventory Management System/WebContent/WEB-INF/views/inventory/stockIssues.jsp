@@ -319,6 +319,7 @@ document.getElementById("searchInput").addEventListener("input", performSearch);
          error: function () {
            console.log("Failed to load static page");
          }
+
        });
      }
    // Get the current date

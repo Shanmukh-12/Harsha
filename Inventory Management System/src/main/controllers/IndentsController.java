@@ -87,11 +87,13 @@ public class IndentsController {
 		objectMapper.registerModule(new JavaTimeModule());
 		try {
 			filterInput = objectMapper.readValue(filters, FilterInput.class);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		List<FilteredIndent> sl = procurementIndentsDAL.getfilterIndents(filterInput);
+
 		return sl;
 	}
 

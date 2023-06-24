@@ -3,26 +3,21 @@ package main.models.indentModels.inputModels;
 import java.time.LocalDate;
 
 public class FilterInput {
-    private int indentId;
+    private String indentStatus;
     private LocalDate fromDate;
     private LocalDate toDate;
 
     // Getters and setters
-
-
-    public int getIndentId() {
-		return indentId;
-	}
-
-	public void setIndentId(int indentId) {
-		this.indentId = indentId;
-	}
-
-
-
-
 	public LocalDate getFromDate() {
 		return fromDate;
+	}
+
+	public String getIndentStatus() {
+		return indentStatus;
+	}
+
+	public void setIndentStatus(String indentStatus) {
+		this.indentStatus = indentStatus;
 	}
 
 	public void setFromDate(LocalDate fromDate) {
@@ -39,8 +34,10 @@ public class FilterInput {
 
 	@Override
 	public String toString() {
-		return "FilterInput [indentId=" + indentId + ", fromDate=" + fromDate + ", toDate=" + toDate + "]";
+		return "FilterInput [indentStatus=" + indentStatus + ", fromDate=" + fromDate + ", toDate=" + toDate + "]";
 	}
+
+
 	
 
 }
