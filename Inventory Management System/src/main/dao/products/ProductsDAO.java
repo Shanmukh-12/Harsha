@@ -2,8 +2,10 @@ package main.dao.products;
 
 import java.util.List;
 
+import main.models.productModels.dto.ProductProfit;
 import main.models.productModels.entities.HSNEntityModel;
 import main.models.productModels.entities.ProductsCategory;
+import main.models.productModels.inputModels.ProductsProductIdInputModel;
 import main.models.productModels.outputModels.ProductStockData;
 
 public interface ProductsDAO {
@@ -19,5 +21,7 @@ public interface ProductsDAO {
 	public boolean saveCategory(ProductsCategory productsCategory);
 
 	public boolean saveHSN(HSNEntityModel hsnEntityModel);
+
+	public ProductProfit getProfitPercentage(ProductsProductIdInputModel pp);
 
 }

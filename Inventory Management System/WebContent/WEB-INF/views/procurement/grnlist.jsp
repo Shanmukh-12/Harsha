@@ -161,9 +161,9 @@
       
 				$(document).ready(function() {
 					tk();
-					
+					sk();
 				});
-				
+
 				function tk() {
 
 					var vendorIdf = $("#vendorId option:selected").val();
@@ -194,7 +194,7 @@
 							console.log(response);
 							var PurchasesId = $("#PurchasesId");
 							appendGRNDataToContainer(response);
-							appendVendorIdsToSelect(response);
+							
 
 						},
 						error : function() {
@@ -205,19 +205,58 @@
 					});
 
 				}
-				//########
-				function appendVendorIdsToSelect(jsonData) {
-					  var selectTag = document.getElementById("vendorId");
+				
+				function sk()
+				{
+					$.ajax({
+						url:"showVendors",
+						method : "GET",
+						success : function(response)
+						{
+							populateVendorOptions(response);
+							
+						},
+						error : function()
+						{
+							console.log("error in sk()");
+						}
+					});
+				}
+				
 
-					  for (var i = 0; i < jsonData.length; i++) {
-					    var vendorId = jsonData[i].vendor_id;
-					    var option = document.createElement("option");
-					    option.value = vendorId;
-					    option.text = vendorId;
-					    selectTag.appendChild(option);
-					  }
-					}
+				function populateVendorOptions(vendors) {
+				  var selectElement = document.getElementById('vendorId');
 
+				  // Clear any existing options
+				  selectElement.innerHTML = '';
+
+				  // Add the default option
+				  var defaultOption = document.createElement('option');
+				  defaultOption.value = '';
+				  defaultOption.text = 'Select Vendor';
+				  selectElement.appendChild(defaultOption);
+
+				  // Iterate over each vendor object
+				  for (var i = 0; i < vendors.length; i++) {
+				    var vendor = vendors[i];
+				    
+				    // Extract vendor ID and vendor name
+				    var vendorId = vendor.vendorId;
+				    var vendorName = vendor.vendorName;
+				    
+
+				    // Create an option element
+				    var option = document.createElement('option');
+				    option.value = vendorId;
+				    option.text = vendorId +'-'+vendorName;
+
+				    // Append the option to the select element
+				    selectElement.appendChild(option);
+				  }
+				}
+				
+
+				
 				
 				
 				function mapPurchaseOrderData2(data) {
@@ -384,10 +423,7 @@
 				
 
 				function clearSelection() {
-					 $("#vendorId").val("");
-					    $("#cost").val("");
-					    $("#fromDate").val("");
-					    $("#toDate").val("");
+					$('#vendorId').val('');
 					
 				}
 				function tk2(grnId) {

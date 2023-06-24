@@ -10,8 +10,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import main.dao.products.ProductsDAO;
+import main.models.productModels.dto.ProductProfit;
 import main.models.productModels.entities.HSNEntityModel;
 import main.models.productModels.entities.ProductsCategory;
+import main.models.productModels.inputModels.ProductsProductIdInputModel;
 import main.models.productModels.outputModels.ProductStockData;
 
 @Component
@@ -69,6 +71,18 @@ public class ProductsDAL implements ProductsDAO {
 		entityManager.persist(hsnEntityModel);
 
 		return false;
+	}
+
+	@Override
+	@Transactional
+	public ProductProfit getProfitPercentage(ProductsProductIdInputModel pp) {
+		ProductProfit pf = (ProductProfit) entityManager
+				.createQuery("select new main.models.productModels.dto.ProductProfit(p.profitPercentage)"
+						+ " from Products p where p.productId=:id")
+				.setParameter("id", pp.getProductId()).getSingleResult();
+
+		return pf;
+
 	}
 
 }

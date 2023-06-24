@@ -50,6 +50,9 @@ public class Products {
 	@Column(name = "product_status")
 	private String productStatus;
 
+	@Column(name = "profit_percentage")
+	private double profitPercentage;
+
 	// Fields from im_Products_Stock table
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JsonIgnore
@@ -61,6 +64,14 @@ public class Products {
 
 	public void setProductId(int productId) {
 		this.productId = productId;
+	}
+
+	public double getProfitPercentage() {
+		return profitPercentage;
+	}
+
+	public void setProfitPercentage(double profitPercentage) {
+		this.profitPercentage = profitPercentage;
 	}
 
 	public String getProductName() {
