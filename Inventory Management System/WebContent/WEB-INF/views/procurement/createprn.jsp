@@ -425,10 +425,15 @@
 
 	  // Add the negative price input field
 	  const inputNegativePrice = document.createElement("input");
-	  inputNegativePrice.type = "number";
-	  inputNegativePrice.id = "quantity";
-	  inputNegativePrice.style.width = "80px";
-	  inputNegativePrice.style.height = "20px";
+inputNegativePrice.type = "number";
+inputNegativePrice.id = "quantity";
+inputNegativePrice.style.width = "80px";
+inputNegativePrice.style.height = "20px";
+inputNegativePrice.setAttribute("required", "true");
+inputNegativePrice.setAttribute("pattern", "^-?[1-9][0-9]*$|^0$");
+inputNegativePrice.setAttribute("title", "Please enter a valid number greater than 0.");
+inputNegativePrice.value = "1";
+
 	  quantityCell.appendChild(inputNegativePrice);
 	  newRow.appendChild(quantityCell);
 	  

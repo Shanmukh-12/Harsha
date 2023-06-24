@@ -170,7 +170,6 @@
   const selectedOptions = [];
 
     document.getElementById("addProductsId").addEventListener("click", function(event) {
-    	console.log(selectedOptions);
 
     	handleSelectChangeprid()
       event.preventDefault();
@@ -198,7 +197,8 @@
   	document.getElementById("qnty").value='';
   	var selectElement = document.getElementById("prid");
     selectElement.selectedIndex = 0;
-    clear();
+  	console.log("hi"+selectedOptions);
+
 
 
     });
@@ -324,7 +324,6 @@
         dropdown.on('change', function() {
           // Get the selected option value from the dropdown
           var selectedOption = $(this).val();
-      	console.log("hi"+selectedOptions);
 
 
           // Extract the category ID from the selected option
@@ -354,7 +353,20 @@
       }
     function deleteRow(button) {
       var row = button.parentNode.parentNode;
+      var productId = row.cells[0].textContent; // Assuming the product ID is in the first cell of the row
+      
+      // Find the index of the product ID in the selectedOptions array
+      var index = selectedOptions.indexOf(productId);
+      
+      if (index !== -1) {
+        // Remove the product ID from the selectedOptions array
+        selectedOptions.splice(index, 1);
+      }
+  	handleSelectChangeprid()
+                    	console.log("hi"+selectedOptions);
+
       row.parentNode.removeChild(row);
+      
     }
     function handleSelectChange() {
     	console.log("hello");
@@ -404,10 +416,12 @@
     }
     
     function enableOptions2() {
-    	
+    	console.log(selectedOptions);
+    	$("#prid option:not(:first)").remove();
+
     	enableOptionspr();
     	$("#prcat").val("");
-    	$("#prid").val("");
+
     	const table = document.getElementById('dataTable1');
     	table.innerHTML="";
     	
@@ -420,6 +434,8 @@
           options[i].disabled = false;
         }
         selectElement.selectedIndex = 0;
+        selectedOptions.length = 0;
+
       }
 
       function enableOptionspr() {
@@ -530,7 +546,8 @@
            	    data: jsonData,
             success: function() {
             	
-            	
+            	selectedOptions.length = 0;
+
           	  alert("Purchase order created successfuly");
           	  var table = document.getElementById('dataTable1');
           	  table.innerHTML="";

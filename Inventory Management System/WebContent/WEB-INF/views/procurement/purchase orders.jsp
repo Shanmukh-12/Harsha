@@ -431,8 +431,7 @@
     	    var row = button.parentNode.parentNode;
     	    row.parentNode.removeChild(row);
     	  }
-
-        
+ 
          function moveToTable2(button) {
         	  // Get the row of the clicked button
         	  const row = button.parentNode.parentNode;
@@ -461,18 +460,24 @@
         	  inputNegativePrice2.id = "order quantity";
         	  inputNegativePrice2.style.width = "80px";
         	  inputNegativePrice2.style.height = "20px";
+        	  inputNegativePrice2.setAttribute("required", true);
+        	  inputNegativePrice2.setAttribute("min", "1");
+        	  inputNegativePrice2.setAttribute("value", "1");
         	  qtyCell.appendChild(inputNegativePrice2);
         	  newRow.appendChild(idCell);
         	  newRow.appendChild(nameCell);
         	  newRow.appendChild(indentqtyCell);
         	  newRow.appendChild(qtyCell);
-       
+        	   
         	  // Add the negative price input field
         	  const inputNegativePrice = document.createElement("input");
         	  inputNegativePrice.type = "number";
         	  inputNegativePrice.id = "negprice";
         	  inputNegativePrice.style.width = "80px";
         	  inputNegativePrice.style.height = "20px";
+        	  inputNegativePrice.setAttribute("required", true);
+        	  inputNegativePrice.setAttribute("min", "1");
+        	  inputNegativePrice.setAttribute("value", "1");
         	  negCell.appendChild(inputNegativePrice);
         	  
         	  // Add the delete button
@@ -582,7 +587,8 @@
                  	    data: jsonData,
                   success: function() {
                 	  alert("Purchase order created successfuly");
-                     
+                      $("#indentId").val("");
+                      loadIndentProducts();
                   }
               });
         	  
