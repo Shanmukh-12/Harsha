@@ -7,6 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -20,6 +21,7 @@ import main.models.storeModels.entities.StoreIndentData;
 import main.models.storeModels.entities.StoreIndentsList;
 import main.models.storeModels.inputmodels.IndentId;
 import main.models.storeModels.inputmodels.StoreIndentsInputList;
+import main.models.storeModels.outputmodels.StoreIds;
 
 @Controller
 public class StoreIndentController {
@@ -36,12 +38,26 @@ public class StoreIndentController {
 		System.out.println("indents");
 		List<StoreIndentData> sl = storeIndentsDao.getStoreIndentsList();
 		List<StoreIndentDataOutput> res = new ArrayList<>();
-		for (StoreIndentData s : sl)
-		{
-			res.add(modelMapper.map(s,StoreIndentDataOutput.class));
+		for (StoreIndentData s : sl) {
+			res.add(modelMapper.map(s, StoreIndentDataOutput.class));
 			System.out.println(s);
 		}
 		return res;
+	}
+
+	@PostMapping("/getStoreIndentProductsListData")
+	public @ResponseBody List<StoreIndentProducts> getStoreIndentProductsListData(String indentId, Model m) {
+		System.out.println(indentId);
+		IndentId indentid = null;
+		try {
+			indentid = objectMapper.readValue(indentId, IndentId.class);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+
+		List<StoreIndentProducts> storeIndentProducts = storeIndentsDao.getStoreIndentsProductsList(indentid);
+
+		return storeIndentProducts;
 	}
 
 	@PostMapping("/getStoreIndentProductsList")
@@ -88,6 +104,22 @@ public class StoreIndentController {
 		storeIndentsDao.saveStoreIndent(storeIndentsList);
 
 		return "store/createStoreIndent";
+	}
+
+	@PostMapping("/getIndentsListByStoreID")
+	public @ResponseBody List<StoreIndentData> getIndentsList(@ModelAttribute("storeIds") StoreIds storeIds,
+			Model model) {
+
+		System.out.println(storeIds.getStoreId());
+
+		System.out.println("hello");
+
+		int selectedStoreId = storeIds.getStoreId();
+
+		List<StoreIndentData> indents = storeIndentsDao.getIndentsByStoreID(selectedStoreId);
+		System.out.println(indents);
+
+		return indents;
 	}
 
 }
