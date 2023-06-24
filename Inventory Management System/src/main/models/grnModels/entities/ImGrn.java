@@ -19,7 +19,6 @@ public class ImGrn {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-
 	@Column(name = "GRN_ID")
 	private int grnId;
 
@@ -27,13 +26,13 @@ public class ImGrn {
 	private LocalDate grnDate = LocalDate.now();
 
 	@Column(name = "Purchase_Order_ID")
-	private int purchase_order_id;
+	private int purchaseOrderId;
 
 	@Column(name = "GRN_Amount")
 	private double grnAmount;
 
 	@Column(name = "GRN_Status")
-	private String grnStatus;
+	private String grnStatus = "Active";
 
 	// constructor
 	public ImGrn() {
@@ -42,7 +41,6 @@ public class ImGrn {
 
 	@OneToMany(mappedBy = "g")
 	@JsonProperty("product_id")
-
 	List<ImGrnProducts> productsList;
 
 	public int getGrnId() {
@@ -61,12 +59,12 @@ public class ImGrn {
 		this.grnDate = grnDate;
 	}
 
-	public int getPurchase_order_id() {
-		return purchase_order_id;
+	public int getPurchaseOrderId() {
+		return purchaseOrderId;
 	}
 
-	public void setPurchase_order_id(int purchase_order_id) {
-		this.purchase_order_id = purchase_order_id;
+	public void setPurchaseOrderId(int purchaseOrderId) {
+		this.purchaseOrderId = purchaseOrderId;
 	}
 
 	public double getGrnAmount() {
@@ -95,8 +93,8 @@ public class ImGrn {
 
 	@Override
 	public String toString() {
-		return "ImGrn [grnId=" + grnId + ", grnDate=" + grnDate + ", purchase_order_id=" + purchase_order_id
-				+ ", grnAmount=" + grnAmount + ", grnStatus=" + grnStatus + " ]";
+		return "ImGrn [grnId=" + grnId + ", grnDate=" + grnDate + ", purchaseOrderId=" + purchaseOrderId
+				+ ", grnAmount=" + grnAmount + ", grnStatus=" + grnStatus + ", productsList=" + productsList + "]";
 	}
 
 }

@@ -12,4 +12,9 @@ public class ProductsProductIdInputModel {
 		this.productId = productId;
 	}
 
+	public ProductsProductIdInputModel(int productId) {
+		super();
+		this.productId = productId;
+	}
+
 }

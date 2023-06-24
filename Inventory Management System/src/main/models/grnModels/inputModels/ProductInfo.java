@@ -10,9 +10,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class ProductInfo {
 	int product_id;
 	int batch_no;
-	int product_mrp = 4250;
-	int product_cost = 4000;
-	int product_sale_price = 4200;
+	int product_mrp;
+	int product_cost;
+	int product_sale_price;
+
+	public int getTotalprice() {
+		return totalprice;
+	}
+
+	public void setTotalprice(int totalprice) {
+		this.totalprice = totalprice;
+	}
+
+	int totalprice;
 	private String last_updated_user;
 	private Date last_updated_date;
 	@JsonProperty("quantity")
@@ -53,6 +63,20 @@ public class ProductInfo {
 
 	public void setProduct_cost(int product_cost) {
 		this.product_cost = product_cost;
+	}
+
+	public ProductInfo(int product_id, int batch_no, int product_mrp, int product_cost, int product_sale_price,
+			int totalprice, String last_updated_user, Date last_updated_date, int product_stock) {
+		super();
+		this.product_id = product_id;
+		this.batch_no = batch_no;
+		this.product_mrp = product_mrp;
+		this.product_cost = product_cost;
+		this.product_sale_price = product_sale_price;
+		this.totalprice = totalprice;
+		this.last_updated_user = last_updated_user;
+		this.last_updated_date = last_updated_date;
+		this.product_stock = product_stock;
 	}
 
 	public int getProduct_sale_price() {
@@ -103,8 +127,8 @@ public class ProductInfo {
 	@Override
 	public String toString() {
 		return "ProductInfo [product_id=" + product_id + ", batch_no=" + batch_no + ", product_mrp=" + product_mrp
-				+ ", product_cost=" + product_cost + ", product_sale_price=" + product_sale_price
-				+ ", last_updated_user=" + last_updated_user + ", last_updated_date=" + last_updated_date
+				+ ", product_cost=" + product_cost + ", product_sale_price=" + product_sale_price + ", totalprice="
+				+ totalprice + ", last_updated_user=" + last_updated_user + ", last_updated_date=" + last_updated_date
 				+ ", product_stock=" + product_stock + "]";
 	}
 

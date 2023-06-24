@@ -4,25 +4,19 @@ import java.util.List;
 
 public class GrnInputList {
 
-	int purchase_order_id;
+	int purchaseOrderId;
 	List<GrnInputProductsList> productsList;
 
 	public GrnInputList() {
 		super();
 	}
 
-	public GrnInputList(int purchase_order_id, List<GrnInputProductsList> productsList) {
-		super();
-		this.purchase_order_id = purchase_order_id;
-		this.productsList = productsList;
+	public int getPurchaseOrderId() {
+		return purchaseOrderId;
 	}
 
-	public int getPurchase_order_id() {
-		return purchase_order_id;
-	}
-
-	public void setPurchase_order_id(int purchase_order_id) {
-		this.purchase_order_id = purchase_order_id;
+	public void setPurchaseOrderId(int purchaseOrderId) {
+		this.purchaseOrderId = purchaseOrderId;
 	}
 
 	public List<GrnInputProductsList> getProductsList() {
@@ -33,9 +27,15 @@ public class GrnInputList {
 		this.productsList = productsList;
 	}
 
+	public GrnInputList(int purchaseOrderId, List<GrnInputProductsList> productsList) {
+		super();
+		this.purchaseOrderId = purchaseOrderId;
+		this.productsList = productsList;
+	}
+
 	@Override
 	public String toString() {
-		return "GrnInputList [purchase_order_id=" + purchase_order_id + ", productsList=" + productsList + "]";
+		return "GrnInputList [purchaseOrderId=" + purchaseOrderId + ", productsList=" + productsList + "]";
 	}
 
 }

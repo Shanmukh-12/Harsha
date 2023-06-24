@@ -6,20 +6,47 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 public class GrnInputProductsList {
 
-	int product_id;
-	int batch_no;
+	int productId;
+	int batchNo;
 	int quantity;
 	int bonus;
+	double cgst;
+	double sgst;
+	double igst;
+	double totalPrice;
+	double mrp;
 
 	public GrnInputProductsList() {
 	}
 
-	public GrnInputProductsList(int product_id, int batch_no, int quantity, int bonus) {
+	public GrnInputProductsList(int productId, int batchNo, int quantity, int bonus, double cgst, double sgst,
+			double igst, double totalPrice, double mrp) {
 		super();
-		this.product_id = product_id;
-		this.batch_no = batch_no;
+		this.productId = productId;
+		this.batchNo = batchNo;
 		this.quantity = quantity;
 		this.bonus = bonus;
+		this.cgst = cgst;
+		this.sgst = sgst;
+		this.igst = igst;
+		this.totalPrice = totalPrice;
+		this.mrp = mrp;
+	}
+
+	public int getProductId() {
+		return productId;
+	}
+
+	public void setProductId(int productId) {
+		this.productId = productId;
+	}
+
+	public int getBatchNo() {
+		return batchNo;
+	}
+
+	public void setBatchNo(int batchNo) {
+		this.batchNo = batchNo;
 	}
 
 	public int getQuantity() {
@@ -30,30 +57,6 @@ public class GrnInputProductsList {
 		this.quantity = quantity;
 	}
 
-	public int getProduct_id() {
-		return product_id;
-	}
-
-	public void setProduct_id(int product_id) {
-		this.product_id = product_id;
-	}
-
-	public int getBatch_no() {
-		return batch_no;
-	}
-
-	public void setBatch_no(int batch_no) {
-		this.batch_no = batch_no;
-	}
-
-	public int getQuantity_received() {
-		return quantity;
-	}
-
-	public void setQuantity_received(int quantity_received) {
-		this.quantity = quantity_received;
-	}
-
 	public int getBonus() {
 		return bonus;
 	}
@@ -62,10 +65,51 @@ public class GrnInputProductsList {
 		this.bonus = bonus;
 	}
 
+	public double getCgst() {
+		return cgst;
+	}
+
+	public void setCgst(double cgst) {
+		this.cgst = cgst;
+	}
+
+	public double getSgst() {
+		return sgst;
+	}
+
+	public void setSgst(double sgst) {
+		this.sgst = sgst;
+	}
+
+	public double getIgst() {
+		return igst;
+	}
+
+	public void setIgst(double igst) {
+		this.igst = igst;
+	}
+
+	public double getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setTotalPrice(double totalPrice) {
+		this.totalPrice = totalPrice;
+	}
+
+	public double getMrp() {
+		return mrp;
+	}
+
+	public void setMrp(double mrp) {
+		this.mrp = mrp;
+	}
+
 	@Override
 	public String toString() {
-		return "GrnInputProductsList [product_id=" + product_id + ", batch_no=" + batch_no + ", quantity_received="
-				+ quantity + ", bonus=" + bonus + "]";
+		return "GrnInputProductsList [productId=" + productId + ", batchNo=" + batchNo + ", quantity=" + quantity
+				+ ", bonus=" + bonus + ", cgst=" + cgst + ", sgst=" + sgst + ", igst=" + igst + ", totalPrice="
+				+ totalPrice + ", mrp=" + mrp + "]";
 	}
 
 }

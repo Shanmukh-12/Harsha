@@ -9,7 +9,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
@@ -18,56 +17,33 @@ public class ImGrnProducts implements Serializable {
 
 	@Id
 	@Column(name = "grn_id")
-	private int grn_id;
+	private int grnId;
 
 	@Id
 	@Column(name = "product_id")
 	@JsonProperty("product_id")
-	private int product_id;
+	private int productId;
 
 	@Id
 	@Column(name = "batch_no")
 	@JsonProperty("batch_no")
-	private int batch_no;
+	private int batchNo;
 	@JsonProperty("quantity")
 
 	@Column(name = "quantity")
 	private int quantity;
 
-	@Column(name = "price")
-	private double price;
+	@Column(name = "cgst")
+	private double cgst;
 
-	public int getGrn_id() {
-		return grn_id;
-	}
+	@Column(name = "sgst")
+	private double sgst;
 
-	public void setGrn_id(int grn_id) {
-		this.grn_id = grn_id;
-	}
+	@Column(name = "igst")
+	private double igst;
 
-	public int getProduct_id() {
-		return product_id;
-	}
-
-	public void setProduct_id(int product_id) {
-		this.product_id = product_id;
-	}
-
-	public int getBatch_no() {
-		return batch_no;
-	}
-
-	public void setBatch_no(int batch_no) {
-		this.batch_no = batch_no;
-	}
-
-	public int getHsn_code() {
-		return hsn_code;
-	}
-
-	public void setHsn_code(int hsn_code) {
-		this.hsn_code = hsn_code;
-	}
+	@Column(name = "total_price")
+	private double totalPrice;
 
 	@Column(name = "hsn_code")
 	private int hsn_code;
@@ -76,12 +52,31 @@ public class ImGrnProducts implements Serializable {
 	private int bonus;
 
 	@ManyToOne
-	@JsonIgnore
-	@JoinColumn(name = "grn_id", referencedColumnName = "grn_id", updatable = false, insertable = false)
+	@JoinColumn(name = "grn_id", referencedColumnName = "GRN_ID", updatable = false, insertable = false)
 	ImGrn g;
 
-	public ImGrnProducts() {
+	public int getGrnId() {
+		return grnId;
+	}
 
+	public void setGrnId(int grnId) {
+		this.grnId = grnId;
+	}
+
+	public int getProductId() {
+		return productId;
+	}
+
+	public void setProductId(int productId) {
+		this.productId = productId;
+	}
+
+	public int getBatchNo() {
+		return batchNo;
+	}
+
+	public void setBatchNo(int batchNo) {
+		this.batchNo = batchNo;
 	}
 
 	public int getQuantity() {
@@ -92,12 +87,44 @@ public class ImGrnProducts implements Serializable {
 		this.quantity = quantity;
 	}
 
-	public double getPrice() {
-		return price;
+	public double getCgst() {
+		return cgst;
 	}
 
-	public void setPrice(double price) {
-		this.price = price;
+	public void setCgst(double cgst) {
+		this.cgst = cgst;
+	}
+
+	public double getSgst() {
+		return sgst;
+	}
+
+	public void setSgst(double sgst) {
+		this.sgst = sgst;
+	}
+
+	public double getIgst() {
+		return igst;
+	}
+
+	public void setIgst(double igst) {
+		this.igst = igst;
+	}
+
+	public double getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setTotalPrice(double totalPrice) {
+		this.totalPrice = totalPrice;
+	}
+
+	public int getHsn_code() {
+		return hsn_code;
+	}
+
+	public void setHsn_code(int hsn_code) {
+		this.hsn_code = hsn_code;
 	}
 
 	public int getBonus() {
@@ -118,19 +145,27 @@ public class ImGrnProducts implements Serializable {
 
 	@Override
 	public String toString() {
-		return "ImGrnProducts [grn_id=" + grn_id + ", product_id=" + product_id + ", batch_no=" + batch_no
-				+ ", quantity=" + quantity + ", price=" + price + ", hsn_code=" + hsn_code + ", bonus=" + bonus + ", g="
-				+ g + "]";
+		return "ImGrnProducts [grnId=" + grnId + ", productId=" + productId + ", batchNo=" + batchNo + ", quantity="
+				+ quantity + ", cgst=" + cgst + ", sgst=" + sgst + ", igst=" + igst + ", totalPrice=" + totalPrice
+				+ ", hsn_code=" + hsn_code + ", bonus=" + bonus + "]";
 	}
 
-	public ImGrnProducts(int grnId, int product_id, int batch_no, int quantity, double price, int hsn_code, int bonus,
-			ImGrn g) {
+	public ImGrnProducts() {
 		super();
-		this.grn_id = grnId;
-		this.product_id = product_id;
-		this.batch_no = batch_no;
+		// TODO Auto-generated constructor stub
+	}
+
+	public ImGrnProducts(int grnId, int productId, int batchNo, int quantity, double cgst, double sgst, double igst,
+			double totalPrice, int hsn_code, int bonus, ImGrn g) {
+		super();
+		this.grnId = grnId;
+		this.productId = productId;
+		this.batchNo = batchNo;
 		this.quantity = quantity;
-		this.price = price;
+		this.cgst = cgst;
+		this.sgst = sgst;
+		this.igst = igst;
+		this.totalPrice = totalPrice;
 		this.hsn_code = hsn_code;
 		this.bonus = bonus;
 		this.g = g;
