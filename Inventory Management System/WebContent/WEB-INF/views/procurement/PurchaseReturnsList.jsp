@@ -23,7 +23,7 @@
 	.purchaseClass1
          {
          position:relative;
-    	right:230px;
+    	right:200px;
          top:60px;
 	     font-size: 18px;
          font-weight: bold;
@@ -33,19 +33,21 @@
          .purchaseClass2
          {
           position:relative;
-         left:330px;
+         left:490px;
          top:10px;
 	     font-size: 18px;
          font-weight: bold;
          color: #333;
          text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
          }
-        .container {
-            max-width: 800px;
-            margin: 100 auto;
-            padding-top: 10px;
-            margin-left:170px;
-        }
+         .container {
+         position:relative;
+         left:130px;
+         max-width: 800px;
+         margin: 100 auto;
+         padding-top: 10px;
+         margin-left:170px;
+         }
        .flex-container {
     display: flex;
     justify-content: center; /* Center the h1 element */
@@ -54,7 +56,7 @@
   .searchClass
   {
   position:relative;
- left:800px;
+ left:920px;
  top:55px;
   }
   
@@ -201,6 +203,31 @@
 
 
 <script>
+$(document).ready(function() {
+	 function showVendors() {
+		    $.ajax({
+		      url: "showVendors",
+		      type: "GET",
+		      dataType: "json",
+		      success: function(response) {
+		        console.log(response);
+		        var dropdown = $('#vendorId');
+		       $("#vendorId option:not(:first)").remove();
+		        $.each(response, function(index, vendor) {
+		          var option = $('<option>').val(vendor.vendorId).text(vendor.vendorId +"(" + vendor.vendorName+")");
+		          dropdown.append(option);
+		        });
+		       
+		      },
+		      error: function(xhr, status, error) {
+		        console.log("Error:", error);
+		      }
+		    });
+		  }
+
+		  // Call the function to initiate the AJAX request
+		  showVendors();
+		  });
   $(document).ready(function() {
 	tk();
     function tk() {
@@ -218,7 +245,7 @@
 
     	$.ajax({
     		            
-    	                 url: "getPurchaseReturnsList2",
+    	                 url: "getPurchaseReturnsListDetails",
     	                 method:"GET",
     	                	    data: {
     	                	    	"purchase_return_date":returnDate,
@@ -246,6 +273,7 @@
 	  $('#prnvalue').val('');
 	  $('#returnDate').val('');
 	  $('#returnDate1').val('');
+	  tk();
 	}
 
   function tk() {
@@ -263,7 +291,7 @@
 
  	$.ajax({
  		            
- 	                 url: "getPurchaseReturnsList2",
+ 	                 url: "getPurchaseReturnsListDetails",
  	                 method:"GET",
  	                	    data: {
  	                	    	"purchase_return_date":returnDate,
@@ -331,7 +359,7 @@
  		var pid=$("#purchasereturnid").val();
  		 $.ajax({
  		      
- 		      url: "getPurchaseReturnsList3",
+ 		      url: "getPurchaseReturnsListDetailsById",
  		      method:"GET",
  		     	    data: {
  		     	    	"purchase_return_id":pid,

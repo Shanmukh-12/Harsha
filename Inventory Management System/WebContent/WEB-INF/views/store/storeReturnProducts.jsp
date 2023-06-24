@@ -49,9 +49,9 @@
 
   </style>
 <body>
-  <h2 align="center">Indents List</h2>
+  <h2 align="center">Returns List</h2>
   <div style="margin-bottom:20px; margin-left:50px;">
-   <div id="products-dropdown" align="right">
+<!--    <div id="products-dropdown" align="right">
     <label for="product-category">Product Category</label>
     <select id="product-category">
       <option value="category1">Soaps & Lotions</option>
@@ -59,24 +59,28 @@
       <option value="category3">Category 3</option>
     </select>
   </div>
-  
+ -->  
   <div id="first_table">
     <table id="product-details-table">
       <thead>
         <tr>
           <th>Product ID</th>
-          <th>Product Name</th>
-          <th>Product Category</th>
-          <th>Quantity</th>
+          <th>Batch NO</th>
+<!--           <th>Product Name</th>
+           <th>Product Category</th>
+ -->         <th>Quantity</th>
+          <th>Reason</th>
         </tr>
       </thead>
       <tbody>
       	<c:forEach var="item" items="${productsList}">
             <tr>
                 <td>${item.productId}</td>
-                <td>${item.productName}</td>
-                <td>${item.productCategoryName}</td>
-                <td>${item.quantity}</td>
+                <td>${item.batchNo}</td>
+<%--                 <td>${item.productName}</td>
+                 <td>${item.productCategoryName}</td>
+  --%>              <td>${item.quantity}</td>
+                <td>${item.reason}</td>
             </tr>
         </c:forEach>
       		

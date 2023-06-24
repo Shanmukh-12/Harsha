@@ -2,12 +2,12 @@ package main.dao.storeIndents;
 
 import java.util.List;
 
+import main.models.storeIndentModels.outputmodels.StoreIndentProducts;
 import main.models.storeModels.entities.Store;
 import main.models.storeModels.entities.StoreIndentData;
 import main.models.storeModels.entities.StoreIndentsList;
 import main.models.storeModels.inputmodels.IndentId;
 import main.models.storeModels.inputmodels.StoreFilters;
-import main.models.storeModels.outputmodels.StoreIndentProducts;
 
 public interface StoreIndentsDao {
 
@@ -34,4 +34,6 @@ public interface StoreIndentsDao {
 	public List<StoreIndentData> getStoreIndentsListByFrom(StoreFilters storeFilters);
 
 	List<StoreIndentData> getStoreIndentsListByTo(StoreFilters storeFilters);
+
+	public List<StoreIndentData> getIndentsByStoreID(int selectedStoreId);
 }

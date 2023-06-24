@@ -1,11 +1,13 @@
 package main.models.productModels.entities;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -24,8 +26,8 @@ public class im_products {
 	private int product_reorder_level;
 	private int ecommerce_reorder_level;
 	private String product_status;
-	@OneToOne(mappedBy = "product")
-	private im_products_stock ps;
+	@OneToMany(mappedBy = "product")
+	private List<im_products_stock> ps;
 
 	public im_products() {
 		super();
@@ -111,12 +113,21 @@ public class im_products {
 		this.product_image = product_image;
 	}
 
-	public im_products_stock getPs() {
+	public List<im_products_stock> getPs() {
 		return ps;
 	}
 
-	public void setPs(im_products_stock ps) {
+	public void setPs(List<im_products_stock> ps) {
 		this.ps = ps;
+	}
+
+	@Override
+	public String toString() {
+		return "im_products [product_id=" + product_id + ", product_name=" + product_name + ", product_image="
+				+ product_image + ", product_description=" + product_description + ", product_category_id="
+				+ product_category_id + ", product_hsn_code=" + product_hsn_code + ", product_type=" + product_type
+				+ ", product_reorder_level=" + product_reorder_level + ", ecommerce_reorder_level="
+				+ ecommerce_reorder_level + ", product_status=" + product_status + ", ps=" + ps + "]";
 	}
 
 }

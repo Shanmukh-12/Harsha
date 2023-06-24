@@ -1,8 +1,9 @@
-package main.models.storeModels.outputmodels;
+package main.models.storeIssueModels.outputModels;
 
-public class StoreIndentProducts {
+public class StoreIssueProducts {
 
 	int productId;
+	int batchNo;
 	String productName;
 	String productCategoryName;
 	int quantity;
@@ -11,16 +12,26 @@ public class StoreIndentProducts {
 		return productId;
 	}
 
-	public StoreIndentProducts() {
+	public StoreIssueProducts() {
 		super();
 	}
 
-	public StoreIndentProducts(int productId, String productName, String productCategoryName, int quantity) {
+	public StoreIssueProducts(int productId, int batchNo, String productName, String productCategoryName,
+			int quantity) {
 		super();
 		this.productId = productId;
+		this.batchNo = batchNo;
 		this.productName = productName;
 		this.productCategoryName = productCategoryName;
 		this.quantity = quantity;
+	}
+
+	public int getBatchNo() {
+		return batchNo;
+	}
+
+	public void setBatchNo(int batchNo) {
+		this.batchNo = batchNo;
 	}
 
 	public void setProductId(int productId) {

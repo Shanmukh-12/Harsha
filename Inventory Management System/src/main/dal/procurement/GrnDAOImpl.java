@@ -111,7 +111,7 @@ public class GrnDAOImpl implements GrnDAO {
 				&& g.getGrnToDate().equals(String.valueOf(LocalDate.now()))) {
 			System.out.println("2");
 			List<ImGrnOutputModel> s = manager.createQuery(
-					"SELECT new main.models.grnModel.outputModels.ImGrnOutputModel(s.grnId, p.vendor_id, s.purchase_order_id, s.grnDate, s.grnAmount) FROM ImGrn s JOIN Im_Purchase_Order p on  s.purchase_order_id=p.purchase_order_id WHERE p.vendor_id =:v and s.grnDate<=:d",
+					"SELECT new main.models.grnModels.outputModels.ImGrnOutputModel(s.grnId, p.vendor_id, s.purchase_order_id, s.grnDate, s.grnAmount) FROM ImGrn s JOIN Im_Purchase_Order p on  s.purchase_order_id=p.purchase_order_id WHERE p.vendor_id =:v and s.grnDate<=:d",
 					ImGrnOutputModel.class).setParameter("v", g.getVendor_id())
 					.setParameter("d", LocalDate.parse(g.getGrnToDate())).getResultList();
 
@@ -123,7 +123,7 @@ public class GrnDAOImpl implements GrnDAO {
 				&& g.getGrnToDate().equals(String.valueOf(LocalDate.now()))) {
 			System.out.println("3");
 			List<ImGrnOutputModel> s = manager.createQuery(
-					"SELECT new main.models.grnModel.outputModels.ImGrnOutputModel(s.grnId, p.vendor_id, s.purchase_order_id, s.grnDate, s.grnAmount) FROM ImGrn s JOIN Im_Purchase_Order p  on  s.purchase_order_id=p.purchase_order_id  WHERE p.vendor_id = :v AND s.grnDate >= :d and s.grnDate<=:t",
+					"SELECT new main.models.grnModels.outputModels.ImGrnOutputModel(s.grnId, p.vendor_id, s.purchase_order_id, s.grnDate, s.grnAmount) FROM ImGrn s JOIN Im_Purchase_Order p  on  s.purchase_order_id=p.purchase_order_id  WHERE p.vendor_id = :v AND s.grnDate >= :d and s.grnDate<=:t",
 					ImGrnOutputModel.class).setParameter("v", g.getVendor_id())
 					.setParameter("d", LocalDate.parse(g.getGrnFromDate()))
 					.setParameter("t", LocalDate.parse(g.getGrnToDate())).getResultList();
@@ -137,7 +137,7 @@ public class GrnDAOImpl implements GrnDAO {
 			System.out.println("4");
 			List<ImGrnOutputModel> s = manager.createQuery(
 					// check
-					"SELECT new main.models.grnModel.outputModels.ImGrnOutputModel(s.grnId, p.vendor_id, s.purchase_order_id, s.grnDate, s.grnAmount) FROM ImGrn s JOIN Im_Purchase_Order p  on  s.purchase_order_id=p.purchase_order_id  where p.vendor_id = :v AND s.grnDate>= :d and s.grnDate<=:t AND s.grnAmount = :a",
+					"SELECT new main.models.grnModels.outputModels.ImGrnOutputModel(s.grnId, p.vendor_id, s.purchase_order_id, s.grnDate, s.grnAmount) FROM ImGrn s JOIN Im_Purchase_Order p  on  s.purchase_order_id=p.purchase_order_id  where p.vendor_id = :v AND s.grnDate>= :d and s.grnDate<=:t AND s.grnAmount = :a",
 					ImGrnOutputModel.class).setParameter("v", g.getVendor_id())
 					.setParameter("d", LocalDate.parse(g.getGrnFromDate())).setParameter("a", g.getGrn_amount())
 					.setParameter("t", LocalDate.parse(g.getGrnToDate())).getResultList();
@@ -151,7 +151,7 @@ public class GrnDAOImpl implements GrnDAO {
 			System.out.println("5");
 			List<ImGrnOutputModel> s = manager.createQuery(
 					// check
-					"SELECT new main.models.grnModel.outputModels.ImGrnOutputModel(s.grnId, p.vendor_id, s.purchase_order_id, s.grnDate, s.grnAmount) FROM ImGrn s JOIN Im_Purchase_Order p  on  s.purchase_order_id=p.purchase_order_id WHERE p.vendor_id = :v AND s.grnDate >=:d AND s.grnAmount = :a AND s.grnDate <= :t",
+					"SELECT new main.models.grnModels.outputModels.ImGrnOutputModel(s.grnId, p.vendor_id, s.purchase_order_id, s.grnDate, s.grnAmount) FROM ImGrn s JOIN Im_Purchase_Order p  on  s.purchase_order_id=p.purchase_order_id WHERE p.vendor_id = :v AND s.grnDate >=:d AND s.grnAmount = :a AND s.grnDate <= :t",
 					ImGrnOutputModel.class).setParameter("v", g.getVendor_id())
 					.setParameter("d", LocalDate.parse(g.getGrnFromDate())).setParameter("a", g.getGrn_amount())
 					.setParameter("t", g.getGrnToDate()).getResultList();
@@ -165,7 +165,7 @@ public class GrnDAOImpl implements GrnDAO {
 			System.out.println("6");
 			List<ImGrnOutputModel> s = manager.createQuery(
 					// check
-					"SELECT new main.models.grnModel.outputModels.ImGrnOutputModel(s.grnId, p.vendor_id, s.purchase_order_id, s.grnDate, s.grnAmount) FROM ImGrn s JOIN Im_Purchase_Order p  on  s.purchase_order_id=p.purchase_order_id WHERE p.vendor_id = :v AND s.grnDate<=: and s.grnAmount = :a",
+					"SELECT new main.models.grnModels.outputModels.ImGrnOutputModel(s.grnId, p.vendor_id, s.purchase_order_id, s.grnDate, s.grnAmount) FROM ImGrn s JOIN Im_Purchase_Order p  on  s.purchase_order_id=p.purchase_order_id WHERE p.vendor_id = :v AND s.grnDate<=: and s.grnAmount = :a",
 					ImGrnOutputModel.class).setParameter("v", g.getVendor_id()).setParameter("a", g.getGrn_amount())
 					.getResultList();
 
@@ -178,7 +178,7 @@ public class GrnDAOImpl implements GrnDAO {
 			System.out.println("6");
 			List<ImGrnOutputModel> s = manager.createQuery(
 					// check
-					"SELECT new main.models.grnModel.outputModels.ImGrnOutputModel(s.grnId, p.vendor_id, s.purchase_order_id, s.grnDate, s.grnAmount) FROM ImGrn s JOIN Im_Purchase_Order p  on  s.purchase_order_id=p.purchase_order_id WHERE s.grnAmount = :a",
+					"SELECT new main.models.grnModels.outputModels.ImGrnOutputModel(s.grnId, p.vendor_id, s.purchase_order_id, s.grnDate, s.grnAmount) FROM ImGrn s JOIN Im_Purchase_Order p  on  s.purchase_order_id=p.purchase_order_id WHERE s.grnAmount = :a",
 					ImGrnOutputModel.class).setParameter("a", g.getGrn_amount()).getResultList();
 
 			for (ImGrnOutputModel x : s) {
@@ -188,7 +188,7 @@ public class GrnDAOImpl implements GrnDAO {
 		} else {
 			System.out.println("7");
 			List<ImGrnOutputModel> s = manager.createQuery(
-					"SELECT new main.models.grnModel.outputModels.ImGrnOutputModel(s.grnId, p.vendor_id, s.purchase_order_id, s.grnDate, s.grnAmount) FROM ImGrn s JOIN Im_Purchase_Order p on  s.purchase_order_id=p.purchase_order_id where s.grnDate>=:v and s.grnDate<=:t",
+					"SELECT new main.models.grnModels.outputModels.ImGrnOutputModel(s.grnId, p.vendor_id, s.purchase_order_id, s.grnDate, s.grnAmount) FROM ImGrn s JOIN Im_Purchase_Order p on  s.purchase_order_id=p.purchase_order_id where s.grnDate>=:v and s.grnDate<=:t",
 					ImGrnOutputModel.class).setParameter("v", LocalDate.parse(g.getGrnFromDate()))
 					.setParameter("t", LocalDate.parse(g.getGrnToDate())).getResultList();
 

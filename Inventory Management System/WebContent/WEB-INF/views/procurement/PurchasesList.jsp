@@ -10,6 +10,7 @@
 <head>
     <meta charset="UTF-8">
     <style>
+    
     .PurchasesClass
 	{
 	position:relative;
@@ -22,7 +23,7 @@
 	.purchaseClass1
          {
          position:relative;
-        right:100px;	
+        right:70px;	
          top:50px;
         
 	     font-size: 18px;
@@ -33,19 +34,21 @@
          .purchaseClass2
          {
           position:relative;
-         left:440px;
+         left:550px;
 	     font-size: 18px;
          font-weight: bold;
          color: #333;
          text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
          }
         
-        .container {
-            max-width: 800px;
-            margin: 100 auto;
-            padding-top: 10px;
-            margin-left:170px;
-        }
+         .container {
+         position:relative;
+         left:130px;
+         max-width: 800px;
+         margin: 100 auto;
+         padding-top: 10px;
+         margin-left:170px;
+         }
 
         .issues-block {
             border: 1px solid #ccc;
@@ -102,7 +105,7 @@
          .searchClass
   {
   position:relative;
- left:740px;
+ left:900px;
  top:55px;
   }
   
@@ -141,7 +144,7 @@
 	<br><br><br><br>
 	<input type="text" id="purchaseorderid" placeholder="Enter purchase id" class="searchClass" style="width:140px;">
 	<input type="button" onclick="tk3()" value="search" class="searchClass">
-<span class="refresh-icon searchClass" onclick="tk()">&#x21bb;</span>
+<span class="refresh-icon searchClass" onclick="refresh()">&#x21bb;</span>
 	
 
 <form method="Get">
@@ -182,6 +185,33 @@
 
 
 <script>
+$(document).ready(function() {
+	 function showVendors() {
+		    $.ajax({
+		      url: "showVendors",
+		      type: "GET",
+		      dataType: "json",
+		      success: function(response) {
+		        console.log(response);
+		        var dropdown = $('#vendorId');
+		       
+		        $("#vendorId option:not(:first)").remove();
+
+		        $.each(response, function(index, vendor) {
+		          var option = $('<option>').val(vendor.vendorId).text(vendor.vendorId +"(" + vendor.vendorName+")");
+		          dropdown.append(option);
+		        });
+		       
+		      },
+		      error: function(xhr, status, error) {
+		        console.log("Error:", error);
+		      }
+		    });
+		  }
+
+		  // Call the function to initiate the AJAX request
+		  showVendors();
+		  });
   $(document).ready(function() {
 	  tk();
 	
@@ -196,7 +226,7 @@
       console.log(vendorId);
       console.log(expectedDate);
       $.ajax({
-          url: "getPurchaseId2",
+          url: "getPurchaseIdDetails",
           method:"GET",
           
           data: {
@@ -240,7 +270,7 @@
     console.log(vendorId);
     console.log(expectedDate);
     $.ajax({
-        url: "getPurchaseId2",
+        url: "getPurchaseIdDetails",
         method:"GET",
         
         data: {
@@ -314,7 +344,7 @@
 
 		console.log(pid)
       $.ajax({
-          url: "getPurchaseId3",
+          url: "getPurchaseIdDetailsById",
           method:"GET",
           
           data: {
@@ -349,6 +379,12 @@
     };
     function refresh()
     {
+     console.log("hii babu");
+    	 $('#vendorId').val('');
+ 	    $('#expectedDate').val('');
+ 	    $('#expectedDate1').val('');
+ 	   $("#purchaseorderid").val('');
+ 	    
     	tk();
     }
     
@@ -421,6 +457,7 @@
 	    $('#vendorId').val('');
 	    $('#expectedDate').val('');
 	    $('#expectedDate1').val('');
+	    tk();
 	  }
 function tk2(PurchasesId) {
       
