@@ -13,47 +13,48 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import main.dal.indents.IndentsDAL;
-import main.models.indentModels.entities.ProcurementIndentsList;
+import main.dao.inventoryIndents.InventoryIndentsDAO;
+import main.models.indentModels.entities.InventoryIndentsList;
 import main.models.indentModels.inputModels.FilterInput;
-import main.models.indentModels.inputModels.ProcurementIndentsInputList;
+import main.models.indentModels.inputModels.InventoryIndentsInputList;
 import main.models.indentModels.outputModels.FilteredIndent;
-import main.models.indentModels.outputModels.ProcurementIndentProductListData;
+import main.models.indentModels.outputModels.InventoryIndentProductListData;
 import main.models.storeModels.inputmodels.IndentId;
 
 @Controller
 public class IndentsController {
 
 	@Autowired
-	IndentsDAL procurementIndentsDAL;
+	InventoryIndentsDAO inventoryIndentsDAO;
 
-	@PostMapping("/createProcurementIndent")
-	public String createStoreIndent(String jsonData, Model m) {
+//It persist the indents created by the inventory team to the procurement team
+	@PostMapping("/createInventoryIndent")
+	public String createInventoryIndent(String jsonData, Model m) {
 		ObjectMapper objectMapper = new ObjectMapper();
 		ModelMapper modelMapper = new ModelMapper();
-		ProcurementIndentsInputList procurementIndentsInputList = null;
+		InventoryIndentsInputList inventoryIndentsInputList = null;
 
 		try {
-			procurementIndentsInputList = objectMapper.readValue(jsonData, ProcurementIndentsInputList.class);
+			inventoryIndentsInputList = objectMapper.readValue(jsonData, InventoryIndentsInputList.class);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		ProcurementIndentsList procurementIndentsList = modelMapper.map(procurementIndentsInputList,
-				ProcurementIndentsList.class);
+		InventoryIndentsList inventoryIndentsList = modelMapper.map(inventoryIndentsInputList,
+				InventoryIndentsList.class);
 
-		m.addAttribute("data", procurementIndentsList);
-		System.out.println(procurementIndentsList.toString());
+		m.addAttribute("data", inventoryIndentsList);
+		System.out.println(inventoryIndentsList.toString());
 
-		procurementIndentsDAL.saveProcurementIndent(procurementIndentsList);
+		inventoryIndentsDAO.saveInventoryIndent(inventoryIndentsList);
 
 		return "inventory/createIndent";
 	}
 
-	@PostMapping("/getProcurementIndentProductsList")
-	@ResponseBody
-	public List<ProcurementIndentProductListData> getProcurementIndentProductsList(String indentId, Model m) {
+	
+//It returns the InventoryIndentProductList page by taking IndentId as input
+	@PostMapping("/getInventoryIndentProductsList")
+	public String  getInventoryIndentProductsList(String indentId, Model m) {
 		System.out.println("in the controller");
 		ObjectMapper objectMapper = new ObjectMapper();
 		System.out.println(indentId);
@@ -64,21 +65,38 @@ public class IndentsController {
 			e.printStackTrace();
 		}
 
-		List<ProcurementIndentProductListData> procurementIndentProductListData = procurementIndentsDAL
-				.getProcurementIndentProductsList(indentid);
+		List<InventoryIndentProductListData> inventoryIndentProductListData = inventoryIndentsDAO
+				.getInventoryIndentProductsList(indentid);
 
-		// List<StoreIndentProducts> storeIndentProducts = new ArrayList();
-		// for (StoreIndentProductsList s : storeIndentProductsList)
-		// storeIndentProducts.add(modelMapper.map(s, StoreIndentProducts.class));
-		//
-		m.addAttribute("productsList", procurementIndentProductListData);
+		m.addAttribute("productsList", inventoryIndentProductListData);
 
-		for (ProcurementIndentProductListData s : procurementIndentProductListData)
+		for (InventoryIndentProductListData s : inventoryIndentProductListData)
 			System.out.println(s);
 
-		return procurementIndentProductListData;
+		return "inventory/indentProducts";
 	}
+	
+	
+// It returns the InventoryIndentProductListData by taking IndentId as input
+	@PostMapping("/getInventoryIndentProductsListData")
+	public List<InventoryIndentProductListData>  getInventoryIndentProductsListData(String indentId, Model m) {
+		System.out.println("in the controller");
+		ObjectMapper objectMapper = new ObjectMapper();
+		System.out.println(indentId);
+		IndentId indentid = null;
+		try {
+			indentid = objectMapper.readValue(indentId, IndentId.class);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
 
+		List<InventoryIndentProductListData> inventoryIndentProductListData = inventoryIndentsDAO
+				.getInventoryIndentProductsList(indentid);
+
+		return inventoryIndentProductListData;
+	}
+	
+//It filters the data according to the FromDate,ToDate and IndentStatus
 	@PostMapping("/filterIndents")
 	@ResponseBody
 	public List<FilteredIndent> filterIndents(String filters) {
@@ -92,7 +110,7 @@ public class IndentsController {
 			e.printStackTrace();
 		}
 
-		List<FilteredIndent> sl = procurementIndentsDAL.getfilterIndents(filterInput);
+		List<FilteredIndent> sl = inventoryIndentsDAO.getfilterIndents(filterInput);
 
 		return sl;
 	}
