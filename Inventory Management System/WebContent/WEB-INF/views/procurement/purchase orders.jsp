@@ -293,7 +293,7 @@
           var data = { "indentId": indentId };
           console.log(data);
           $.ajax({
-              url: "getProcurementIndentProductsList",
+              url: "getInventoryIndentProductsListData",
               method: "post",
               dataType:"json",
               data:{"indentId":JSON.stringify(data)},
