@@ -29,7 +29,7 @@ public class ProductControllers {
 	ProductsDAO productsDAO;
 	@Autowired
 	ProductCategoryDAO productCategoryDAO;
-
+   //Getting ProductCategory id,name
 	@PostMapping("/getProductCategories")
 	public @ResponseBody List<ProductsCategory> getProductCategories(
 			@ModelAttribute("categoryInputModel") CategoryRequest categoryInputModel, Model model) {
@@ -37,6 +37,7 @@ public class ProductControllers {
 		System.out.println(productCategory);
 		return productCategory;
 	}
+	//Getting Products List based on Category Id
 	@PostMapping("/getProducts")
     public @ResponseBody List<ProductStockData> getProducts(String categoryId, Model model) {
 	 ObjectMapper objectMapper = new ObjectMapper();

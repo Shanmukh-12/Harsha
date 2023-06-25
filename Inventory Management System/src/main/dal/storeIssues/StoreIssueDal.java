@@ -24,7 +24,7 @@ public class StoreIssueDal implements StoreIssueDao {
 
 	@PersistenceContext
 	EntityManager entityManager;
-
+    //Getting StoreIssue Information Based on storeID
 	@Transactional
 	public List<StoreIssueData> getStoreIds(StoreId sid) {
 		int value = sid.getStoreId();
@@ -41,6 +41,7 @@ public class StoreIssueDal implements StoreIssueDao {
 	 * entityManager.createQuery("select e from StoreIssues s where s.storeId=:id") .setParameter("id",
 	 * sid.getStoreId()).getResultList(); return data; }
 	 */
+	//Getting all StoreIssue Infromation
 	@Override
 	public List<StoreIssuesData> getAllStoreIssues() {
 		List<StoreIssuesData> storeIssue = entityManager.createQuery(
@@ -51,7 +52,7 @@ public class StoreIssueDal implements StoreIssueDao {
 		}
 		return storeIssue;
 	}
-
+    //Getting StoreIssue Products Information
 	@Override
 	public List<StoreIssueProducts> getStoreIssuesProductsList(StoreIssueIds storeIssueIds) {
 		// TODO Auto-generated method stub
@@ -69,7 +70,7 @@ public class StoreIssueDal implements StoreIssueDao {
 		return s;
 
 	}
-
+    //Getting Filtered Data based on To date
 	@Override
 	public List<StoreIssuesData> getStoreIssuesListByTo(StoreFilters storeFilters) {
 		List<StoreIssuesData> lst = entityManager.createQuery(
@@ -78,7 +79,7 @@ public class StoreIssueDal implements StoreIssueDao {
 
 		return lst;
 	}
-
+    //Getting Filtered Data Based on from Date,To date
 	@Override
 	public List<StoreIssuesData> getStoreIssuesListByFrom(StoreFilters storeFilters) {
 		List<StoreIssuesData> lst = entityManager.createQuery(
@@ -88,7 +89,7 @@ public class StoreIssueDal implements StoreIssueDao {
 		return lst;
 
 	}
-
+    //Getting Filtered Information based on StoreIssueStatus,To date
 	@Override
 	public List<StoreIssuesData> getStoreIssuesListByStatus(StoreFilters storeFilters) {
 		List<StoreIssuesData> lst = entityManager.createQuery(
@@ -98,7 +99,7 @@ public class StoreIssueDal implements StoreIssueDao {
 		return lst;
 
 	}
-
+    //Getting Filtered Information based on StoreIssueStatus,From date,To date
 	@Override
 	public List<StoreIssuesData> getStoreIssuesListByStatusFrom(StoreFilters storeFilters) {
 		List<StoreIssuesData> lst = entityManager.createQuery(
@@ -110,7 +111,7 @@ public class StoreIssueDal implements StoreIssueDao {
 				.getResultList();
 		return lst;
 	}
-
+    //Getting Filtered data based on StoreID
 	@Override
 	public List<StoreIssuesData> getStoreIssuesListById(StoreFilters storeFilters) {
 		List<StoreIssuesData> lst = entityManager.createQuery(
@@ -120,7 +121,7 @@ public class StoreIssueDal implements StoreIssueDao {
 		return lst;
 
 	}
-
+   //Getting Filtered Information based on StoreId,From date
 	@Override
 	public List<StoreIssuesData> getStoreIssuesListByIdFrom(StoreFilters storeFilters) {
 		List<StoreIssuesData> lst = entityManager.createQuery(
@@ -129,7 +130,7 @@ public class StoreIssueDal implements StoreIssueDao {
 				.setParameter("toDate", storeFilters.getToDate()).getResultList();
 		return lst;
 	}
-
+   //Getting Filtered Information based on storeId,StoreIssue Status 
 	@Override
 	public List<StoreIssuesData> getStoreIssuesListByIdStatus(StoreFilters storeFilters) {
 		List<StoreIssuesData> lst = entityManager.createQuery(
@@ -139,7 +140,7 @@ public class StoreIssueDal implements StoreIssueDao {
 				.setParameter("toDate", storeFilters.getToDate()).getResultList();
 		return lst;
 	}
-
+   //Getting Filtered Information based on StoreId,StoreIssue Status,From Date 
 	@Override
 	public List<StoreIssuesData> getStoreIssuesListByIdStatusFrom(StoreFilters storeFilters) {
 		List<StoreIssuesData> lst = entityManager.createQuery(
@@ -152,7 +153,7 @@ public class StoreIssueDal implements StoreIssueDao {
 				.getResultList();
 		return lst;
 	}
-
+   //Getting PRoductStock Information based on ProductId
 	@Override
 	@Transactional
 	public List<ProductStock> getBatchNumbers(ProductsProductIdInputModel productId) {
@@ -163,7 +164,7 @@ public class StoreIssueDal implements StoreIssueDao {
 		System.out.println("after  " + query);
 		return query;
 	}
-
+    //Saving StoreIssue Information
 	@Transactional
 	public boolean saveStoreInfo(StoreIssues storeIssues) {
 		try {

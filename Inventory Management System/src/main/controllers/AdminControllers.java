@@ -24,8 +24,8 @@ public class AdminControllers {
 	public String getStoreStock() {
 		return "admin/storeStock";
 	}
-	/* Manipulating Users */
-	/* Vendor */
+                                     /* Manipulating Users */
+/* Vendor */
 
 	// Redirect to Add vendor page
 	@GetMapping("/addVendor")

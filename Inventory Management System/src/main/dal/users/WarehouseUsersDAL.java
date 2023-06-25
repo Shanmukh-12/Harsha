@@ -17,7 +17,7 @@ public class WarehouseUsersDAL implements WarehouseUsersDAO {
 
 	@PersistenceContext
 	private EntityManager entityManager;
-
+   //Saving Inventory User Information
 	@Transactional
 	public void saveUser(User user) {
 		try {
@@ -26,7 +26,7 @@ public class WarehouseUsersDAL implements WarehouseUsersDAO {
 			throw new IllegalArgumentException("User with the same unique key already exists.");
 		}
 	}
-
+   //Getting all  Inventory Users
 	@Transactional
 	public List<User> getAllUsers() {
 		List<User> l = entityManager.createQuery("SELECT u FROM User u").getResultList();
@@ -34,8 +34,7 @@ public class WarehouseUsersDAL implements WarehouseUsersDAO {
 			System.out.println(u);
 		return l;
 	}
-
-
+   //Soft Deleting the  Inventory User 
 	@Transactional
 	public User deleteUser(UserId user) {
 		User existingUser = entityManager.find(User.class, user.getUserId());
@@ -44,7 +43,7 @@ public class WarehouseUsersDAL implements WarehouseUsersDAO {
 		return existingUser;
 
 	}
-
+  //Getting all Active Inventory Users
 	@Transactional
 	public List<User> getAllActiveUsers() {
 		List<User> users = entityManager.createQuery("SELECT u FROM User u WHERE status = 'active'").getResultList();
