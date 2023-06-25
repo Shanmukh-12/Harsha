@@ -6,7 +6,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -23,6 +22,7 @@ import main.models.productModels.inputModels.HSNInputModel;
 import main.models.productModels.inputModels.ProductsProductIdInputModel;
 import main.models.productModels.inputModels.ProductsProductIdandBatchNoInputModel;
 import main.models.productModels.outputModels.ProductStockData;
+import main.models.productModels.outputModels.ProductsReOrderList;
 
 @Controller
 public class ProductControllers {
@@ -32,13 +32,16 @@ public class ProductControllers {
 	@Autowired
 	ProductCategoryDAO productCategoryDAO;
 
+	
+//It returns the Product Categories
 	@PostMapping("/getProductCategories")
-	public @ResponseBody List<ProductsCategory> getProductCategories(
-			@ModelAttribute("categoryInputModel") CategoryRequest categoryInputModel, Model model) {
+	public @ResponseBody List<ProductsCategory> getProductCategories(Model model) {
 		List<ProductsCategory> productCategory = productCategoryDAO.getProductCategories();
 		System.out.println(productCategory);
 		return productCategory;
 	}
+	
+//It return productsIds and productNames by taking the categoryId as an input
 	@PostMapping("/getProducts")
     public @ResponseBody List<ProductStockData> getProducts(String categoryId, Model model) {
 	 ObjectMapper objectMapper = new ObjectMapper();
@@ -55,7 +58,7 @@ public class ProductControllers {
         List<ProductStockData> products = productsDAO.getProductsByCategory(selectedCategoryId);
         return products;
     }
-
+//It return products Data by taking the categoryId as an input
 	@PostMapping("/getProductStockData")
 	public @ResponseBody List<ProductStockData> getProducts(
 			@ModelAttribute("categoryInputModel") CategoryRequest categoryInputModel, Model model) {
@@ -70,7 +73,8 @@ public class ProductControllers {
 		System.out.println(products);
 		return products;
 	}
-
+	
+//It return product BatchNos by taking the productId as an input
 	@PostMapping("/getProductBatchNos")
 	public @ResponseBody List<ProductStockData> getProductBatchesNos(
 			@ModelAttribute("productsProductIdInputModel") ProductsProductIdInputModel productsProductIdInputModel,
@@ -84,6 +88,7 @@ public class ProductControllers {
 		return batchesNos;
 	}
 
+//It return products Data by taking the categoryId as an input
 	@PostMapping("/getProductQuantityOrPrice")
 	public @ResponseBody ProductStockData getProductQuantityOrPrice(
 			@ModelAttribute("productsProductIdandBatchNoInputModel") ProductsProductIdandBatchNoInputModel productsProductIdandBatchNoInputModel,
@@ -96,15 +101,16 @@ public class ProductControllers {
 		return quantity;
 	}
 
-	@PostMapping("/getReOrderLevelProducts")
-	public @ResponseBody List<ProductStockData> getReOrderLevelProducts(
-			@ModelAttribute("productsProductIdandBatchNoInputModel") ProductsProductIdandBatchNoInputModel productsProductIdandBatchNoInputModel,
-			Model model) {
-
-		List<ProductStockData> list = productsDAO.getReOrderLevelProducts();
+//It returns List of Re-order Products 
+	@PostMapping("/getReOrderProductsData")
+	public @ResponseBody List<ProductsReOrderList> getReOrderLevelProducts(Model model) {
+        System.out.println("Ciriya");
+		List<ProductsReOrderList> list = productsDAO.getReOrderLevelProducts();
+		System.out.println(list);
 		return list;
 	}
-
+	
+//It persist the category created by procurement team
 	@PostMapping("/createCategory")
 	@ResponseBody
 	public String saveCategory(@ModelAttribute("categoryInputModel") CategoryRequest2 categoryInputModel) {
@@ -115,8 +121,10 @@ System.out.println(categoryInputModel.toString());
 		productsDAO.saveCategory(productsCategory);
 		return "null";
 	}
-
-	@GetMapping("/createHSN")
+	
+	
+//It persist the HSN created by the procurement team
+	@PostMapping("/createHSN")
 	@ResponseBody
 	public String saveHSN(@ModelAttribute("hsnInputModel") HSNInputModel hsnInputModel) {
        System.out.println(hsnInputModel.toString());

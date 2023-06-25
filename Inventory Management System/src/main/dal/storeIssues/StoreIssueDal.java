@@ -198,6 +198,7 @@ public class StoreIssueDal implements StoreIssueDao {
 			}
 			return true;
 		} catch (Exception e) {
+			e.printStackTrace();
 			return false;
 		}
 	}
