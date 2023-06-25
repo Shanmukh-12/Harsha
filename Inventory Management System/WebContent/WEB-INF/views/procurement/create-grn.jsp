@@ -82,6 +82,31 @@
    }
 </style>
 <script>
+$(document).ready(function() {
+	 function showVendors() {
+		    $.ajax({
+		      url: "showVendors",
+		      type: "GET",
+		      dataType: "json",
+		      success: function(response) {
+		        console.log(response);
+		        var dropdown = $('#vendorId');
+		       $("#vendorId option:not(:first)").remove();
+		        $.each(response, function(index, vendor) {
+		          var option = $('<option>').val(vendor.vendorId).text(vendor.vendorId +"(" + vendor.vendorName+")");
+		          dropdown.append(option);
+		        });
+		       
+		      },
+		      error: function(xhr, status, error) {
+		        console.log("Error:", error);
+		      }
+		    });
+		  }
+
+		  // Call the function to initiate the AJAX request
+		  showVendors();
+		  });
    $(document).ready(function() {
    	tk();
    	$("#purchaseId").click(tk2);
