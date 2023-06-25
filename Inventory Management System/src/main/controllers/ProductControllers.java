@@ -18,6 +18,7 @@ import main.dao.products.ProductsDAO;
 import main.models.productModels.entities.HSNEntityModel;
 import main.models.productModels.entities.ProductsCategory;
 import main.models.productModels.inputModels.CategoryRequest;
+import main.models.productModels.inputModels.CategoryRequest2;
 import main.models.productModels.inputModels.HSNInputModel;
 import main.models.productModels.inputModels.ProductsProductIdInputModel;
 import main.models.productModels.inputModels.ProductsProductIdandBatchNoInputModel;
@@ -105,22 +106,25 @@ public class ProductControllers {
 	}
 
 	@PostMapping("/createCategory")
-	public String saveCategory(@ModelAttribute("categoryInputModel") CategoryRequest categoryInputModel) {
-
+	@ResponseBody
+	public String saveCategory(@ModelAttribute("categoryInputModel") CategoryRequest2 categoryInputModel) {
+System.out.println(categoryInputModel.toString());
 		ModelMapper modelMapper = new ModelMapper();
 		ProductsCategory productsCategory = modelMapper.map(categoryInputModel, ProductsCategory.class);
+		System.out.println(productsCategory.toString());
 		productsDAO.saveCategory(productsCategory);
-		return "redirect:/showCategories";
+		return "null";
 	}
 
 	@GetMapping("/createHSN")
+	@ResponseBody
 	public String saveHSN(@ModelAttribute("hsnInputModel") HSNInputModel hsnInputModel) {
        System.out.println(hsnInputModel.toString());
 		ModelMapper modelMapper = new ModelMapper();
 		HSNEntityModel hsnEntityModel = modelMapper.map(hsnInputModel, HSNEntityModel.class);
 		System.out.println(hsnEntityModel.toString());
 		productsDAO.saveHSN(hsnEntityModel);
-		return "redirect:/showHSNs";
+		return "null";
 	}
 
 }

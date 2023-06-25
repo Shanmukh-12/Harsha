@@ -16,7 +16,6 @@ public class HSNEntityModel {
 	}
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "hsn_code")
 	private int HSNcode;
 
