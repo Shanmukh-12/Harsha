@@ -8,7 +8,9 @@
       <style>
          .grnClass1
          {
-         position:relative;
+         margin-left:300px;
+         margin-top:20px;
+         margin-bottom:30px;
          right:290px;	
          top:50px;
          font-size: 18px;
@@ -18,6 +20,7 @@
          }
          .grnClass2
          {
+         margin-top:50px;
          position:relative;
          left:440px;
          font-size: 18px;
@@ -104,30 +107,34 @@
       </style>
    </head>
    <body>
-      <label class="grnClass2">Select VendorID:</label>
-      <select id="vendorId" class="grnClass2"  >
+   <h1 class="text-center mb-4">GRN's Data</h1>
+   <div class="grnClass2" >
+   
+      <label >Select VendorID:</label>
+      <select id="vendorId" >
          <option value="">Select Vendor</option>
          <option>20001</option>
          <option>20002</option>
          <option>20003</option>
       </select>
-      <label class="grnClass2">GRN Cost</label>
-      <select id="cost" class="grnClass2"  >
+      <label >GRN Cost</label>
+      <select id="cost"  >
          <option value="">Select Cost</option>
          <option>2000000</option>
          <option>2000001</option>
          <option>2000002</option>
       </select>
-      <label class="grnClass1">Select Order Received From Date:</label>
-      <input type="date" id="fromDate" class="grnClass1">
-      <label class="grnClass1">Select Order Received To Date:</label>
-      <input type="date" id="toDate" class="grnClass1">
-      <input type="button" value="filter" onclick="tk()" class="grnClass1" style="color: white; background-color: green;">
-      <input type="button" value="clear" onclick="clearSelection()" class="grnClass1" style="color: white; background-color: green;">
-      <br><br><br><br>
+    </div>  
+      <div class="grnClass1">
+      <label >Received From Date:</label>
+      <input type="date" id="fromDate" >
+      <label >Received To Date:</label>
+      <input type="date" id="toDate" >
+      <input type="button" value="filter" onclick="tk()" style="color: white; background-color: green;">
+      <input type="button" value="clear" onclick="clearSelection()" style="color: white; background-color: green;">
+      </div>
       <form method="Get">
          <div class="container" >
-            <h1 class="text-center mb-4">GRN's Data</h1>
             <div class="issues-block">
                <h4 class="store-indent-id" id="grnid">GRN ID: <span class="bold">5001</span></h4>
                <div class="issue-details" >
@@ -341,15 +348,16 @@
 					  const container = document.querySelector('.container');
 					  $(".container").empty();
 
-					  var h1Element = $('<h1 class="text-center mb-4" align="center">GRN Data</h1>');
-					  $('.container').append(h1Element);
+					  //var h1Element = $('<h1 class="text-center mb-4" align="center">GRN Data</h1>');
+					 // $('.container').append(h1Element);
 
 					  // Clear existing data
 					  data.forEach((item) => {
 					    const grnId = item.grnId;
 					    const vendorId = item.vendor_id;
 					    const purchaseOrderId = item.purchase_order_id;
-					    const grnDate = new Date(...item.grnDate).toISOString().split('T')[0];
+					    const [year, month, day] = item.grnDate;
+					    const grnDate = new Date(year, month - 1, day).toISOString().split('T')[0];
 					    const grnAmount = item.grnAmount.toFixed(2);
 
 					    const issueBlock = document.createElement('div');
