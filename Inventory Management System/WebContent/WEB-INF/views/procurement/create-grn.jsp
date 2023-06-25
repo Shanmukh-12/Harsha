@@ -253,7 +253,7 @@
        	    console.log(vendorId);
        	    console.log(expectedDate);
        	    $.ajax({
-       	        url: "getPurchaseId2",
+       	        url: "getPurchaseIdDetails",
        	        method:"GET",
        	        
        	        data: {
