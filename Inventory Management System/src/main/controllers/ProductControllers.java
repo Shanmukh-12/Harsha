@@ -6,6 +6,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -112,11 +113,12 @@ public class ProductControllers {
 		return "redirect:/showCategories";
 	}
 
-	@PostMapping("/createHSN")
+	@GetMapping("/createHSN")
 	public String saveHSN(@ModelAttribute("hsnInputModel") HSNInputModel hsnInputModel) {
-
+       System.out.println(hsnInputModel.toString());
 		ModelMapper modelMapper = new ModelMapper();
 		HSNEntityModel hsnEntityModel = modelMapper.map(hsnInputModel, HSNEntityModel.class);
+		System.out.println(hsnEntityModel.toString());
 		productsDAO.saveHSN(hsnEntityModel);
 		return "redirect:/showHSNs";
 	}

@@ -31,7 +31,7 @@ public class WarehouseController {
 
 		return "OtpReq";
 	}
-
+    //gets all required data for dashboard
 	@RequestMapping(value = "/getStock", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public String getStock() throws JsonProcessingException {
@@ -41,13 +41,14 @@ public class WarehouseController {
 		return ob.writeValueAsString(l);
 
 	}
+    //gets all required data to plot a graph using products details
 
 	@RequestMapping(value = "/graphs", method = RequestMethod.GET)
 	public String getGraph() {
 		System.out.println("hello");
 		return "graphs";
 	}
-
+	//gets total count of products in inventory with its name and count
 	@RequestMapping(value = "/getTotalProductsCount", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public String getTotalProductsCount() throws JsonProcessingException {
@@ -57,7 +58,7 @@ public class WarehouseController {
 		return ob.writeValueAsString(s);
 
 	}
-
+    //gets total count of products in inventory
 	@RequestMapping(value = "/getProductsCount", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public String getProductsCount() throws JsonProcessingException {
@@ -67,6 +68,7 @@ public class WarehouseController {
 		return ob.writeValueAsString(l);
 
 	}
+    //gets total count of categories in inventory
 
 	@RequestMapping(value = "/getCategoriesCount", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
@@ -77,6 +79,7 @@ public class WarehouseController {
 		return ob.writeValueAsString(l);
 
 	}
+    //gets total cost of all products in inventory
 
 	@RequestMapping(value = "/getWarehouseValue", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
@@ -87,6 +90,7 @@ public class WarehouseController {
 		return ob.writeValueAsString(l);
 
 	}
+    //gets total count of vendors in inventory
 
 	@RequestMapping(value = "/getVendorsCount", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
