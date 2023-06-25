@@ -13,7 +13,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "im_Indents")
-public class ProcurementIndentsList {
+public class InventoryIndentsList {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +27,7 @@ public class ProcurementIndentsList {
 	String indentsStatus = "Active";
 
 	@OneToMany(mappedBy = "pil")
-	List<ProcurementIndentProductsList> productsList;
+	List<InventoryIndentProductsList> productsList;
 
 	public int getIndentID() {
 		return indentID;
@@ -37,11 +37,11 @@ public class ProcurementIndentsList {
 		this.indentID = indentID;
 	}
 
-	public List<ProcurementIndentProductsList> getProductsList() {
+	public List<InventoryIndentProductsList> getProductsList() {
 		return productsList;
 	}
 
-	public void setProductsList(List<ProcurementIndentProductsList> productsList) {
+	public void setProductsList(List<InventoryIndentProductsList> productsList) {
 		this.productsList = productsList;
 	}
 

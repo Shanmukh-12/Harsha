@@ -6,13 +6,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import main.dal.indents.IndentsDAL;
+import main.dao.inventoryIndents.InventoryIndentsDAO;
+
+
+//It handles the controls of inventory home page(redirecting the inventory user pages)
+
+
 
 @Controller
 public class InventoryControllers {
 
 	@Autowired
-	public IndentsDAL p;
+	public InventoryIndentsDAO inventoryIndentsDAO;
+	
 
 	@GetMapping(value = "/inventoryHome")
 	public String user() {
@@ -66,7 +72,7 @@ public class InventoryControllers {
 
 	@PostMapping("/indentsButton")
 	public String getIndentsPage(Model m) {
-		m.addAttribute("indents", p.getAllIndents());
+		m.addAttribute("indents", inventoryIndentsDAO.getAllIndents());
 		return "inventory/indents";
 	}
 

@@ -2,10 +2,10 @@ package main.models.indentModels.inputModels;
 
 import java.util.List;
 
-public class ProcurementIndentsInputList {
+public class InventoryIndentsInputList {
 
 	int indentID;
-	List<ProcurementIndentInputProductsList> productsList;
+	List<InventoryIndentInputProductsList> productsList;
 
 	public int getIndentID() {
 		return indentID;
@@ -15,11 +15,11 @@ public class ProcurementIndentsInputList {
 		this.indentID = indentID;
 	}
 
-	public List<ProcurementIndentInputProductsList> getProductsList() {
+	public List<InventoryIndentInputProductsList> getProductsList() {
 		return productsList;
 	}
 
-	public void setProductsList(List<ProcurementIndentInputProductsList> productsList) {
+	public void setProductsList(List<InventoryIndentInputProductsList> productsList) {
 		this.productsList = productsList;
 	}
 

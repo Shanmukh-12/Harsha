@@ -11,7 +11,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "im_indents_Products")
-public class ProcurementIndentProductsList implements Serializable {
+public class InventoryIndentProductsList implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -25,7 +25,7 @@ public class ProcurementIndentProductsList implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "indents_id", referencedColumnName = "indents_id", insertable = false, updatable = false)
-	ProcurementIndentsList pil;
+	InventoryIndentsList pil;
 
 	public int getIndentID() {
 		return indentID;
@@ -51,11 +51,11 @@ public class ProcurementIndentProductsList implements Serializable {
 		this.quantity = quantity;
 	}
 
-	public ProcurementIndentsList getSil() {
+	public InventoryIndentsList getSil() {
 		return pil;
 	}
 
-	public void setSil(ProcurementIndentsList sil) {
+	public void setSil(InventoryIndentsList sil) {
 		this.pil = sil;
 	}
 

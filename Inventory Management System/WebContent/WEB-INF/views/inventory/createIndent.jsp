@@ -222,11 +222,12 @@
             <tr>
               <th>Product ID</th>
               <th>Product Name</th>
-              <th>Batch No.</th>
               <th>Stock</th>
+              <th>Re-Order Level</th>
               <th>Add</th>
             </tr>
           </thead>
+          <tbody></tbody>
         </table>
       </div>
     </div>
@@ -239,7 +240,6 @@
             <tr>
               <th>Product ID</th>
               <th>Product Name</th>
-              <th>Batch No.</th>
               <th>Stock</th>
               <th>Add</th>
             </tr>
@@ -258,7 +258,6 @@
               <tr>
                  <th id="productId">Product ID</th>
                  <th>Product Name</th>
-                 <th id="batchId">Batch No.</th>
                  <th >Stock</th>
                  <th id="quantity">Required Stock</th>
                  <th>Action</th>
@@ -288,7 +287,42 @@
           }
      	    	  
      	});	
-    	
+
+    	 $.ajax({
+    	        url: "getReOrderProductsData",
+    	        method: "post",
+    	        success: function(reorderlist) {
+    	        	console.log(reorderlist);
+    	          // Create a new row with the received data
+    	          $.each(reorderlist, function(index, data) {
+    	            var newRow = '<tr>' +
+    	              '<td>' + data.productId + '</td>' +
+    	              '<td>' + data.productName + '</td>' +
+    	              '<td>' + data.sumOfProducts + '</td>' +
+    	              '<td>' + data.productReorderLevel + '</td>' +
+    	              '<td><button class="add-btn">Add</button></td>' +
+    	              '</tr>';
+
+    	            // Append the new row to the table body
+    	            $('#reorder-level-table tbody').append(newRow); 
+    	          });
+    	          // Add event listeners to the dynamically created buttons
+    	          var addButtons = $('#reorder-level-table .add-btn');
+    	          addButtons.click(function() {
+    	            var row = $(this).closest('tr');
+    	            addRowToSelectedTable(row);
+    	          });
+    	          
+    	          // Place your code here that needs to be executed after the data is loaded in the table
+    	          // ...
+    	          console.log("Data loaded successfully!");
+
+    	        },
+    	        error: function() {
+    	          alert('Error occurred while retrieving Products by categoryId.');
+    	        }
+    	      });
+
     	
       $.ajax({
         url: "getProductStockData",
@@ -302,7 +336,6 @@
             var newRow = '<tr>' +
               '<td>' + data.productId + '</td>' +
               '<td>' + data.productName + '</td>' +
-              '<td>' + data.batchNo + '</td>' +
               '<td>' + data.stock + '</td>' +
               '<td><button class="add-btn">Add</button></td>' +
               '</tr>';
@@ -346,7 +379,6 @@
 		   		  var newRow = '<tr>' +
 		   		    '<td>' + data.productId + '</td>' +
 		   		    '<td>' + data.productName + '</td>' +
-		   		    '<td>' + data.batchNo + '</td>' +
 		   		    '<td>' + data.stock + '</td>' +
 		   		    '<td><button class="add-btn">Add</button></td>' +
 		   		    '</tr>';
@@ -388,13 +420,11 @@
   var field1 = cells[0].textContent;
   var field2 = cells[1].textContent;
   var field3 = cells[2].textContent;
-  var field4 = cells[3].textContent;
 
   var newRow = '<tr>' +
     '<td>' + field1 + '</td>' +
     '<td>' + field2 + '</td>' +
     '<td>' + field3 + '</td>' +
-    '<td>' + field4 + '</td>' +
     '<td><input type="number" value="1"></td>' +
     '<td><button class="delete-btn">Delete</button></td>' +
     '</tr>';
@@ -421,7 +451,7 @@
     	    const rowData = {};
 
     	    rowData["productId"] = row.cells[0].innerText;
-    	    rowData["quantity"] = row.cells[4].querySelector('input').value;
+    	    rowData["quantity"] = row.cells[3].querySelector('input').value;
 
     	    tableData.push(rowData);
     	  }
@@ -440,7 +470,7 @@
      	const jsonData = JSON.stringify(data);
     		console.log(jsonData);
      	$.ajax({
-     		url:"createProcurementIndent",
+     		url:"createInventoryIndent",
      		method:"post",
      		data:{"jsonData":jsonData},
      		success:function(page)
