@@ -35,19 +35,16 @@ public class StoreIndentController {
 
 	@PostMapping("/getStoreIndentsList")
 	public @ResponseBody List<StoreIndentDataOutput> getStoreIndentList(Model m) {
-		System.out.println("indents");
 		List<StoreIndentData> sl = storeIndentsDao.getStoreIndentsList();
 		List<StoreIndentDataOutput> res = new ArrayList<>();
 		for (StoreIndentData s : sl) {
 			res.add(modelMapper.map(s, StoreIndentDataOutput.class));
-			System.out.println(s);
 		}
 		return res;
 	}
 
 	@PostMapping("/getStoreIndentProductsListData")
 	public @ResponseBody List<StoreIndentProducts> getStoreIndentProductsListData(String indentId, Model m) {
-		System.out.println(indentId);
 		IndentId indentid = null;
 		try {
 			indentid = objectMapper.readValue(indentId, IndentId.class);
@@ -62,7 +59,6 @@ public class StoreIndentController {
 
 	@PostMapping("/getStoreIndentProductsList")
 	public String getStoreIndentProductsList(String indentId, Model m) {
-		System.out.println(indentId);
 		IndentId indentid = null;
 		try {
 			indentid = objectMapper.readValue(indentId, IndentId.class);
@@ -72,21 +68,14 @@ public class StoreIndentController {
 
 		List<StoreIndentProducts> storeIndentProducts = storeIndentsDao.getStoreIndentsProductsList(indentid);
 
-		// List<StoreIndentProducts> storeIndentProducts = new ArrayList();
-		// for (StoreIndentProductsList s : storeIndentProductsList)
-		// storeIndentProducts.add(modelMapper.map(s, StoreIndentProducts.class));
-		//
 		m.addAttribute("productsList", storeIndentProducts);
-
-		for (StoreIndentProducts s : storeIndentProducts)
-			System.out.println(s);
 
 		return "store/storeIndentProducts";
 	}
 
 	@PostMapping("/newCreateStoreIndent")
 	public String createStoreIndent(String jsonData, Model m) {
-		// System.out.println("Data is " + jsonData);
+
 		StoreIndentsInputList storeIndentsInputList = null;
 
 		try {
@@ -98,9 +87,6 @@ public class StoreIndentController {
 
 		StoreIndentsList storeIndentsList = modelMapper.map(storeIndentsInputList, StoreIndentsList.class);
 
-		// System.out.println(storeIndentsList);
-		// m.addAttribute("data", storeIndentsList);
-
 		storeIndentsDao.saveStoreIndent(storeIndentsList);
 
 		return "store/createStoreIndent";
@@ -110,14 +96,9 @@ public class StoreIndentController {
 	public @ResponseBody List<StoreIndentData> getIndentsList(@ModelAttribute("storeIds") StoreIds storeIds,
 			Model model) {
 
-		System.out.println(storeIds.getStoreId());
-
-		System.out.println("hello");
-
 		int selectedStoreId = storeIds.getStoreId();
 
 		List<StoreIndentData> indents = storeIndentsDao.getIndentsByStoreID(selectedStoreId);
-		System.out.println(indents);
 
 		return indents;
 	}
