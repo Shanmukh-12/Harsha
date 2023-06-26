@@ -4,6 +4,7 @@ import java.util.List;
 
 import main.models.storeModels.entities.Store;
 import main.models.storeModels.inputmodels.StoreId;
+import main.models.storeModels.inputmodels.StoreStatus;
 
 public interface StoreUsersDAO {
 	public void saveStore(Store store);
@@ -13,5 +14,7 @@ public interface StoreUsersDAO {
 	public List<Store> getAllActiveStores();
 
 	public List<Store> getAllStores();
+
+	public List<Store> getActiveStores(StoreStatus storeStatus);
 
 }

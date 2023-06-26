@@ -12,13 +12,15 @@ import org.springframework.stereotype.Component;
 import main.dao.users.StoreUsersDAO;
 import main.models.storeModels.entities.Store;
 import main.models.storeModels.inputmodels.StoreId;
+import main.models.storeModels.inputmodels.StoreStatus;
 
 @Component
 public class StoreUsersDAL implements StoreUsersDAO {
 
 	@PersistenceContext
 	private EntityManager entityManager;
-    //Saving StoreUser Information
+
+	// Saving StoreUser Information
 	@Transactional
 	public void saveStore(Store store) {
 		try {
@@ -27,13 +29,15 @@ public class StoreUsersDAL implements StoreUsersDAO {
 			throw new IllegalArgumentException("Store with the same unique key already exists.");
 		}
 	}
-   //Getting all Store Users
+
+	// Getting all Store Users
 	@Transactional
 	public List<Store> getAllStores() {
 		List<Store> l = entityManager.createQuery("SELECT s FROM Store s").getResultList();
 		return l;
 	}
-   //Soft Deleting the Store User
+
+	// Soft Deleting the Store User
 	@Transactional
 	public Store deleteStore(StoreId store) {
 		Store existingStore = entityManager.find(Store.class, store.getStoreId());
@@ -42,11 +46,23 @@ public class StoreUsersDAL implements StoreUsersDAO {
 		return existingStore;
 
 	}
-   //Getting all Active Stores
+
+	// Getting all Active Stores
 	@Transactional
 	public List<Store> getAllActiveStores() {
 		List<Store> stores = entityManager.createQuery("SELECT s FROM Store s WHERE status = 'Active'").getResultList();
 		return stores;
+	}
+
+	@Override
+	public List<Store> getActiveStores(StoreStatus storeStatus) {
+		String x = storeStatus.getStoreStatus();
+		List<Store> l = entityManager.createQuery("SELECT v FROM Store v where v.status=:x")
+				.setParameter("x", storeStatus.getStoreStatus()).getResultList();
+		for (Store v : l) {
+			System.out.println(v.toString());
+		}
+		return l;
 	}
 
 }
