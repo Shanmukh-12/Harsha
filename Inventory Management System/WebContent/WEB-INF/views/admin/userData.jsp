@@ -1,15 +1,18 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <style>
-body {
-	background-color: #fff;
-}
-
+.container1
+    {
+    position:relative;
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    }
 .container {
 	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
-	height: 100vh;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
 }
 
 table {
@@ -46,9 +49,26 @@ tr:nth-child(even) {
 	display: none;
 }
 </style>
+<div class="container1">
+	<h1>User List</h1><br>
+    <div class="filter-container">
+        <label for="userTypeFilter">User Type:</label>
+        <select id="userTypeFilter">
+            <option value="">Select UserType</option>
+            <option value="inventory">Inventory</option>
+            <option value="procurement">Procurement</option>
+        </select>
 
+        <label for="userStatusFilter">User Status:</label>
+        <select id="userStatusFilter">
+            <option value="">Select User Status</option>
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+        </select>
+
+        <button id="applyFilterBtn">Apply Filter</button>
+    </div>
 <div class="container">
-	<h1>User List</h1>
 	<div class="table-container">
 		<table>
 			<thead>
@@ -67,6 +87,61 @@ tr:nth-child(even) {
 
 <script>
 $(document).ready(function() {
+    function applyFilter() {
+        var userTypeFilter = $("#userTypeFilter").val();
+        var userStatusFilter = $("#userStatusFilter").val();
+        var url;
+        if (userTypeFilter && userStatusFilter) {
+            url = "getFilteredDataByTypeAndStatus";
+        } else if (userTypeFilter) {
+            url = "getFilteredDataByType";
+        } else if (userStatusFilter) {
+            url = "getFilteredDataByStatus";
+        } else {
+            url = "showUsers";
+        }
+
+        console.log(userTypeFilter);
+        console.log(userStatusFilter);
+        console.log(url);
+
+        $.ajax({
+            url: url,
+            method: "POST",
+            dataType: "json",
+            data: {
+                userType: userTypeFilter,
+                userStatus: userStatusFilter
+            },
+            success: function(data) {
+                // Handle the success response
+                var userTableBody = $("#userTableBody");
+                userTableBody.empty();
+
+                data.forEach(function(user) {
+                    var row = $("<tr>");
+                    row.append($("<td>").text(user.userId));
+                    row.append($("<td>").text(user.userName));
+                    row.append($("<td>").text(user.userType));
+                    row.append($("<td>").text(user.status));
+                    userTableBody.append(row);
+                });
+            },
+            error: function() {
+                console.log("Error");
+            }
+        });
+    }
+
+    $("#applyFilterBtn").click(function() {
+        applyFilter();
+    });
+
+    // Initial data load
+    applyFilter();
+});
+
+/* $(document).ready(function() {
     $.ajax({
         url: "showUsers",
         method: "GET",
@@ -88,5 +163,5 @@ $(document).ready(function() {
             console.log("Error");
         }
     });
-});
+}); */
 </script>
