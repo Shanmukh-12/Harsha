@@ -9,6 +9,8 @@ import main.models.storeIssueModels.inputModels.StoreIssuesListData;
 
 @Component
 public class StoreIssuesBLL {
+	
+	//calculating totalStock issue Amount
 	public double calculateTotalPurchaseAmount(StoreIssuesList storeIssuesList) {
 		double totalPurchaseAmount = 0.0;
 		List<StoreIssuesListData> storeProducts = storeIssuesList.getStoreProducts();

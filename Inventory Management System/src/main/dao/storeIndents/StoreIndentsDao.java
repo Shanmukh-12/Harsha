@@ -36,4 +36,5 @@ public interface StoreIndentsDao {
 	List<StoreIndentData> getStoreIndentsListByTo(StoreFilters storeFilters);
 
 	public List<StoreIndentData> getIndentsByStoreID(int selectedStoreId);
+
 }

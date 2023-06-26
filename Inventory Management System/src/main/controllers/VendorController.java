@@ -22,6 +22,7 @@ import main.dao.vendor.VendorsDAO;
 import main.models.vendorModels.entities.Vendor;
 import main.models.vendorModels.inputModels.VendorId;
 import main.models.vendorModels.inputModels.VendorInput;
+import main.models.vendorModels.inputModels.VendorStatus;
 import main.models.vendorModels.outputModels.VendorOutput;
 
 @Controller
@@ -92,6 +93,14 @@ public class VendorController {
 	@GetMapping("/showVendors")
 	public @ResponseBody List<Vendor> showVendors() {
 		return vendorDAO.getAllVendors();
+	}
+
+	/* filter */
+	@PostMapping("/vendorStatus")
+	public @ResponseBody List<Vendor> vendorStatus(VendorStatus vendorStatus) {
+		System.out.println(vendorStatus.toString());
+		List<Vendor> l = vendorDAO.getActiveVendors(vendorStatus);
+		return l;
 	}
 
 }

@@ -11,6 +11,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "im_grn_products")
 public class ImGrnProducts implements Serializable {

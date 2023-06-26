@@ -4,7 +4,13 @@
     body {
         background-color: #fff;
     }
-
+    .container1
+    {
+    position:relative;
+    top:200px;
+    left:800px;
+    }
+    
     .container {
         display: flex;
         justify-content: center;
@@ -73,8 +79,73 @@ $(document).ready(function() {
         }
     });
 });
+function getVendors() {
+    $.ajax({
+        url: "showVendors",
+        method: "GET",
+        dataType: "json",
+        success: function(data) {
+            var tableBody = $("#vendorTable tbody");
+            tableBody.empty(); // Clear existing table data
+
+            data.forEach(function(vendor) {
+                var row = $("<tr>");
+                $("<td>").text(vendor.vendorId).appendTo(row);
+                $("<td>").text(vendor.vendorName).appendTo(row);
+                $("<td>").text(vendor.vendorAddress).appendTo(row);
+                $("<td>").text(vendor.vendorPhone).appendTo(row);
+                $("<td>").text(vendor.status).appendTo(row);
+                row.appendTo(tableBody);
+            });
+        },
+        error: function() {
+            console.log("Error");
+        }
+    });
+}
+$(document).ready(function() {
+    $("#vendor-status").change(function() {
+    	console.log('click status');
+        var status = $("#vendor-status").val();
+        $.ajax({
+            url: "vendorStatus",
+            method: "POST",
+            dataType: "json",
+            data: {
+                vendorStatus: status
+            },
+            success: function(data) {
+                var tableBody = $("#vendorTable tbody");
+                tableBody.empty(); // Clear existing table data
+                console.log(data);
+                data.forEach(function(vendor) {
+                    var row = $("<tr>");
+                    $("<td>").text(vendor.vendorId).appendTo(row);
+                    $("<td>").text(vendor.vendorName).appendTo(row);
+                    $("<td>").text(vendor.vendorAddress).appendTo(row);
+                    $("<td>").text(vendor.vendorPhone).appendTo(row);
+                    $("<td>").text(vendor.status).appendTo(row);
+                    row.appendTo(tableBody);
+                });
+            },
+            error: function() {
+                console.log("Error");
+            }
+        });
+    });
+});
+
+
 </script>
 
+<div class="container1">
+<select id="vendor-status">
+<option value="" disabled selected>Select Vendor</option>
+<option value="Active">Active</option>
+<option value="NotActive">InActive</option>
+</select>
+<button onclick="getVendors()">reset</button>
+</div>
 <div class="container">
     <h1>Vendor List</h1>
     <div class="table-container">

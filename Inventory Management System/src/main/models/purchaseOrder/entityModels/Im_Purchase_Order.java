@@ -19,8 +19,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import main.models.purchaseOrder.entityModels.Im_Purchase_Order_Products;
-
 @Entity
 @Table(name = "im_purchase_order")
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -30,20 +28,21 @@ public class Im_Purchase_Order {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "purchase_order_id")
 	int purchase_order_id;
-	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Kolkata")
 
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Kolkata")
 	Date purchase_order_date = Date.valueOf(LocalDate.now());
+
 	private BigDecimal purchase_order_amount = BigDecimal.valueOf(3000);
+
 	int vendor_id;
-	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Kolkata")
 
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Kolkata")
 	Date purchase_order_expected_date = Date.valueOf(LocalDate.now().plusWeeks(1));
-	String purchase_order_status = "Active";
-	int user_id = 2;
-	String last_updated_user = "tharak";
-	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "Asia/Kolkata")
 
-	Date last_updated_date = Date.valueOf(LocalDate.now());
+	String purchase_order_status = "Active";
+
+	int user_id;
+
 	@JsonIgnore
 	@JsonManagedReference
 	@OneToMany(mappedBy = "parent", fetch = FetchType.LAZY)
@@ -105,22 +104,6 @@ public class Im_Purchase_Order {
 		this.user_id = user_id;
 	}
 
-	public String getLast_updated_user() {
-		return last_updated_user;
-	}
-
-	public void setLast_updated_user(String last_updated_user) {
-		this.last_updated_user = last_updated_user;
-	}
-
-	public Date getLast_updated_date() {
-		return last_updated_date;
-	}
-
-	public void setLast_updated_date(Date last_updated_date) {
-		this.last_updated_date = last_updated_date;
-	}
-
 	public List<Im_Purchase_Order_Products> getChildren() {
 		return children;
 	}
@@ -134,13 +117,13 @@ public class Im_Purchase_Order {
 		return "Im_Purchase_Order [purchase_order_id=" + purchase_order_id + ", purchase_order_date="
 				+ purchase_order_date + ", purchase_order_amount=" + purchase_order_amount + ", vendor_id=" + vendor_id
 				+ ", purchase_order_expected_date=" + purchase_order_expected_date + ", purchase_order_status="
-				+ purchase_order_status + ", user_id=" + user_id + ", last_updated_user=" + last_updated_user
-				+ ", last_updated_date=" + last_updated_date + ", children=" + children + "]";
+				+ purchase_order_status + ", user_id=" + user_id + ", last_updated_user=" + ", children=" + children
+				+ "]";
 	}
 
 	public Im_Purchase_Order(int purchase_order_id, Date purchase_order_date, BigDecimal purchase_order_amount,
 			int vendor_id, Date purchase_order_expected_date, String purchase_order_status, int user_id,
-			String last_updated_user, Date last_updated_date, List<Im_Purchase_Order_Products> children) {
+			List<Im_Purchase_Order_Products> children) {
 		super();
 		this.purchase_order_id = purchase_order_id;
 		this.purchase_order_date = purchase_order_date;
@@ -149,8 +132,6 @@ public class Im_Purchase_Order {
 		this.purchase_order_expected_date = purchase_order_expected_date;
 		this.purchase_order_status = purchase_order_status;
 		this.user_id = user_id;
-		this.last_updated_user = last_updated_user;
-		this.last_updated_date = last_updated_date;
 		this.children = children;
 	}
 
