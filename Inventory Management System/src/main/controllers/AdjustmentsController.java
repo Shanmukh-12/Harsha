@@ -25,16 +25,19 @@ public class AdjustmentsController {
 
 	@Autowired
 	AdjustmentsDAO adjustmentsDAO;
-//This method is for listing all adjustments
+
+	// This method is for listing all adjustments
 	@PostMapping("/adjustmentsListButton")
 	public String showDataPage(Model model) {
-		System.out.println("hi in controller1");
 		List<AdjustmentsList> adjustments = adjustmentsDAO.getAdjustments();
 		model.addAttribute("adjustments", adjustments);
 		return "inventory/adjustmentsList";
 	}
-/*This method is for saving adjustments details (product category, product name, batch no, 
-original stock, updated stock and reason) to DB */
+
+	/*
+	 * This method is for saving adjustments details (product category, product name, batch no, original stock, updated
+	 * stock and reason) to DB
+	 */
 	@PostMapping("/createAdjustments")
 	public String updateData(String jsonData, Model model) {
 
@@ -60,12 +63,13 @@ original stock, updated stock and reason) to DB */
 		return "inventory/adjustments";
 
 	}
-//This method is for displaying the list of products in each adjustment
+
+	// This method is for displaying the list of products in each adjustment
 	@PostMapping("/getAdjustmentProductsList")
 	public String getAdjustmentProductsList(String adjs_id, Model m) {
-		System.out.println("in the controller");
+
 		ObjectMapper objectMapper = new ObjectMapper();
-		System.out.println(adjs_id);
+
 		AdjustmentsInputList adjustmentid = null;
 		try {
 			adjustmentid = objectMapper.readValue(adjs_id, AdjustmentsInputList.class);
@@ -76,8 +80,6 @@ original stock, updated stock and reason) to DB */
 		List<AdjustmentProductsListData> adjustmentProductsListData = adjustmentsDAO
 				.getAdjustmentProductsList(adjustmentid);
 
-		
-		System.out.println("after dao");
 		m.addAttribute("productsList", adjustmentProductsListData); // adding to the view
 
 		for (AdjustmentProductsListData s : adjustmentProductsListData)
@@ -85,7 +87,8 @@ original stock, updated stock and reason) to DB */
 
 		return "inventory/adjustmentProducts";
 	}
-//This method filters adjustments by product category Id, product Id and From date
+
+	// This method filters adjustments by product category Id, product Id and From date
 	@PostMapping("/getFilterDataByCategoryIdProductIdFrom")
 	public @ResponseBody List<AdjustmentsFilterOutput> getFilterDataByCategoryIdProductIdFrom(String filters,
 			Model model) {
@@ -103,7 +106,8 @@ original stock, updated stock and reason) to DB */
 				.getFilterDataByCategoryIdProductIdFrom(adjustmentsFilterInput);
 		return sl;
 	}
-//This method filters adjustments by product category Id and product Id 
+
+	// This method filters adjustments by product category Id and product Id
 	@PostMapping("/getFilterDataByCategoryIdProductId")
 	public @ResponseBody List<AdjustmentsFilterOutput> getFilterDataByCategoryIdProductId(String filters, Model model) {
 		AdjustmentsFilterInput adjustmentsFilterInput = null;
@@ -119,7 +123,8 @@ original stock, updated stock and reason) to DB */
 		List<AdjustmentsFilterOutput> sl = adjustmentsDAO.getFilterDataByCategoryIdProductId(adjustmentsFilterInput);
 		return sl;
 	}
-//This method filters adjustments by product category Id and From Date
+
+	// This method filters adjustments by product category Id and From Date
 	@PostMapping("/getFilterDataByCategoryIdFrom")
 	public @ResponseBody List<AdjustmentsFilterOutput> getFilterDataByCategoryIdFrom(String filters, Model model) {
 		AdjustmentsFilterInput adjustmentsFilterInput = null;
@@ -135,7 +140,8 @@ original stock, updated stock and reason) to DB */
 		List<AdjustmentsFilterOutput> sl = adjustmentsDAO.getFilterDataByCategoryIdFrom(adjustmentsFilterInput);
 		return sl;
 	}
-//This method filters adjustments by product category Id
+
+	// This method filters adjustments by product category Id
 	@PostMapping("/getFilterDataByCategoryId")
 	public @ResponseBody List<AdjustmentsFilterOutput> getFilterDataByCategoryId(String filters, Model model) {
 		AdjustmentsFilterInput adjustmentsFilterInput = null;
@@ -151,7 +157,8 @@ original stock, updated stock and reason) to DB */
 		List<AdjustmentsFilterOutput> sl = adjustmentsDAO.getFilterDataByCategoryId(adjustmentsFilterInput);
 		return sl;
 	}
-//This method filters adjustments by only From date
+
+	// This method filters adjustments by only From date
 	@PostMapping("/getFilterDataByFrom")
 	public @ResponseBody List<AdjustmentsFilterOutput> getFilterDataByFrom(String filters, Model model) {
 		AdjustmentsFilterInput adjustmentsFilterInput = null;
@@ -167,7 +174,8 @@ original stock, updated stock and reason) to DB */
 		List<AdjustmentsFilterOutput> sl = adjustmentsDAO.getFilterDataByFrom(adjustmentsFilterInput);
 		return sl;
 	}
-//This method filters adjustments by only To date
+
+	// This method filters adjustments by only To date
 	@PostMapping("/getFilterDataByTo")
 	public @ResponseBody List<AdjustmentsFilterOutput> getFilterDataByTo(String filters, Model model) {
 		AdjustmentsFilterInput adjustmentsFilterInput = null;

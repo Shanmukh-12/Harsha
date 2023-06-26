@@ -14,6 +14,7 @@ import main.models.productModels.dto.ProductProfit;
 import main.models.productModels.entities.HSNEntityModel;
 import main.models.productModels.entities.ProductsCategory;
 import main.models.productModels.inputModels.ProductsProductIdInputModel;
+import main.models.productModels.outputModels.ProductIdListOutput;
 import main.models.productModels.outputModels.ProductStockData;
 import main.models.productModels.outputModels.ProductsReOrderList;
 
@@ -29,6 +30,18 @@ public class ProductsDAL implements ProductsDAO {
 		TypedQuery<ProductStockData> query = entityManager.createQuery(queryString, ProductStockData.class);
 		query.setParameter("categoryId", categoryId);
 		List<ProductStockData> productsList = query.getResultList();
+		System.out.println(productsList);
+
+		return productsList;
+	}
+
+	@Transactional
+	public List<ProductIdListOutput> getProductsByCategoryId(int categoryId) {
+		String queryString = "SELECT new main.models.productModels.outputModels.ProductIdListOutput(productId,productName) FROM Products  WHERE category = :categoryId";
+		TypedQuery<ProductIdListOutput> query = entityManager.createQuery(queryString, ProductIdListOutput.class);
+		query.setParameter("categoryId", categoryId);
+		List<ProductIdListOutput> productsList = query.getResultList();
+		System.out.println(productsList);
 
 		return productsList;
 	}
@@ -56,13 +69,13 @@ public class ProductsDAL implements ProductsDAO {
 	@Override
 	public List<ProductsReOrderList> getReOrderLevelProducts() {
 		String queryString = "SELECT new main.models.productModels.outputModels.ProductsReOrderList(p.productId, p.productName, p.productReorderLevel, SUM(ps.productStock) as sumOfProducts) "
-		        + "FROM Products p "
-		        + "JOIN ProductStock ps ON p.productId = ps.productId "
-		        + "GROUP BY p.productId, p.productName, p.productReorderLevel "
-		        + "HAVING p.productReorderLevel >= SUM(ps.productStock)";
+				+ "FROM Products p " + "JOIN ProductStock ps ON p.productId = ps.productId "
+				+ "GROUP BY p.productId, p.productName, p.productReorderLevel "
+				+ "HAVING p.productReorderLevel >= SUM(ps.productStock)";
 		TypedQuery<ProductsReOrderList> query = entityManager.createQuery(queryString, ProductsReOrderList.class);
 		return query.getResultList();
 	}
+
 	@Transactional
 	public boolean saveCategory(ProductsCategory productsCategory) {
 		entityManager.persist(productsCategory);

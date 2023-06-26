@@ -68,8 +68,7 @@ public class AdjustmentsDAL implements AdjustmentsDAO {
 			System.out.println("Inside " + p);
 
 		return s;
-      
-		
+
 	}
 
 	@Override
@@ -81,7 +80,9 @@ public class AdjustmentsDAL implements AdjustmentsDAO {
 						+ " FROM AdjustmentsFilter e"
 						+ " JOIN main.models.adjustmentsModels.entities.AdjustmentsProductsList ai ON e.adjustmentID = ai.adjs_id"
 						+ " JOIN main.models.productModels.entities.Products p ON p.productId = ai.product_id"
-						+ " WHERE p.productId = :productId and e.adjustmentDate between :fromDate and :toDate")
+						+ " WHERE p.productId = :productId and e.adjustmentDate between :fromDate and :toDate and p.category = :categoryId"
+						+ " GROUP BY e.adjustmentID, e.adjustmentDate")
+				.setParameter("categoryId", adjustmentsFilterInput.getProductCategoryId())
 				.setParameter("productId", adjustmentsFilterInput.getProductId())
 				.setParameter("fromDate", adjustmentsFilterInput.getFromDate())
 				.setParameter("toDate", adjustmentsFilterInput.getToDate()).getResultList();
@@ -98,7 +99,9 @@ public class AdjustmentsDAL implements AdjustmentsDAO {
 						+ " FROM AdjustmentsFilter e"
 						+ " JOIN main.models.adjustmentsModels.entities.AdjustmentsProductsList ai ON e.adjustmentID = ai.adjs_id"
 						+ " JOIN main.models.productModels.entities.Products p ON p.productId = ai.product_id"
-						+ " WHERE p.productId = :productId and e.adjustmentDate<= :toDate")
+						+ " WHERE p.productId = :productId and e.adjustmentDate<= :toDate and p.category = :categoryId"
+						+ " GROUP BY e.adjustmentID, e.adjustmentDate")
+				.setParameter("categoryId", adjustmentsFilterInput.getProductCategoryId())
 				.setParameter("productId", adjustmentsFilterInput.getProductId())
 				.setParameter("toDate", adjustmentsFilterInput.getToDate()).getResultList();
 		return lst;
@@ -112,7 +115,9 @@ public class AdjustmentsDAL implements AdjustmentsDAO {
 						+ " FROM AdjustmentsFilter e"
 						+ " JOIN main.models.adjustmentsModels.entities.AdjustmentsProductsList ai ON e.adjustmentID = ai.adjs_id"
 						+ " JOIN main.models.productModels.entities.Products p ON p.productId = ai.product_id"
-						+ " WHERE e.adjustmentDate between :fromDate and :toDate")
+						+ " WHERE  p.category = :categoryId and e.adjustmentDate between :fromDate and :toDate "
+						+ " GROUP BY e.adjustmentID, e.adjustmentDate")
+				.setParameter("categoryId", adjustmentsFilterInput.getProductCategoryId())
 				.setParameter("fromDate", adjustmentsFilterInput.getFromDate())
 				.setParameter("toDate", adjustmentsFilterInput.getToDate()).getResultList();
 		return lst;
@@ -126,8 +131,11 @@ public class AdjustmentsDAL implements AdjustmentsDAO {
 						+ " FROM AdjustmentsFilter e"
 						+ " JOIN main.models.adjustmentsModels.entities.AdjustmentsProductsList ai ON e.adjustmentID = ai.adjs_id"
 						+ " JOIN main.models.productModels.entities.Products p ON p.productId = ai.product_id"
-						+ " WHERE e.adjustmentDate <= :toDate")
+						+ " WHERE p.category = :categoryId and e.adjustmentDate <= :toDate"
+						+ " GROUP BY e.adjustmentID, e.adjustmentDate")
+				.setParameter("categoryId", adjustmentsFilterInput.getProductCategoryId())
 				.setParameter("toDate", adjustmentsFilterInput.getToDate()).getResultList();
+		System.out.println(lst);
 		return lst;
 	}
 
@@ -139,7 +147,8 @@ public class AdjustmentsDAL implements AdjustmentsDAO {
 						+ " FROM AdjustmentsFilter e"
 						+ " JOIN main.models.adjustmentsModels.entities.AdjustmentsProductsList ai ON e.adjustmentID = ai.adjs_id"
 						+ " JOIN main.models.productModels.entities.Products p ON p.productId = ai.product_id"
-						+ " WHERE e.adjustmentDate between :fromDate and :toDate")
+						+ " WHERE e.adjustmentDate between :fromDate and :toDate"
+						+ " GROUP BY e.adjustmentID, e.adjustmentDate")
 				.setParameter("fromDate", adjustmentsFilterInput.getFromDate())
 				.setParameter("toDate", adjustmentsFilterInput.getToDate()).getResultList();
 		return lst;
@@ -153,7 +162,7 @@ public class AdjustmentsDAL implements AdjustmentsDAO {
 						+ " FROM AdjustmentsFilter e"
 						+ " JOIN main.models.adjustmentsModels.entities.AdjustmentsProductsList ai ON e.adjustmentID = ai.adjs_id"
 						+ " JOIN main.models.productModels.entities.Products p ON p.productId = ai.product_id"
-						+ " WHERE e.adjustmentDate <= :toDate")
+						+ " WHERE e.adjustmentDate <= :toDate" + " GROUP BY e.adjustmentID, e.adjustmentDate")
 				.setParameter("toDate", adjustmentsFilterInput.getToDate()).getResultList();
 		return lst;
 	}

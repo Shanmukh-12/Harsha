@@ -83,7 +83,9 @@ public class PriceReviewDAL implements PriceReviewDAO {
 						+ " FROM PriceReviewFilter e"
 						+ " JOIN main.models.priceReviewModels.entities.PriceReviewProductsList pi ON e.priceReviewId = pi.pr_id"
 						+ " JOIN main.models.productModels.entities.Products p ON p.productId = pi.product_id"
-						+ " WHERE p.productId = :productId and e.priceReviewDate between :fromDate and :toDate")
+						+ " WHERE p.productId = :productId and e.priceReviewDate between :fromDate and :toDate and p.category = :categoryId"
+						+ " GROUP BY e.priceReviewId, e.priceReviewDate")
+				.setParameter("categoryId", priceReviewFilterInput.getProductCategoryId())
 				.setParameter("productId", priceReviewFilterInput.getProductId())
 				.setParameter("fromDate", priceReviewFilterInput.getFromDate())
 				.setParameter("toDate", priceReviewFilterInput.getToDate()).getResultList();
@@ -100,7 +102,9 @@ public class PriceReviewDAL implements PriceReviewDAO {
 						+ " FROM PriceReviewFilter e"
 						+ " JOIN main.models.priceReviewModels.entities.PriceReviewProductsList pi ON e.priceReviewId = pi.pr_id"
 						+ " JOIN main.models.productModels.entities.Products p ON p.productId = pi.product_id"
-						+ " WHERE p.productId = :productId and e.priceReviewDate <= :toDate")
+						+ " WHERE p.productId = :productId and e.priceReviewDate <= :toDate and p.category = :categoryId"
+						+ " GROUP BY e.priceReviewId, e.priceReviewDate")
+				.setParameter("categoryId", priceReviewFilterInput.getProductCategoryId())
 				.setParameter("productId", priceReviewFilterInput.getProductId())
 				.setParameter("toDate", priceReviewFilterInput.getToDate()).getResultList();
 		return lst;
@@ -114,7 +118,9 @@ public class PriceReviewDAL implements PriceReviewDAO {
 						+ " FROM PriceReviewFilter e"
 						+ " JOIN main.models.priceReviewModels.entities.PriceReviewProductsList pi ON e.priceReviewId = pi.pr_id"
 						+ " JOIN main.models.productModels.entities.Products p ON p.productId = pi.product_id"
-						+ " WHERE e.priceReviewDate between :fromDate and :toDate")
+						+ " WHERE  p.category = :categoryId and e.priceReviewDate between :fromDate and :toDate"
+						+ " GROUP BY e.priceReviewId, e.priceReviewDate")
+				.setParameter("categoryId", priceReviewFilterInput.getProductCategoryId())
 				.setParameter("fromDate", priceReviewFilterInput.getFromDate())
 				.setParameter("toDate", priceReviewFilterInput.getToDate()).getResultList();
 		return lst;
@@ -128,7 +134,9 @@ public class PriceReviewDAL implements PriceReviewDAO {
 						+ " FROM PriceReviewFilter e"
 						+ " JOIN main.models.priceReviewModels.entities.PriceReviewProductsList pi ON e.priceReviewId = pi.pr_id"
 						+ " JOIN main.models.productModels.entities.Products p ON p.productId = pi.product_id"
-						+ " WHERE e.priceReviewDate <= : toDate")
+						+ " WHERE p.category = :categoryId and e.priceReviewDate <= : toDate"
+						+ " GROUP BY e.priceReviewId, e.priceReviewDate")
+				.setParameter("categoryId", priceReviewFilterInput.getProductCategoryId())
 				.setParameter("toDate", priceReviewFilterInput.getToDate()).getResultList();
 		return lst;
 	}
@@ -141,7 +149,8 @@ public class PriceReviewDAL implements PriceReviewDAO {
 						+ " FROM PriceReviewFilter e"
 						+ " JOIN main.models.priceReviewModels.entities.PriceReviewProductsList pi ON e.priceReviewId = pi.pr_id"
 						+ " JOIN main.models.productModels.entities.Products p ON p.productId = pi.product_id"
-						+ " WHERE e.priceReviewDate between :fromDate and :toDate")
+						+ " WHERE e.priceReviewDate between :fromDate and :toDate"
+						+ " GROUP BY e.priceReviewId, e.priceReviewDate")
 				.setParameter("fromDate", priceReviewFilterInput.getFromDate())
 				.setParameter("toDate", priceReviewFilterInput.getToDate()).getResultList();
 		return lst;
@@ -155,7 +164,7 @@ public class PriceReviewDAL implements PriceReviewDAO {
 						+ " FROM PriceReviewFilter e"
 						+ " JOIN main.models.priceReviewModels.entities.PriceReviewProductsList pi ON e.priceReviewId = pi.pr_id"
 						+ " JOIN main.models.productModels.entities.Products p ON p.productId = pi.product_id"
-						+ " WHERE e.priceReviewDate <= :toDate")
+						+ " WHERE e.priceReviewDate <= :toDate" + " GROUP BY e.priceReviewId, e.priceReviewDate")
 				.setParameter("toDate", priceReviewFilterInput.getToDate()).getResultList();
 		return lst;
 	}
