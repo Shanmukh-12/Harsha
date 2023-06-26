@@ -33,7 +33,7 @@ public class PurchasesController {
 
 	@Autowired
 	ProcurementService x;
-
+    //gets all purchase ids based on filter entered
 	@RequestMapping(value = "/getPurchaseId", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public String getPurchaseId(@ModelAttribute PurchasesFilter p, Model m)
@@ -47,7 +47,8 @@ public class PurchasesController {
 		return ob.writeValueAsString(s);
 
 	}
-
+	
+    //gets all purchase ids and additionsl details based on filters entered
 	@RequestMapping(value = "/getPurchaseIdDetails", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public String getPurchaseId2(@ModelAttribute PurchasesFilter p, Model m)
@@ -62,7 +63,8 @@ public class PurchasesController {
 		return ob.writeValueAsString(s);
 
 	}
-
+	
+    //gets all purchase id  details based on purchase id entered
 	@RequestMapping(value = "/getPurchaseIdDetailsById", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public String getPurchaseId3(@ModelAttribute PurchaseId p, Model m)
@@ -75,7 +77,8 @@ public class PurchasesController {
 		return ob.writeValueAsString(s);
 
 	}
-
+	
+    //gets all products under purchase id taking purchase id as input
 	@RequestMapping(value = "/getPurchaseProducts", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public String getPurchaseProducts(PurchaseId p) throws JsonProcessingException {
@@ -85,7 +88,8 @@ public class PurchasesController {
 		return ob.writeValueAsString(s);
 
 	}
-
+	
+	//create purchase order taking all products to be ordered as input
 	@RequestMapping(value = "/makePurchseOrder", method = RequestMethod.POST)
 	@ResponseBody
 	public void makePurchseOrder(@RequestBody String json, Model m)

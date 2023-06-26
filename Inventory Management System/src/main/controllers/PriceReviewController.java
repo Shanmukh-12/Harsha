@@ -25,7 +25,7 @@ public class PriceReviewController {
 
 	@Autowired
 	PriceReviewDAO priceReviewDAO;
-
+//This method is for listing all price reviews
 	@PostMapping("/priceReviewListButton")
 	public String showDataPage(Model model) {
 
@@ -33,7 +33,8 @@ public class PriceReviewController {
 		model.addAttribute("priceReview", priceReview);
 		return "inventory/priceReviewList";
 	}
-
+/*This method is for saving price review details (product category, product name, batch no, 
+old price, new price and reason) to DB */
 	@PostMapping("/createPriceReview")
 	public String updateData(String jsonData, Model model) {
 
@@ -59,7 +60,7 @@ public class PriceReviewController {
 		return "inventory/priceReview";
 
 	}
-
+//This method is for displaying the list of products in each price review
 	@PostMapping("/getPriceReviewProductsList")
 	public String getPriceReviewProductsList(String pr_id, Model m) {
 		System.out.println("in the controller");
@@ -83,7 +84,7 @@ public class PriceReviewController {
 
 		return "inventory/priceReviewProducts";
 	}
-
+//This method filters price reviews by product category Id, product Id and From date
 	@PostMapping("/getFilterDataByCategoryIdProductIdFrom1")
 	public @ResponseBody List<PriceReviewFilterOutput> getFilterDataByCategoryIdProductIdFrom(String filters,
 			Model model) {
@@ -101,7 +102,7 @@ public class PriceReviewController {
 				.getFilterDataByCategoryIdProductIdFrom(priceReviewFilterInput);
 		return sl;
 	}
-
+//This method filters price reviews by product category Id and product Id 
 	@PostMapping("/getFilterDataByCategoryIdProductId1")
 	public @ResponseBody List<PriceReviewFilterOutput> getFilterDataByCategoryIdProductId(String filters, Model model) {
 		PriceReviewFilterInput priceReviewFilterInput = null;
@@ -117,7 +118,7 @@ public class PriceReviewController {
 		List<PriceReviewFilterOutput> sl = priceReviewDAO.getFilterDataByCategoryIdProductId(priceReviewFilterInput);
 		return sl;
 	}
-
+//This method filters price reviews by product category Id and From Date
 	@PostMapping("/getFilterDataByCategoryIdFrom1")
 	public @ResponseBody List<PriceReviewFilterOutput> getFilterDataByCategoryIdFrom(String filters, Model model) {
 		PriceReviewFilterInput priceReviewFilterInput = null;
@@ -133,7 +134,7 @@ public class PriceReviewController {
 		List<PriceReviewFilterOutput> sl = priceReviewDAO.getFilterDataByCategoryIdFrom(priceReviewFilterInput);
 		return sl;
 	}
-
+//This method filters price reviews by product category Id
 	@PostMapping("/getFilterDataByCategoryId1")
 	public @ResponseBody List<PriceReviewFilterOutput> getFilterDataByCategoryId(String filters, Model model) {
 		PriceReviewFilterInput priceReviewFilterInput = null;
@@ -149,7 +150,7 @@ public class PriceReviewController {
 		List<PriceReviewFilterOutput> sl = priceReviewDAO.getFilterDataByCategoryId(priceReviewFilterInput);
 		return sl;
 	}
-
+//This method filters price reviews by only From date
 	@PostMapping("/getFilterDataByFrom1")
 	public @ResponseBody List<PriceReviewFilterOutput> getFilterDataByFrom(String filters, Model model) {
 		PriceReviewFilterInput priceReviewFilterInput = null;
@@ -165,7 +166,7 @@ public class PriceReviewController {
 		List<PriceReviewFilterOutput> sl = priceReviewDAO.getFilterDataByFrom(priceReviewFilterInput);
 		return sl;
 	}
-
+//This method filters price reviews by only To date
 	@PostMapping("/getFilterDataByTo1")
 	public @ResponseBody List<PriceReviewFilterOutput> getFilterDataByTo(String filters, Model model) {
 		PriceReviewFilterInput priceReviewFilterInput = null;

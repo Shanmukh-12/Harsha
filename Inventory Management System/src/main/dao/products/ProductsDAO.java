@@ -7,10 +7,11 @@ import main.models.productModels.entities.HSNEntityModel;
 import main.models.productModels.entities.ProductsCategory;
 import main.models.productModels.inputModels.ProductsProductIdInputModel;
 import main.models.productModels.outputModels.ProductStockData;
+import main.models.productModels.outputModels.ProductsReOrderList;
 
 public interface ProductsDAO {
 
-	public List<ProductStockData> getReOrderLevelProducts();
+	public List<ProductsReOrderList> getReOrderLevelProducts();
 
 	public List<ProductStockData> getProductsByCategory(int selectedCategoryId);
 

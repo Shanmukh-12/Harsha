@@ -15,13 +15,14 @@ import main.models.productModels.entities.HSNEntityModel;
 import main.models.productModels.entities.ProductsCategory;
 import main.models.productModels.inputModels.ProductsProductIdInputModel;
 import main.models.productModels.outputModels.ProductStockData;
+import main.models.productModels.outputModels.ProductsReOrderList;
 
 @Component
 public class ProductsDAL implements ProductsDAO {
 
 	@PersistenceContext
 	private EntityManager entityManager;
-
+    //Getting Product Information Based on Category Id
 	@Transactional
 	public List<ProductStockData> getProductsByCategory(int categoryId) {
 		String queryString = "SELECT new main.models.productModels.outputModels.ProductStockData(p.productId,p.productName,ps.batchNo,ps.productStock,p.productReorderLevel,p.productHsnCode,ps.productSalePrice,ps.productMrp,ps.productCost) FROM Products p JOIN  p.productStocks ps  WHERE p.category = :categoryId";
@@ -53,12 +54,15 @@ public class ProductsDAL implements ProductsDAO {
 	}
 
 	@Override
-	public List<ProductStockData> getReOrderLevelProducts() {
-		String queryString = "SELECT new main.models.productModels.outputModels.ProductStockData(p.productId, p.productName, ps.batchNo, p.productReorderLevel,p.productHsnCode,ps.productStock, ps.productSalePrice, ps.productMrp, ps.productCost) FROM Products p JOIN p.productStocks ps WHERE  p.productId = :productId";
-		TypedQuery<ProductStockData> query = entityManager.createQuery(queryString, ProductStockData.class);
+	public List<ProductsReOrderList> getReOrderLevelProducts() {
+		String queryString = "SELECT new main.models.productModels.outputModels.ProductsReOrderList(p.productId, p.productName, p.productReorderLevel, SUM(ps.productStock) as sumOfProducts) "
+		        + "FROM Products p "
+		        + "JOIN ProductStock ps ON p.productId = ps.productId "
+		        + "GROUP BY p.productId, p.productName, p.productReorderLevel "
+		        + "HAVING p.productReorderLevel >= SUM(ps.productStock)";
+		TypedQuery<ProductsReOrderList> query = entityManager.createQuery(queryString, ProductsReOrderList.class);
 		return query.getResultList();
 	}
-
 	@Transactional
 	public boolean saveCategory(ProductsCategory productsCategory) {
 		entityManager.persist(productsCategory);

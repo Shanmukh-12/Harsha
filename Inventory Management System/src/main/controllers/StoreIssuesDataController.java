@@ -43,7 +43,7 @@ public class StoreIssuesDataController {
 	@Autowired
 	ModelMapper modelMapper;
 	ObjectMapper objectMapper = new ObjectMapper();
-
+    //Getting Batch Numbers and Purchase Sale Price
 	@PostMapping("/getBatchNumbers")
 	public @ResponseBody List<ProductOutput> getBatchNumbers(@RequestBody ProductsProductIdInputModel productId) {
 		System.out.println(productId);
@@ -58,7 +58,7 @@ public class StoreIssuesDataController {
 
 		return productOutputList;
 	}
-
+    //Calculate total stock issue amount and save the stock issues 
 	@PostMapping("/issueStock")
 	public String issueStock(@RequestBody StoreIssuesList storeIssuesList) {
 		System.out.println(storeIssuesList);
@@ -72,7 +72,7 @@ public class StoreIssuesDataController {
 		System.out.println("inserted successfull");
 		return "inventory/inventoryHome";
 	}
-
+    //Getting storeIssueIds
 	@RequestMapping(value = "/getStoreIssueIds", method = RequestMethod.POST)
 	public @ResponseBody List<StoreIssueIds> getStoreIssueIds(StoreId storeId, Model m) {
 		System.out.println("Inside");
@@ -111,7 +111,8 @@ public class StoreIssuesDataController {
 		return "inventory/stockIssuedProducts";
 	}
 
-	/* Filters */
+/* Filters */
+	//Filter based on Store Id,StockIssueStatus,From date,to date
 	@PostMapping("/getIssuesFilterDataIdStatusFrom")
 	public @ResponseBody List<StoreIssuesData> getIssuesFilterDataIdStatusFrom(String filters, Model m) {
 		StoreFilters storeFilters = null;
@@ -125,7 +126,7 @@ public class StoreIssuesDataController {
 		List<StoreIssuesData> sl = storeIssueDao.getStoreIssuesListByIdStatusFrom(storeFilters);
 		return sl;
 	}
-
+    //filter based on storeId,StockIssuestatus,to Date
 	@PostMapping("/getIssuesFilterDataIdStatus")
 	public @ResponseBody List<StoreIssuesData> getIssuesFilterDataIdStatus(String filters, Model m) {
 		StoreFilters storeFilters = null;
@@ -138,7 +139,7 @@ public class StoreIssuesDataController {
 		List<StoreIssuesData> sl = storeIssueDao.getStoreIssuesListByIdStatus(storeFilters);
 		return sl;
 	}
-
+   //Filter based on StoreId,from date,to Date
 	@PostMapping("/getIssuesFilterDataIdFrom")
 	public @ResponseBody List<StoreIssuesData> getIssuesFilterDataIdFrom(String filters, Model m) {
 		StoreFilters storeFilters = null;
@@ -151,7 +152,7 @@ public class StoreIssuesDataController {
 		List<StoreIssuesData> sl = storeIssueDao.getStoreIssuesListByIdFrom(storeFilters);
 		return sl;
 	}
-
+    //Filter based on StoreID,toDate
 	@PostMapping("/getIssuesFilterDataId")
 	public @ResponseBody List<StoreIssuesData> getIssuesFilterDataId(String filters, Model m) {
 		StoreFilters storeFilters = null;
@@ -164,7 +165,7 @@ public class StoreIssuesDataController {
 		List<StoreIssuesData> sl = storeIssueDao.getStoreIssuesListById(storeFilters);
 		return sl;
 	}
-
+    //filter Based on StockIssueStatus,From date,to date
 	@PostMapping("/getIssuesFilterDataStatusFrom")
 	public @ResponseBody List<StoreIssuesData> getIssuesFilterDataStatusFrom(String filters, Model m) {
 		StoreFilters storeFilters = null;
@@ -177,7 +178,7 @@ public class StoreIssuesDataController {
 		List<StoreIssuesData> sl = storeIssueDao.getStoreIssuesListByStatusFrom(storeFilters);
 		return sl;
 	}
-
+    //Filters based on StockIssueStatus,to date
 	@PostMapping("/getIssuesFilterDataStatus")
 	public @ResponseBody List<StoreIssuesData> getIssuesFilterDataStatus(String filters, Model m) {
 		StoreFilters storeFilters = null;
@@ -190,7 +191,7 @@ public class StoreIssuesDataController {
 		List<StoreIssuesData> sl = storeIssueDao.getStoreIssuesListByStatus(storeFilters);
 		return sl;
 	}
-
+    //Filters based on From Date,to date
 	@PostMapping("/getIssuesFilterDataFrom")
 	public @ResponseBody List<StoreIssuesData> getIssuesFilterDataFrom(String filters, Model m) {
 		StoreFilters storeFilters = null;
@@ -203,7 +204,7 @@ public class StoreIssuesDataController {
 		List<StoreIssuesData> sl = storeIssueDao.getStoreIssuesListByFrom(storeFilters);
 		return sl;
 	}
-
+    //Filters based on To date only
 	@PostMapping("/getIssuesFilterDataTo")
 	public @ResponseBody List<StoreIssuesData> getIssuesFilterDataTo(String filters, Model m) {
 		StoreFilters storeFilters = null;

@@ -61,13 +61,41 @@
   <h4>Add Category</h4>
   <form>
     <label>Category Id:</label>
-    <input type="number">
+    <input type="number" id="categoryId">
     <br><br>
     <label>Category Name:</label>
-    <input type="numeric">
+    <input type="numeric" id="categoryName">
     <br><br>
-    <input type="button" value="Add">
+    <input type="button" id="addCategoryBtn" value="Add">
   </form>
 </div>
 </body>
 </html>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function() {
+    $('#addCategoryBtn').click(function() {
+      var categoryId = $('#categoryId').val();
+      var categoryName = $('#categoryName').val();
+
+      var data = {
+        productCategoryId: categoryId,
+        productCategoryName: categoryName
+      };
+
+      $.ajax({
+        type: 'POST',
+        url: 'createCategory',
+        data: data,
+        success: function(response) {
+        alert("product category added successfully");
+        },
+        error: function(xhr, status, error) {
+          // Handle the error here, if needed
+          console.log(error);
+        }
+      });
+    });
+  });
+</script>
+
