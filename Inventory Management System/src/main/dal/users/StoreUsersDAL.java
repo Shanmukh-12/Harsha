@@ -18,7 +18,7 @@ public class StoreUsersDAL implements StoreUsersDAO {
 
 	@PersistenceContext
 	private EntityManager entityManager;
-
+    //Saving StoreUser Information
 	@Transactional
 	public void saveStore(Store store) {
 		try {
@@ -27,13 +27,13 @@ public class StoreUsersDAL implements StoreUsersDAO {
 			throw new IllegalArgumentException("Store with the same unique key already exists.");
 		}
 	}
-
+   //Getting all Store Users
 	@Transactional
 	public List<Store> getAllStores() {
 		List<Store> l = entityManager.createQuery("SELECT s FROM Store s").getResultList();
 		return l;
 	}
-
+   //Soft Deleting the Store User
 	@Transactional
 	public Store deleteStore(StoreId store) {
 		Store existingStore = entityManager.find(Store.class, store.getStoreId());
@@ -42,7 +42,7 @@ public class StoreUsersDAL implements StoreUsersDAO {
 		return existingStore;
 
 	}
-
+   //Getting all Active Stores
 	@Transactional
 	public List<Store> getAllActiveStores() {
 		List<Store> stores = entityManager.createQuery("SELECT s FROM Store s WHERE status = 'Active'").getResultList();

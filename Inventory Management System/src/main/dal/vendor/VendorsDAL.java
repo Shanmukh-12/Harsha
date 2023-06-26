@@ -18,7 +18,7 @@ public class VendorsDAL implements VendorsDAO {
 
 	@PersistenceContext
 	private EntityManager entityManager;
-
+   //Saving Vendor Information
 	@Transactional
 	public Vendor saveVendor(Vendor vendor) {
 		try {
@@ -29,7 +29,7 @@ public class VendorsDAL implements VendorsDAO {
 			throw new IllegalArgumentException("Vendor with the same unique key already exists.");
 		}
 	}
-
+   //Getting all Vendors
 	@Transactional
 	public List<Vendor> getAllVendors() {
 		List<Vendor> l = entityManager.createQuery("SELECT v FROM Vendor v").getResultList();
@@ -38,13 +38,13 @@ public class VendorsDAL implements VendorsDAO {
 		// }
 		return l;
 	}
-
+   //Getting Vendor Data Based on Id
 	@Transactional
 	public Vendor getVendorData(VendorId v) {
 		Vendor getVendor = entityManager.find(Vendor.class, v.getVendorId());
 		return getVendor;
 	}
-
+   //Updating the Vendor Information
 	@Transactional
 	public Vendor updateVendor(Vendor vendor) {
 		Vendor existingVendor = entityManager.find(Vendor.class, vendor.getVendorId());
@@ -58,7 +58,7 @@ public class VendorsDAL implements VendorsDAO {
 			return null;
 		}
 	}
-
+   //Soft deleting the Vendor 
 	@Transactional
 	public Vendor deleteVendor(VendorId vendor) {
 		System.out.println("Inside delete vendoe dao");

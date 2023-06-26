@@ -16,7 +16,7 @@ public class ProductsCategoryDAL implements ProductCategoryDAO {
 
 	@PersistenceContext
 	private EntityManager entityManager;
-
+    //Getting Product Category Information ID,Name
 	@Transactional
 	public List<ProductsCategory> getProductCategories() {
 		List<ProductsCategory> l = entityManager.createQuery("SELECT v FROM ProductsCategory v").getResultList();
