@@ -10,21 +10,17 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "im_hsn_code")
 public class HSNEntityModel {
+	@Override
+	public String toString() {
+		return "HSNEntityModel [HSNcode=" + HSNcode + ", gst=" + gst + "]";
+	}
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "hsn_code")
-	private int HSNCode;
+	private int HSNcode;
 
 	@Column(name = "gst")
 	private double gst;
-
-	public int getHSNCode() {
-		return HSNCode;
-	}
-
-	public void setHSNCode(int hSNCode) {
-		HSNCode = hSNCode;
-	}
 
 	public double getGst() {
 		return gst;
@@ -34,9 +30,25 @@ public class HSNEntityModel {
 		this.gst = gst;
 	}
 
-	@Override
-	public String toString() {
-		return "HSNEntityModel [HSNCode=" + HSNCode + ", gst=" + gst + "]";
+	public int getHSNcode() {
+		return HSNcode;
 	}
+
+	public void setHSNcode(int hSNode) {
+		HSNcode = hSNode;
+	}
+
+	public HSNEntityModel(int hSNode, double gst) {
+		super();
+		HSNcode = hSNode;
+		this.gst = gst;
+	}
+
+	public HSNEntityModel() {
+		super();
+	}
+	
+
+	
 
 }

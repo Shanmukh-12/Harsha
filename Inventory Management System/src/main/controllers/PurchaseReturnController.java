@@ -34,6 +34,7 @@ public class PurchaseReturnController {
 
 	@Autowired
 	ProcurementService x;
+    //gets all purchase return ids based on filter entered
 
 	@RequestMapping(value = "/getPurchaseReturnsList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
@@ -48,6 +49,7 @@ public class PurchaseReturnController {
 		return ob.writeValueAsString(s);
 
 	}
+    //gets all purchase return ids and addditional details based on filter entered
 
 	@RequestMapping(value = "/getPurchaseReturnsListDetails", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
@@ -63,6 +65,7 @@ public class PurchaseReturnController {
 		return ob.writeValueAsString(s);
 
 	}
+    //gets all purchase return id  details based on purchase id entered
 
 	@RequestMapping(value = "/getPurchaseReturnsListDetailsById", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
@@ -76,6 +79,7 @@ public class PurchaseReturnController {
 		return ob.writeValueAsString(s);
 
 	}
+    //gets all products under purchase return id taking purchase id as input
 
 	@RequestMapping(value = "/getPurchaseReturnProducts", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
@@ -90,6 +94,7 @@ public class PurchaseReturnController {
 
 	}
 
+	//create purchase return taking all products to be returned as input
 	@RequestMapping(value = "/makePurchaseReturn", method = RequestMethod.POST)
 	@ResponseBody
 	public String makePurchseOrder(@RequestBody String json, Model m) throws JsonProcessingException {

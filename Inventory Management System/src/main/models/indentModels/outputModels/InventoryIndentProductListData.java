@@ -1,7 +1,7 @@
 package main.models.indentModels.outputModels;
 
 
-public class ProcurementIndentProductListData {
+public class InventoryIndentProductListData {
 
 	int productId;
 	String productName;
@@ -12,11 +12,11 @@ public class ProcurementIndentProductListData {
 		return productId;
 	}
 
-	public ProcurementIndentProductListData() {
+	public InventoryIndentProductListData() {
 		super();
 	}
 
-	public ProcurementIndentProductListData(int productId, String productName, String productCategoryName, int quantity) {
+	public InventoryIndentProductListData(int productId, String productName, String productCategoryName, int quantity) {
 		super();
 		this.productId = productId;
 		this.productName = productName;

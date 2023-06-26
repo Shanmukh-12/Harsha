@@ -293,8 +293,8 @@
           var data = { "indentId": indentId };
           console.log(data);
           $.ajax({
-              url: "getProcurementIndentProductsList",
-              method: "post",
+              url: "getInventoryIndentProductsListData",
+              method: "get",
               dataType:"json",
               data:{"indentId":JSON.stringify(data)},
               success: function (response) {
@@ -304,6 +304,7 @@
               },
               error: function () {
                   console.log("Failed to load static page");
+                  console.log(this.url);
               }
           });
       }

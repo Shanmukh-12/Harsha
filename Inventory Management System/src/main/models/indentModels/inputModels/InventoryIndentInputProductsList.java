@@ -1,12 +1,12 @@
 package main.models.indentModels.inputModels;
 
-public class ProcurementIndentInputProductsList {
+public class InventoryIndentInputProductsList {
 
 	int indentID;
 	int productId;
 	int quantity;
 
-	ProcurementIndentsInputList pil;
+	InventoryIndentsInputList pil;
 
 	public int getIndentID() {
 		return indentID;
@@ -32,11 +32,11 @@ public class ProcurementIndentInputProductsList {
 		this.quantity = quantity;
 	}
 
-	public ProcurementIndentsInputList getSil() {
+	public InventoryIndentsInputList getSil() {
 		return pil;
 	}
 
-	public void setSil(ProcurementIndentsInputList pil) {
+	public void setSil(InventoryIndentsInputList pil) {
 		this.pil = pil;
 	}
 

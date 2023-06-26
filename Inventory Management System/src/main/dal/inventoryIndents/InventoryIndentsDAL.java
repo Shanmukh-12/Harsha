@@ -1,4 +1,4 @@
-package main.dal.indents;
+package main.dal.inventoryIndents;
 
 import java.util.List;
 
@@ -9,57 +9,57 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Component;
 
-import main.models.indentModels.entities.ProcurementIndentProductsList;
-import main.models.indentModels.entities.ProcurementIndentsList;
+import main.dao.inventoryIndents.InventoryIndentsDAO;
+import main.models.indentModels.entities.InventoryIndentProductsList;
+import main.models.indentModels.entities.InventoryIndentsList;
 import main.models.indentModels.inputModels.FilterInput;
 import main.models.indentModels.outputModels.FilteredIndent;
-import main.models.indentModels.outputModels.ProcurementIndentProductListData;
+import main.models.indentModels.outputModels.InventoryIndentProductListData;
 import main.models.storeModels.inputmodels.IndentId;
-
 @Component
-public class IndentsDAL {
+public class InventoryIndentsDAL implements InventoryIndentsDAO {
 
 	@PersistenceContext
 	private EntityManager entityManager;
 
 	@Transactional
-	public boolean saveProcurementIndent(ProcurementIndentsList procurementIndentsList) {
+	public boolean saveInventoryIndent(InventoryIndentsList inventoryIndentsList) {
 		System.out.println("Inside storeIndentsDao");
-		System.out.println(procurementIndentsList);
-		entityManager.persist(procurementIndentsList);
-		List<ProcurementIndentProductsList> pipl;
-		pipl = procurementIndentsList.getProductsList();
-		for (ProcurementIndentProductsList s : pipl) {
-			s.setIndentID(procurementIndentsList.getIndentID());
+		System.out.println(inventoryIndentsList);
+		entityManager.persist(inventoryIndentsList);
+		List<InventoryIndentProductsList> pipl;
+		pipl = inventoryIndentsList.getProductsList();
+		for (InventoryIndentProductsList s : pipl) {
+			s.setIndentID(inventoryIndentsList.getIndentID());
 			System.out.println(s);
 			entityManager.persist(s);
 		}
-		System.out.println(procurementIndentsList);
+		System.out.println(inventoryIndentsList);
 		return true;
 	}
 
 	@Transactional
-	public List<ProcurementIndentsList> getAllIndents() {
-		List<ProcurementIndentsList> l = entityManager.createQuery("SELECT v FROM ProcurementIndentsList v")
+	public List<InventoryIndentsList> getAllIndents() {
+		List<InventoryIndentsList> l = entityManager.createQuery("SELECT v FROM InventoryIndentsList v")
 				.getResultList();
-		for (ProcurementIndentsList v : l) {
+		for (InventoryIndentsList v : l) {
 			System.out.println(v.toString());
 		}
 		return l;
 	}
 
 	@Transactional
-	public List<ProcurementIndentProductListData> getProcurementIndentProductsList(IndentId indentid) {
+	public List<InventoryIndentProductListData> getInventoryIndentProductsList(IndentId indentid) {
 		int data = indentid.getIndentId();
 		System.out.println(data);
-		List<ProcurementIndentProductListData> s = entityManager.createQuery(
-				"SELECT NEW main.models.indentModels.outputModels.ProcurementIndentProductListData(e.productId, p.productName, pc.productCategoryName, e.quantity) "
-						+ "FROM ProcurementIndentProductsList e "
+		List<InventoryIndentProductListData> s = entityManager.createQuery(
+				"SELECT NEW main.models.indentModels.outputModels.InventoryIndentProductListData(e.productId, p.productName, pc.productCategoryName, e.quantity) "
+						+ "FROM InventoryIndentProductsList e "
 						+ "JOIN main.models.productModels.entities.Products p ON e.productId = p.productId "
 						+ "JOIN main.models.productModels.entities.ProductsCategory pc ON p.category = pc.productCategoryId "
 						+ "WHERE e.indentID = :data",
-				ProcurementIndentProductListData.class).setParameter("data", data).getResultList();
-		for (ProcurementIndentProductListData p : s)
+				InventoryIndentProductListData.class).setParameter("data", data).getResultList();
+		for (InventoryIndentProductListData p : s)
 			System.out.println("Inside " + p);
 
 		return s;

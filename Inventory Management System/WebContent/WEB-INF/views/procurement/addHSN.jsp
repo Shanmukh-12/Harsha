@@ -68,13 +68,40 @@
 <label align="center">Add HSN</h4>
   <form>
     <label>HSN Code:</label>
-    <input type="number">
+    <input type="number" id="hsn">
     <br><br>
     <label>GST:</label>
-    <input type="numeric">
+    <input type="numeric" id="gst">
     <br><br>
-    <input type="button" value="Submit">
+    <input type="button" value="Submit" onclick="submitForm()">
   </form>
  </div>
 </body>
 </html>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  function submitForm() {
+    event.preventDefault(); // Prevent the form from submitting normally
+
+    // Get the HSN and GST values from the input fields
+    var HSNcode = $('#hsn').val();
+    var gst = $('#gst').val();
+
+    // Create a URL-encoded string with the data
+    var data = 'HSNcode=' + encodeURIComponent(HSNcode) + '&gst=' + encodeURIComponent(gst);
+
+    // Send an AJAX POST request
+    $.ajax({
+      type: 'GET',
+      url: 'createHSN',
+      data: data,
+      success: function(response) {
+        alert("added successfully");
+      },
+      error: function(xhr, status, error) {
+        // Handle the error here, if needed
+        console.log(error);
+      }
+    });
+  }
+</script>

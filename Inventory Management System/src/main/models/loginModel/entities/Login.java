@@ -1,5 +1,6 @@
 package main.models.loginModel.entities;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -8,8 +9,11 @@ import javax.persistence.Table;
 @Table(name = "im_users")
 public class Login {
 	@Id
+	@Column(name="user_name")
 	private String username;
+	@Column(name="user_password")
 	private String password;
+	@Column(name="user_type")
 	private String userType;
 
 	public String getUsername() {
