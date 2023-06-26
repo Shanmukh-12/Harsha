@@ -22,15 +22,22 @@ public class Im_Purchase_Order_Products implements Serializable {
 	@Id
 	@Column(name = "purchase_order_id")
 	int purchase_order_id;
+
 	@Id
 	@Column(name = "product_id")
 	int product_id;
+
 	@Column(name = "purchase_order_quantity")
 	int purchase_order_quantity;
+
 	@Column(name = "negotiation_price")
 	BigDecimal negotiation_price;
+
 	@Column(name = "quantity_received")
 	int quantity_received;
+
+	@Column(name = "status")
+	String status = "Active";
 
 	@ManyToOne(fetch = FetchType.LAZY)
 
@@ -42,7 +49,7 @@ public class Im_Purchase_Order_Products implements Serializable {
 	public String toString() {
 		return "Im_Purchase_Order_Products [purchase_order_id=" + purchase_order_id + ", product_id=" + product_id
 				+ ", purchase_order_quantity=" + purchase_order_quantity + ", negotiation_price=" + negotiation_price
-				+ ", quantity_received=" + quantity_received + "]";
+				+ ", quantity_received=" + quantity_received + ", status=" + status + "]";
 	}
 
 	public int getPurchase_order_id() {
@@ -85,6 +92,14 @@ public class Im_Purchase_Order_Products implements Serializable {
 		this.quantity_received = quantity_received;
 	}
 
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	public Im_Purchase_Order getParent() {
 		return parent;
 	}
@@ -94,13 +109,14 @@ public class Im_Purchase_Order_Products implements Serializable {
 	}
 
 	public Im_Purchase_Order_Products(int purchase_order_id, int product_id, int purchase_order_quantity,
-			BigDecimal negotiation_price, int quantity_received, Im_Purchase_Order parent) {
+			BigDecimal negotiation_price, int quantity_received, String status, Im_Purchase_Order parent) {
 		super();
 		this.purchase_order_id = purchase_order_id;
 		this.product_id = product_id;
 		this.purchase_order_quantity = purchase_order_quantity;
 		this.negotiation_price = negotiation_price;
 		this.quantity_received = quantity_received;
+		this.status = status;
 		this.parent = parent;
 	}
 
