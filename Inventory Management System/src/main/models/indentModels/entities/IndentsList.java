@@ -2,13 +2,11 @@ package main.models.indentModels.entities;
 
 import java.time.LocalDate;
 
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
 import javax.persistence.Table;
 
 @Entity
@@ -24,8 +22,7 @@ public class IndentsList {
 	LocalDate d;
 
 	@Column(name = "indents_status")
-	String indentsStatus;
-
+	String indentsStatus = "Active";
 
 	public int getIndentID() {
 		return indentID;
@@ -34,7 +31,6 @@ public class IndentsList {
 	public void setIndentID(int indentID) {
 		this.indentID = indentID;
 	}
-
 
 	public LocalDate getD() {
 		return d;
@@ -56,7 +52,5 @@ public class IndentsList {
 	public String toString() {
 		return "ProcurementIndentsList [indentID=" + indentID + ", d=" + d + ", indentsStatus=" + indentsStatus + "]";
 	}
-
-
 
 }

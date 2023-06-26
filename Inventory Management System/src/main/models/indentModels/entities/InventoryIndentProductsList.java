@@ -22,6 +22,23 @@ public class InventoryIndentProductsList implements Serializable {
 	int productId;
 	@Column(name = "indents_products_quantity")
 	int quantity;
+	@Column(name = "indents_products_status")
+	String status = "Active";
+
+	public InventoryIndentProductsList() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public InventoryIndentProductsList(int indentID, int productId, int quantity, String status,
+			InventoryIndentsList pil) {
+		super();
+		this.indentID = indentID;
+		this.productId = productId;
+		this.quantity = quantity;
+		this.status = status;
+		this.pil = pil;
+	}
 
 	@ManyToOne
 	@JoinColumn(name = "indents_id", referencedColumnName = "indents_id", insertable = false, updatable = false)
@@ -51,18 +68,30 @@ public class InventoryIndentProductsList implements Serializable {
 		this.quantity = quantity;
 	}
 
-	public InventoryIndentsList getSil() {
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public InventoryIndentsList getPil() {
 		return pil;
 	}
 
-	public void setSil(InventoryIndentsList sil) {
-		this.pil = sil;
+	public void setPil(InventoryIndentsList pil) {
+		this.pil = pil;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 	@Override
 	public String toString() {
-		return "ProcurementIndentProductsList [indentID=" + indentID + ", productId=" + productId + ", quantity="
-				+ quantity + "]";
+		return "InventoryIndentProductsList [indentID=" + indentID + ", productId=" + productId + ", quantity="
+				+ quantity + ", status=" + status + "]";
 	}
 
 }

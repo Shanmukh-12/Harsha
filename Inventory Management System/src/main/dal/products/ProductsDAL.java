@@ -22,7 +22,8 @@ public class ProductsDAL implements ProductsDAO {
 
 	@PersistenceContext
 	private EntityManager entityManager;
-    //Getting Product Information Based on Category Id
+
+	// Getting Product Information Based on Category Id
 	@Transactional
 	public List<ProductStockData> getProductsByCategory(int categoryId) {
 		String queryString = "SELECT new main.models.productModels.outputModels.ProductStockData(p.productId,p.productName,ps.batchNo,ps.productStock,p.productReorderLevel,p.productHsnCode,ps.productSalePrice,ps.productMrp,ps.productCost) FROM Products p JOIN  p.productStocks ps  WHERE p.category = :categoryId";
@@ -56,13 +57,13 @@ public class ProductsDAL implements ProductsDAO {
 	@Override
 	public List<ProductsReOrderList> getReOrderLevelProducts() {
 		String queryString = "SELECT new main.models.productModels.outputModels.ProductsReOrderList(p.productId, p.productName, p.productReorderLevel, SUM(ps.productStock) as sumOfProducts) "
-		        + "FROM Products p "
-		        + "JOIN ProductStock ps ON p.productId = ps.productId "
-		        + "GROUP BY p.productId, p.productName, p.productReorderLevel "
-		        + "HAVING p.productReorderLevel >= SUM(ps.productStock)";
+				+ "FROM Products p " + "JOIN ProductStock ps ON p.productId = ps.productId "
+				+ "WHERE p.productStatus ='Active'" + "GROUP BY p.productId, p.productName, p.productReorderLevel "
+				+ "HAVING p.productReorderLevel >= SUM(ps.productStock)";
 		TypedQuery<ProductsReOrderList> query = entityManager.createQuery(queryString, ProductsReOrderList.class);
 		return query.getResultList();
 	}
+
 	@Transactional
 	public boolean saveCategory(ProductsCategory productsCategory) {
 		entityManager.persist(productsCategory);
