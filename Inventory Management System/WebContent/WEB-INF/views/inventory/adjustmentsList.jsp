@@ -260,7 +260,7 @@
 
 		        $('#product-category-dropdown').append($('<option value="" selected disabled >Select Product Category</option>'));
 		        
-		        // Add options based on the response
+		       
 		        response.forEach(function(item) {
 		        	 $('<option>', {
 		        		    value: item.productCategoryId,
@@ -279,7 +279,7 @@
 			
 			
 		   	$.ajax({
-		   	     url :"getProductStockData",
+		   	     url :"getProductsIds",
 		   	     method :"post",
 		   	  data:{
 		   	    	
@@ -288,7 +288,7 @@
           success: function (response) {
         	  console.log(response);
         	  $('#product-name-dropdown').empty();
-        	  $('#product-name-dropdown').append($('<option value="" selected >Select Product</option>'));
+        	  $('#product-name-dropdown').append($('<option value="" selected disabled >Select Product</option>'));
        		 $.each(response, function(index, product) {
                  var option = '<option value="' + product.productId + '">' + product.productName + '</option>';
                  $('#product-name-dropdown').append(option);
@@ -300,10 +300,9 @@
    
    var currentDate = new Date();
 
-	// Format the date as YYYY-MM-DD
+	
 	var formattedDate = currentDate.toISOString().split("T")[0];
 
-	// Set the max attribute to the date with one day added
 	document.getElementById("adjustment-date-dropdown-to").setAttribute("max", formattedDate);
 	document.getElementById("adjustment-date-dropdown-from").setAttribute("max", formattedDate);
 
@@ -311,14 +310,14 @@
 	   document.getElementById("adjustment-date-dropdown-to").setAttribute("value", formattedDate);
 
  
-    </script>
+</script>
 </head>
 <body>
 <form method=post onsubmit="filterData(); return false">
 	<div class="dropdowns">
 		<div class="twoDropdowns">
 			<div class="dropdown">
-				<select id="product-category-dropdown" required>
+				<select id="product-category-dropdown" >
 				
 				
 				</select>
@@ -373,7 +372,7 @@
     </div>
 </form>
 
-<!-- Modal -->
+
 <div class="modal fade" id="productsModal" tabindex="-1" aria-labelledby="productsModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" style="max-width: calc(100% - 200px);">
         <div class="modal-content">
@@ -382,7 +381,7 @@
                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="modalContent">
-                <!-- Modal content will be loaded dynamically here -->
+               
             </div>
         </div>
     </div>

@@ -6,6 +6,7 @@ import main.models.productModels.dto.ProductProfit;
 import main.models.productModels.entities.HSNEntityModel;
 import main.models.productModels.entities.ProductsCategory;
 import main.models.productModels.inputModels.ProductsProductIdInputModel;
+import main.models.productModels.outputModels.ProductIdListOutput;
 import main.models.productModels.outputModels.ProductStockData;
 import main.models.productModels.outputModels.ProductsReOrderList;
 
@@ -14,6 +15,8 @@ public interface ProductsDAO {
 	public List<ProductsReOrderList> getReOrderLevelProducts();
 
 	public List<ProductStockData> getProductsByCategory(int selectedCategoryId);
+
+	public List<ProductIdListOutput> getProductsByCategoryId(int selectedCategoryId);
 
 	public List<ProductStockData> getProductsByProductId(int selectedProductId);
 

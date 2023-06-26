@@ -236,10 +236,9 @@
       return true;
     }
     function addProduct() {
-        validateProductName();
-        validateOriginalStock();
-        validateCurrentStock();
-        validateReason();
+       if(validateForm()){
+    	   
+       
 
       
 
@@ -281,6 +280,7 @@
         document.getElementById("originalstockid").value = "";
         document.getElementById("currentstockid").value = "";
         document.getElementById("reasonid").value = "";
+       }
       }
 
       function deleteProduct(button) {
@@ -293,6 +293,9 @@
       	     url :"getProductCategories",
       	     method :"post",
       	   success : function(data) {
+      		 $('#productcategoryid').empty();
+      		var option = '<option selected disabled>' + "select Category" + '</option>';
+      		$('#productcategoryid').append(option);
                $.each(data, function(index, category) {
                    var option = '<option value="' + category.productCategoryId + '">' + category.productCategoryName + '</option>';
                    $('#productcategoryid').append(option);
@@ -308,7 +311,7 @@
         $("#productcategoryid").change(function() {
         	
             $.ajax({
-                url : "getProductStockData",
+                url : "getProductsIds",
                 method : "post",
                 data:{
                 	
@@ -317,7 +320,7 @@
                 },
                 success: function(data) {
                     $('#productnameid').empty();
-                    var option = '<option >' + "select Product" + '</option>';
+                    var option = '<option selected disabled>' + "select Product" + '</option>';
                     $('#productnameid').append(option);
                     $.each(data, function(index, products) {
                         var option = '<option value="' + products.productId + '">' + products.productName + '</option>';
@@ -339,7 +342,7 @@
                 },
                 success: function(data) {
                     $('#batchnoid').empty();
-                    var option = '<option >' + "select batchNo" + '</option>';
+                    var option = '<option selected disabled>' + "select batchNo" + '</option>';
                     $('#batchnoid').append(option);
                     $.each(data, function(index, batches) {
                     	
@@ -435,7 +438,7 @@
    <form onsubmit="return validateForm()">
     <label for="productcategoryid">Product Category:</label>
     <select id="productcategoryid" name="ProductCategory" onblur="validateProductCategory()">
-      <option value="">Select Category</option>
+      <option value="" >Select Category</option>
 
     </select>
     <span id="productcategory-error" class="error-message"></span>
@@ -454,7 +457,7 @@
     <span id="batchno-error" class="error-message"></span>
     
     <label for="originalstockid">Original Stock:</label>
-    <input type="text" id="originalstockid" name="OriginalStock" onblur="validateOriginalStock()">
+    <input type="text" id="originalstockid" name="OriginalStock" onblur="validateOriginalStock()" readonly>
     <span id="originalstock-error" class="error-message"></span>
     
     <label for="currentstockid">Current Stock:</label>

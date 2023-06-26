@@ -194,7 +194,7 @@
            	    <%-- var storeId = $('<span class="label">Store ID:</span><span>' + indent.storeId + '</span>');
            	       var indentId = $('<span class="label">Status:</span><span>' + indent.indentStatus + '</span>'); --%>
            	       var priceReviewDate = $('<span class="label">Adjustment Date:</span><span>' + new Date(priceReview.pr_date[0], priceReview.pr_date[1] - 1, priceReview.pr_date[2]).toLocaleDateString() + '</span>');
-           	       var viewProductsButton = $('<button type="button" class="btn-issues" onclick="loadAdjustmentsProducts(\'' + priceReview.pr_id + '\')">View Products</button>');
+           	       var viewProductsButton = $('<button type="button" class="btn-issues" onclick="loadPriceReviewProducts(\'' + priceReview.pr_id + '\')">View Products</button>');
 
            	       issueDetails.append( priceReviewDate);
            	       issueBlock.append(status, issueDetails, viewProductsButton);
@@ -262,7 +262,7 @@
  			
  			
  		   	$.ajax({
- 		   	     url :"getProductStockData",
+ 		   	     url :"getProductsIds",
  		   	     method :"post",
  		   	  data:{
  		   	    	
@@ -271,7 +271,7 @@
            success: function (response) {
          	  console.log(response);
          	  $('#product-name-dropdown').empty();
-         	  $('#product-name-dropdown').append($('<option value="" selected >Select Product</option>'));
+         	  $('#product-name-dropdown').append($('<option value="" selected disabled >Select Product</option>'));
         		 $.each(response, function(index, product) {
                   var option = '<option value="' + product.productId + '">' + product.productName + '</option>';
                   $('#product-name-dropdown').append(option);
@@ -307,7 +307,7 @@
 	<div class="dropdowns">
 		<div class="twoDropdowns">
 			<div class="dropdown">
-				<select id="product-category-dropdown" required>
+				<select id="product-category-dropdown" >
 				
 				
 				</select>

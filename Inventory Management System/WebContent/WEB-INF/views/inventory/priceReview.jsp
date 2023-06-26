@@ -197,14 +197,17 @@
     }
     
     function validateModifiedCost() {
-      var modifiedCost = document.getElementById("modifiedcostid").value;
-      var errorElement = document.getElementById("modifiedcost-error");
+    	var modifiedCost = document.getElementById("modifiedcostid").value;
+    	  var maxRetailPrice = document.getElementById("maxretailpriceid").value;
+    	  var errorElement = document.getElementById("modifiedcost-error");
       
       if (modifiedCost === "") {
-        errorElement.innerText = "Please enter the Modified Cost";
-      } else {
-        errorElement.innerText = "";
-      }
+    	    errorElement.innerText = "Please enter the Modified Cost";
+    	  } else if (parseFloat(modifiedCost) > parseFloat(maxRetailPrice)) {
+    	    errorElement.innerText = "Modified Cost cannot be greater than Maximum Retail Price";
+    	  } else {
+    	    errorElement.innerText = "";
+    	  }
     }
     
     function validateReason() {
@@ -238,11 +241,10 @@
     }
     
     function addProduct() {
-        validateProductName();
-        validateOriginalCost();
-        validateModifiedCost();
-        validateReason();
-
+    
+    	if(validateForm())
+    	{
+     
       
 
         // Get input values
@@ -282,6 +284,7 @@
         document.getElementById("originalcostid").value = "";
         document.getElementById("modifiedcostid").value = "";
         document.getElementById("reasonid").value = "";
+    	}
       }
 
       function deleteProduct(button) {
@@ -311,7 +314,7 @@
           $("#productcategoryid").change(function() {
           	
               $.ajax({
-                  url : "getProductStockData",
+                  url : "getProductsIds",
                   method : "post",
                   data:{
                   	
@@ -320,7 +323,7 @@
                   },
                   success: function(data) {
                       $('#productnameid').empty();
-                      var option = '<option >' + "select Product" + '</option>';
+                      var option = '<option selected disabled>' + "select Product" + '</option>';
                       $('#productnameid').append(option);
                       $.each(data, function(index, products) {
                           var option = '<option value="' + products.productId + '">' + products.productName + '</option>';
@@ -342,7 +345,7 @@
                   },
                   success: function(data) {
                       $('#batchnoid').empty();
-                      var option = '<option >' + "select batchNo" + '</option>';
+                      var option = '<option selected disabled>' + "select batchNo" + '</option>';
                       $('#batchnoid').append(option);
                       $.each(data, function(index, batches) {
                       	
@@ -368,6 +371,7 @@
                   success : function(Price) {
                   	console.log("hi");
                   	$('#originalcostid').val(Price.costPrice);
+                  	$('#maxretailpriceid').val(Price.mrp);
                   },
                   error: function(error) {
                 	  alert('Error occurred while retrieving cost price');
@@ -375,6 +379,7 @@
               });
           });
           
+     
           function getTableData() {
         	  const table = document.getElementById('products-table');
         	  const tableData = [];
@@ -434,7 +439,7 @@
    <form onsubmit="return validateForm()">
     <label for="productcategoryid">Product Category:</label>
     <select id="productcategoryid" name="ProductCategory" onblur="validateProductCategory()">
-      <option value="">Select Category</option>
+      <option value="" selected disabled>Select Category</option>
 
     </select>
     <span id="productcategory-error" class="error-message"></span>
@@ -453,8 +458,12 @@
     <span id="batchno-error" class="error-message"></span>
     
     <label for="originalcostid">Original Cost:</label>
-    <input type="text" id="originalcostid" name="OriginalStock" onblur="validateOriginalCost()">
+    <input type="text" id="originalcostid" name="OriginalStock" onblur="validateOriginalCost()" readonly>
     <span id="originalcost-error" class="error-message"></span>
+    
+     <label for="maxretailpriceid">Maximum Retail Price(MRP):</label>
+    <input type="text" id="maxretailpriceid" name="MRP" readonly>
+    <span id="maxretailprice-error" class="error-message"></span>
     
     <label for="modifiedcostid">Modified Cost:</label>
     <input type="text" id="modifiedcostid" name="ModifiedCost" onblur="validateModifiedCost()">
