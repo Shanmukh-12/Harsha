@@ -86,5 +86,5 @@
 	<!-- enable the configuration of transactional behavior based on annotations -->
 	<tx:annotation-driven transaction-manager="transactionManager" />
     <beans:bean id="ProcurementDAO" class="main.dal.procurement.ProcurementDAL" autowire="byName"/>
-    
+      
 </beans:beans>

@@ -20,6 +20,7 @@ import main.dao.users.StoreUsersDAO;
 import main.models.storeModels.entities.Store;
 import main.models.storeModels.inputmodels.StoreId;
 import main.models.storeModels.inputmodels.StoreInfo;
+import main.models.storeModels.inputmodels.StoreStatus;
 import main.models.storeModels.outputmodels.StoreIds;
 
 @Controller
@@ -70,6 +71,13 @@ public class StoreControllers {
 	@GetMapping("/showStores")
 	public @ResponseBody List<Store> showStores() {
 		return storeDAO.getAllStores();
+	}
+
+	@PostMapping("/storeStatus")
+	public @ResponseBody List<Store> vendorStatus(StoreStatus storeStatus) {
+		System.out.println(storeStatus.toString());
+		List<Store> l = storeDAO.getActiveStores(storeStatus);
+		return l;
 	}
 
 	@GetMapping("/storeHome")
