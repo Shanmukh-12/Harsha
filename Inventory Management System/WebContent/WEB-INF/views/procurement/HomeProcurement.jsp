@@ -137,21 +137,7 @@ function ButtonAction(button) {
     var row = button.parentNode.parentNode;
     row.parentNode.removeChild(row);
   }
-function logout() {
-    $.ajax({
-        url: "logout",
-        method: "GET",
-        success: function(response) {
-            console.log("Logout successful");
-            console.log(response);
-            location.href= "/inventory/";
-        },
-        error: function() {
-            console.log("Logout error");
-        }
-    });
-}
-  
+ 
 $("document").ready(
 		function()
 		{
@@ -319,6 +305,21 @@ $("document").ready(
             }
         });
     }
+    
+    function indentsFunction(controllerUrl) {
+            $.ajax({
+                url: controllerUrl,
+                method: "POST",
+                success: function(response) {
+                    $("#content").html(response);
+                },
+                error: function() {
+                    console.log("AJAX call error");
+                }
+            });  
+        
+    }
+   
 </script>
 
 <body>
@@ -333,7 +334,7 @@ $("document").ready(
                         <i class="fas fa-project-diagram me-2"></i>WareHouse Stock
                     </button>
                     <button  class="list-group-item list-group-item-action bg-transparent second-text fw-bold"
-                        id="indents" onclick="Myfunction('indents')"><i class="fas fa-chart-line me-2"></i>Indents</button>
+                        id="indents" onclick="indentsFunction('indentsButton')"><i class="fas fa-chart-line me-2"></i>Indents</button>
                     <button  class="list-group-item list-group-item-action bg-transparent second-text fw-bold dropdown-toggle"
                         role="button" id="purchaseDropdown" data-bs-toggle="dropdown" aria-expanded="false"><i
                             class="fas fa-gift me-2"></i>Purchases</button>
