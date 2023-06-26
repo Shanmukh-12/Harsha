@@ -107,61 +107,6 @@ select, button, #searchInput, input {
 	    var indentStatus = document.getElementById("indent-status-dropdown").value;
 	    var fromDate = document.getElementById("indent-date-dropdown-from").value;
 	    var toDate = document.getElementById("indent-date-dropdown-to").value;
-	    var url = null;
-		if(storeId)
-		{
-			if(indentStatus)
-			{
-				if(fromDate)
-				{
-					url="getFilterDataIdStatusFrom";				
-				}
-				else
-				{
-					url="getFilterDataIdStatus";
-				}
-			}
-			else
-			{
-				if(fromDate)
-				{
-					url="getFilterDataIdFrom";
-				}
-				else
-				{
-					url="getFilterDataId";
-				}
-				
-			}
-		}
-		else
-		{
-			if(indentStatus)
-			{
-				if(fromDate)
-				{
-					url="getFilterDataStatusFrom";				
-				}
-				else
-				{
-					url="getFilterDataStatus";
-				}
-			}
-			else
-			{
-				if(fromDate)
-				{
-					url="getFilterDataFrom";
-				}
-				else
-				{
-					console.log("TO only");
-					url="getFilterDataTo";
-				}
-				
-			}
-			
-		}
 		console.log(storeId);
 		console.log(indentStatus);
 		console.log(fromDate);
@@ -169,7 +114,7 @@ select, button, #searchInput, input {
 		console.log(url);
 	    $.ajax({
 			
-	    	url:url,
+	    	url:"getIndentsByFilterData",
 	    	method:"POST",
 	    	dataType:"json",
 	    	data:{
@@ -208,7 +153,10 @@ select, button, #searchInput, input {
 	    		      $('.container').append(issueBlock);
 	    		    });
 	    		  }
-	    		}
+	    		},
+	    	error:function(){
+	    		console.log("Error");
+	    	}
 	       });
 	}
 	
