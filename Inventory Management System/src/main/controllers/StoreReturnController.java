@@ -26,59 +26,64 @@ import main.models.storeReturnsModels.outputModels.StoreReturnsDataOutput;
 public class StoreReturnController {
 
 	@Autowired
-	StoreReturnsDao storeReturnsDao;
+	StoreReturnsDao storeReturnsDao; // Autowired dependency for StoreReturnsDao
 
 	@Autowired
-	ModelMapper modelMapper;
-	ObjectMapper objectMapper = new ObjectMapper();
+	ModelMapper modelMapper; // Autowired dependency for ModelMapper
+
+	ObjectMapper objectMapper = new ObjectMapper(); // Creating an instance of ObjectMapper
 
 	@PostMapping("/getStoreReturnsList")
+	// Retrieves the list of store returns
 	public @ResponseBody List<StoreReturnsDataOutput> getStoreReturnsList(Model m) {
-		System.out.println("Returns");
-		List<StoreReturnsDataOutput> sl = storeReturnsDao.getStoreReturnsList();
-		/*
-		 * List<StoreReturnsDataOutput> res = new ArrayList<>(); for (StoreReturnsData s : sl) {
-		 * res.add(modelMapper.map(s, StoreReturnsDataOutput.class)); System.out.println(s); }
-		 */ return sl;
+
+		// Fetching store returns list
+		List<StoreReturnsDataOutput> storeReturns = storeReturnsDao.getStoreReturnsList();
+
+		// Returning the list of StoreReturnsDataOutput
+		return storeReturns;
 	}
 
 	@PostMapping("/getStoreReturnProductsList")
+	// Retrieves the list of store return products based on returnId and adds it to the model attribute
 	public String getStoreIndentProductsList(String returnId, Model m) {
-		System.out.println(returnId);
 		ReturnId returnid = null;
 		try {
+			// Converting the input data to input model
 			returnid = objectMapper.readValue(returnId, ReturnId.class);
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
 
+		// Fetching store return products list based on returnid
 		List<StoreReturnProductsList> storeReturnProductsList = storeReturnsDao.getStoreReturnsProductsList(returnid);
-
 		List<StoreReturnProducts> storeReturnProducts = new ArrayList();
-		for (StoreReturnProductsList s : storeReturnProductsList)
-			storeReturnProducts.add(modelMapper.map(s, StoreReturnProducts.class));
 
+		// converting entity to output model
+		for (StoreReturnProductsList product : storeReturnProductsList) {
+			storeReturnProducts.add(modelMapper.map(product, StoreReturnProducts.class));
+		}
+
+		// Adding the storeReturnProducts to the model attribute
 		m.addAttribute("productsList", storeReturnProducts);
-
-		for (StoreReturnProductsList s : storeReturnProductsList)
-			System.out.println(s);
 
 		return "store/storeReturnProducts";
 	}
 
 	@PostMapping("/newCreateStoreReturn")
+	// Creates a new store return using the provided data
 	public String createStoreReturn(@RequestBody String data, Model m) {
-		System.out.println("Inside");
-		System.out.println(data);
 		StoreReturns storeReturns = null;
 		try {
+			// converting input data to StoreReturns object
 			storeReturns = objectMapper.readValue(data, StoreReturns.class);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		// Mapping input model data to output model using modelMapper
 		StoreReturnsList storeReturnsList = modelMapper.map(storeReturns, StoreReturnsList.class);
 
-		System.out.println(storeReturnsList);
+		// Saving the storeReturnsList object to the database
 		storeReturnsDao.saveStoreReturns(storeReturnsList);
 		return "store/createStoreReturn";
 	}

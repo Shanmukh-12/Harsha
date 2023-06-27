@@ -24,52 +24,69 @@ public class StoreReturnsDal implements StoreReturnsDao {
 
 	@Override
 	@Transactional
+	// Returns the recent 5 store returns
 	public List<StoreReturnsDataOutput> getStoreReturnsList() {
 
-		List<StoreReturnsDataOutput> al = entityManager.createQuery(
+		List<StoreReturnsDataOutput> storeReturns = entityManager.createQuery(
 				"select new main.models.storeReturnsModels.outputModels.StoreReturnsDataOutput(e.returnId,s.storeId,e.date,e.storeIssueId) "
 						+ "from StoreReturnsData e  "
 						+ "Join main.models.storeIssueModels.entities.StoreIssueData s on e.storeIssueId = s.storeIssueId "
 						+ "ORDER BY e.storeIssueId DESC")
 				.setMaxResults(5).getResultList();
-		return al;
+		return storeReturns;
 	}
 
 	@Override
 	@Transactional
+	// Returns the list of storeReturn products
 	public List<StoreReturnProductsList> getStoreReturnsProductsList(ReturnId returnid) {
 		int data = returnid.getReturnId();
-		System.out.println(data);
-		List<StoreReturnProductsList> s = entityManager
+		List<StoreReturnProductsList> storeReturnProducts = entityManager
 				.createQuery("select e from StoreReturnProductsList e where e.returnId = :data",
 						StoreReturnProductsList.class)
 				.setParameter("data", data).getResultList();
-		return s;
+		return storeReturnProducts;
 	}
 
 	@Override
 	@Transactional
+	// Stores the input returns list to database
 	public boolean saveStoreReturns(StoreReturnsList storeReturnsList) {
-		System.out.println("Inside storeReturnsDao");
-		System.out.println(storeReturnsList);
-		entityManager.persist(storeReturnsList);
-		List<StoreReturnProductsList> sipl = storeReturnsList.getProductsList();
-		for (StoreReturnProductsList s : sipl) {
-			s.setReturnId(storeReturnsList.getReturnId());
-			entityManager.persist(s);
+		try {
+			// Persisting the Store Returns List to the database
+			entityManager.persist(storeReturnsList);
+			List<StoreReturnProductsList> storeReturnProductsList = storeReturnsList.getProductsList();
+			for (StoreReturnProductsList product : storeReturnProductsList) {
+				product.setReturnId(storeReturnsList.getReturnId());
+				entityManager.persist(product);
 
-			ProductStock ips = (ProductStock) entityManager
-					.createQuery("select s from ProductStock s where s.productId=:prodId and s.batchNo=:batchNo")
-					.setParameter("prodId", s.getProductId()).setParameter("batchNo", s.getBatchNo()).getSingleResult();
-			ips.setProductStock(ips.getProductStock() + s.getQuantity());
+				// persisting the store return products to the database
+				ProductStock productStock = (ProductStock) entityManager
+						.createQuery("select s from ProductStock s where s.productId=:prodId and s.batchNo=:batchNo")
+						.setParameter("prodId", product.getProductId()).setParameter("batchNo", product.getBatchNo())
+						.getSingleResult();
+				productStock.setProductStock(productStock.getProductStock() + product.getQuantity());
+			}
+			return true;
 		}
-		return true;
+		// Handling the exception
+		catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
+	/*
+	 * 
+	 * Store Returns filters
+	 * 
+	 */
+
 	@Override
+	// Filters data based on the storeId, fromDate and toDate
 	public List<StoreReturnsDataOutput> getStoreReturnsFilterDataIdFrom(StoreFilters storeFilters) {
 
-		List<StoreReturnsDataOutput> al = entityManager.createQuery(
+		List<StoreReturnsDataOutput> reutrnsData = entityManager.createQuery(
 				"select new main.models.storeReturnsModels.outputModels.StoreReturnsDataOutput(e.returnId,s.storeId,e.date,e.storeIssueId) "
 						+ "from StoreReturnsData e  "
 						+ "Join main.models.storeIssueModels.entities.StoreIssueData s on e.storeIssueId = s.storeIssueId "
@@ -77,43 +94,46 @@ public class StoreReturnsDal implements StoreReturnsDao {
 						+ "ORDER BY e.storeIssueId DESC")
 				.setParameter("id", storeFilters.getStoreId()).setParameter("fromDate", storeFilters.getFromDate())
 				.setParameter("toDate", storeFilters.getToDate()).getResultList();
-		return al;
+		return reutrnsData;
 
 	}
 
 	@Override
+	// Filters data based on the storeId and toDate
 	public List<StoreReturnsDataOutput> getStoreReturnsFilterDataId(StoreFilters storeFilters) {
-		List<StoreReturnsDataOutput> al = entityManager.createQuery(
+		List<StoreReturnsDataOutput> reutrnsData = entityManager.createQuery(
 				"select new main.models.storeReturnsModels.outputModels.StoreReturnsDataOutput(e.returnId,s.storeId,e.date,e.storeIssueId) "
 						+ "from StoreReturnsData e  "
 						+ "Join main.models.storeIssueModels.entities.StoreIssueData s on e.storeIssueId = s.storeIssueId "
 						+ "where s.storeId=:id and e.date <= :toDate " + "ORDER BY e.storeIssueId DESC")
 				.setParameter("id", storeFilters.getStoreId()).setParameter("toDate", storeFilters.getToDate())
 				.getResultList();
-		return al;
+		return reutrnsData;
 	}
 
 	@Override
+	// Filters data based on the fromDate and toDate
 	public List<StoreReturnsDataOutput> getStoreReturnsFilterDataFrom(StoreFilters storeFilters) {
-		List<StoreReturnsDataOutput> al = entityManager.createQuery(
+		List<StoreReturnsDataOutput> reutrnsData = entityManager.createQuery(
 				"select new main.models.storeReturnsModels.outputModels.StoreReturnsDataOutput(e.returnId,s.storeId,e.date,e.storeIssueId) "
 						+ "from StoreReturnsData e  "
 						+ "Join main.models.storeIssueModels.entities.StoreIssueData s on e.storeIssueId = s.storeIssueId "
 						+ "where e.date between :fromDate and :toDate " + "ORDER BY e.storeIssueId DESC")
 				.setParameter("fromDate", storeFilters.getFromDate()).setParameter("toDate", storeFilters.getToDate())
 				.getResultList();
-		return al;
+		return reutrnsData;
 	}
 
 	@Override
+	// Filters data based on toDate
 	public List<StoreReturnsDataOutput> getStoreReturnsFilterDataTo(StoreFilters storeFilters) {
-		List<StoreReturnsDataOutput> al = entityManager.createQuery(
+		List<StoreReturnsDataOutput> reutrnsData = entityManager.createQuery(
 				"select new main.models.storeReturnsModels.outputModels.StoreReturnsDataOutput(e.returnId,s.storeId,e.date,e.storeIssueId) "
 						+ "from StoreReturnsData e  "
 						+ "Join main.models.storeIssueModels.entities.StoreIssueData s on e.storeIssueId = s.storeIssueId "
 						+ "where e.date <= :toDate " + "ORDER BY e.storeIssueId DESC")
 				.setParameter("toDate", storeFilters.getToDate()).getResultList();
-		return al;
+		return reutrnsData;
 	}
 
 }

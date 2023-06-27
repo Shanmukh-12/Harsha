@@ -82,6 +82,12 @@
 	<beans:property name="packagesToScan" value="main.models.loginModel" />
 </beans:bean>
 
+<!-- CSS resource -->
+<mvc:resources mapping="storeHome/styles/**" location="/WEB-INF/styles/store/" />
+
+<!-- JavaScript resource -->
+<mvc:resources mapping="storeHome/scripts/**" location="/WEB-INF/scripts/store/" />
+
 
 	<!-- Transactions -->
 	<beans:bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
