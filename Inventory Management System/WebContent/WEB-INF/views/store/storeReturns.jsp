@@ -108,35 +108,13 @@ select, button, #searchInput, input {
 	    var fromDate = document.getElementById("return-date-dropdown-from").value;
 	    var toDate = document.getElementById("return-date-dropdown-to").value;
 	    var url = null;
-		if(storeId)
-		{
-			if(fromDate)
-			{
-				url="getStoreReturnsFilterDataIdFrom";
-			}
-			else
-			{
-				url="getStoreReturnsFilterDataId";
-			}
-		}
-		else
-		{
-			if(fromDate)
-			{
-				url="getStoreReturnsFilterDataFrom";				
-			}
-			else
-			{
-				url="getStoreReturnsFilterDataTo";
-			}			
-		}
 		console.log(storeId);
 		console.log(fromDate);
 		console.log(toDate);
 		console.log(url);
 	    $.ajax({
 			
-	    	url:url,
+	    	url:"getStoreReturnsDataBasedOnFilters",
 	    	method:"POST",
 	    	dataType:"json",
 	    	data:{
