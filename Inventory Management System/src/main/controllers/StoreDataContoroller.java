@@ -33,10 +33,10 @@ public class StoreDataContoroller {
 	// Creating an instance of ObjectMapper
 	ObjectMapper objectMapper = new ObjectMapper();
 
-	@PostMapping("/getStoreIds") 
-	//Listing the Store ids 
+	@PostMapping("/getStoreIds")
+	// Listing the Store ids
 	public @ResponseBody List<StoreIds> getStoreIds(Model m) {
-		
+
 		// Fetching list of stores from StoreIndentsDao
 		List<Store> storeIds = storeIndentsDao.getStoreIds();
 		List<StoreIds> storeIdsList = new ArrayList();
@@ -48,17 +48,11 @@ public class StoreDataContoroller {
 		// Returning the list of StoreIds
 		return storeIdsList;
 	}
-	
-	
-	
-	
-	
 
 	@PostMapping("/getIndentsByFilterData")
-	public @ResponseBody List<StoreIndentData> getIndentsByFilterData(String filters, Model m)
-	{
+	public @ResponseBody List<StoreIndentData> getIndentsByFilterData(String filters, Model m) {
 		StoreFilters storeFilters = null;
-		
+
 		// Registering JavaTimeModule with the objectMapper
 		objectMapper.registerModule(new JavaTimeModule());
 
@@ -71,17 +65,17 @@ public class StoreDataContoroller {
 
 		List<StoreIndentData> storeIndents = null;
 
-		if(storeFilters.getStoreId()!=0) {
-			if(storeFilters.getIndentStatus().equals("Active")) {
-				if(storeFilters.getFromDate()!=null) {
-					 // Fetching store indents by filter data with store ID, indent status, and from date
+		if (storeFilters.getStoreId() != 0) {
+			if (storeFilters.getIndentStatus().equals("Active")) {
+				if (storeFilters.getFromDate() != null) {
+					// Fetching store indents by filter data with store ID, indent status, and from date
 					storeIndents = storeIndentsDao.getStoreIndentsListByIdStatusFrom(storeFilters);
 				} else {
-					 // Fetching store indents by filter data with store ID and indent status
+					// Fetching store indents by filter data with store ID and indent status
 					storeIndents = storeIndentsDao.getStoreIndentsListByIdStatus(storeFilters);
 				}
 			} else {
-				if(storeFilters.getFromDate()!=null) {
+				if (storeFilters.getFromDate() != null) {
 					// Fetching store indents by filter data with store ID and from date
 					storeIndents = storeIndentsDao.getStoreIndentsListByIdFrom(storeFilters);
 				} else {
@@ -90,8 +84,8 @@ public class StoreDataContoroller {
 				}
 			}
 		} else {
-			if(storeFilters.getIndentStatus().equals("Active")) {
-				if(storeFilters.getFromDate()!=null) {
+			if (storeFilters.getIndentStatus().equals("Active")) {
+				if (storeFilters.getFromDate() != null) {
 					// Fetching store indents by filter data with indent status and from date
 					storeIndents = storeIndentsDao.getStoreIndentsListByStatusFrom(storeFilters);
 				} else {
@@ -99,7 +93,7 @@ public class StoreDataContoroller {
 					storeIndents = storeIndentsDao.getStoreIndentsListByStatus(storeFilters);
 				}
 			} else {
-				if(storeFilters.getFromDate()!=null) {
+				if (storeFilters.getFromDate() != null) {
 					// Fetching store indents by filter data with from date
 					storeIndents = storeIndentsDao.getStoreIndentsListByFrom(storeFilters);
 				} else {
@@ -108,9 +102,8 @@ public class StoreDataContoroller {
 				}
 			}
 		}
-		
+
 		// Returning the list of StoreIndentData
 		return storeIndents;
 	}
 }
-

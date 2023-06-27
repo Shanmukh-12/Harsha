@@ -26,8 +26,8 @@ public class StoreReturnDataController {
 	ModelMapper modelMapper;
 	ObjectMapper objectMapper = new ObjectMapper();
 
-	@PostMapping("/getStoreReturnsFilterDataIdFrom")
-	public @ResponseBody List<StoreReturnsDataOutput> getStoreReturnsFilterDataIdFrom(String filters, Model m) {
+	@PostMapping("/getStoreReturnsDataBasedOnFilters")
+	public @ResponseBody List<StoreReturnsDataOutput> getStoreReturnsDataBasedOnFilters(String filters, Model m) {
 		StoreFilters storeFilters = null;
 		objectMapper.registerModule(new JavaTimeModule());
 		try {
@@ -35,46 +35,22 @@ public class StoreReturnDataController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		List<StoreReturnsDataOutput> sl = storeReturnsDao.getStoreReturnsFilterDataIdFrom(storeFilters);
-		return sl;
-	}
 
-	@PostMapping("/getStoreReturnsFilterDataId")
-	public @ResponseBody List<StoreReturnsDataOutput> getStoreReturnsFilterDataId(String filters, Model m) {
-		StoreFilters storeFilters = null;
-		objectMapper.registerModule(new JavaTimeModule());
-		try {
-			storeFilters = objectMapper.readValue(filters, StoreFilters.class);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		List<StoreReturnsDataOutput> sl = storeReturnsDao.getStoreReturnsFilterDataId(storeFilters);
-		return sl;
-	}
+		List<StoreReturnsDataOutput> storeReturnsData = null;
 
-	@PostMapping("/getStoreReturnsFilterDataFrom")
-	public @ResponseBody List<StoreReturnsDataOutput> getStoreReturnsFilterDataFrom(String filters, Model m) {
-		StoreFilters storeFilters = null;
-		objectMapper.registerModule(new JavaTimeModule());
-		try {
-			storeFilters = objectMapper.readValue(filters, StoreFilters.class);
-		} catch (Exception e) {
-			e.printStackTrace();
+		if (storeFilters.getStoreId() != 0) {
+			if (storeFilters.getFromDate() != null) {
+				storeReturnsData = storeReturnsDao.getStoreReturnsFilterDataIdFrom(storeFilters);
+			} else {
+				storeReturnsData = storeReturnsDao.getStoreReturnsFilterDataId(storeFilters);
+			}
+		} else {
+			if (storeFilters.getFromDate() != null) {
+				storeReturnsData = storeReturnsDao.getStoreReturnsFilterDataFrom(storeFilters);
+			} else {
+				storeReturnsData = storeReturnsDao.getStoreReturnsFilterDataTo(storeFilters);
+			}
 		}
-		List<StoreReturnsDataOutput> sl = storeReturnsDao.getStoreReturnsFilterDataFrom(storeFilters);
-		return sl;
-	}
-
-	@PostMapping("/getStoreReturnsFilterDataTo")
-	public @ResponseBody List<StoreReturnsDataOutput> getStoreReturnsFilterDataTo(String filters, Model m) {
-		StoreFilters storeFilters = null;
-		objectMapper.registerModule(new JavaTimeModule());
-		try {
-			storeFilters = objectMapper.readValue(filters, StoreFilters.class);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		List<StoreReturnsDataOutput> sl = storeReturnsDao.getStoreReturnsFilterDataTo(storeFilters);
-		return sl;
+		return storeReturnsData;
 	}
 }
