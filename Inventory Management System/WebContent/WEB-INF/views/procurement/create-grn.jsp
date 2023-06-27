@@ -20,15 +20,24 @@
    display: flex;
    justify-content: space-evenly;
    }
-   .purchaseClass1 {
-   position: relative;
+   /* .purchaseClass1 {
+    position: relative;
    right: 100px;
    top: 50px;
    font-size: 18px;
    font-weight: bold;
    color: #333;
-   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-   }
+   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); 
+   margin-left:300px;
+         margin-top:20px;
+         margin-bottom:30px;
+         right:290px;	
+         top:50px;
+         font-size: 18px;
+         font-weight: bold;
+         color: #333;
+         text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+   } */
    .purchaseClass2 {
    position: relative;
    left: 440px;
@@ -80,6 +89,30 @@
    margin-left: 200px;
    width: 900px;
    }
+   
+   
+   
+   
+
+  .purchaseClass1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .purchaseClass1 label {
+    margin-bottom: 5px;
+  }
+
+  .purchaseClass1 input,
+  .purchaseClass1 select {
+    margin-bottom: 10px;
+  }
+
+  .purchaseClass1 input[type="button"] {
+    margin-right: 10px;
+  }
+   
 </style>
 <script>
 $(document).ready(function() {
@@ -419,26 +452,42 @@ $(document).ready(function() {
    GRN
 </h2>
 <br>
-<label class="purchaseClass2">Select VendorID:</label>
-<select id="vendorId" class="purchaseClass2">
+<div class="purchaseClass1">
+  <label>Select VendorID:</label>
+  <select id="vendorId">
+    <option value="">Select Vendor</option>
+    <option>20001</option>
+    <option>20002</option>
+    <option>20003</option>
+  </select>
+  <label>Select Expected From Date:</label>
+  <input type="date" id="expectedDate">
+  <label class="purchaseClass1">Select Expected To Date:</label>
+  <input type="date" id="expectedDate1">
+  <input type="button" value="filter" onclick="tk()" style="color: white; background-color: green;">
+  <input type="button" value="clear" onclick="clearSelection()" style="color: white; background-color: green;">
+</div>
+<!--  
+<div class="purchaseClass1" >
+<label >Select VendorID:</label>
+<select id="vendorId" >
    <option value="">Select Vendor</option>
    <option>20001</option>
    <option>20002</option>
    <option>20003</option>
 </select>
-<label class="purchaseClass1">Select Expected From Date:</label>
-<input type="date" id="expectedDate" class="purchaseClass1">
+<br>
+<label >Select Expected From Date:</label>
+<input type="date" id="expectedDate">
 <label class="purchaseClass1">Select Expected To Date:</label>
-<input type="date" id="expectedDate1" class="purchaseClass1">
+<input type="date" id="expectedDate1" >
 <input type="button" value="filter" onclick="tk()"
-   class="purchaseClass1" style="color: white; background-color: green;">
+   style="color: white; background-color: green;">
 <input type="button" value="clear" onclick="clearSelection()"
-   class="purchaseClass1" style="color: white; background-color: green;">
-<br>
-<br>
-<br>
-<br>
-<br>
+   style="color: white; background-color: green;">
+</div>
+-->
+
 <div style="display: flex; justify-content: center;">
    <div style="width: 45%">
       <label

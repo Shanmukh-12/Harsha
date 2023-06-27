@@ -18,27 +18,39 @@ import main.models.productModels.inputModels.ProductsProductIdInputModel;
 public class GrnBll {
 
 	@Autowired
-	ProductsDAO pd;
+	ProductsDAO productsDAO;
 
-	public SalePrice getProductSalePrice(ProductPrice pp) {
+	/**
+	 * Calculates the sale price of a product based on the cost price and profit percentage.
+	 *
+	 * @param pp The product price information.
+	 * @return The calculated sale price.
+	 */
+	public SalePrice getProductSalePrice(ProductPrice productPrice) {
+		ProductsProductIdInputModel productsProductIdInputModel = new ProductsProductIdInputModel(
+				productPrice.getProductId());
+		ProductProfit productProfit = productsDAO.getProfitPercentage(productsProductIdInputModel);
+		double unitPrice = productPrice.getCostPrice() / productPrice.getQuantity();
 
-		ProductsProductIdInputModel p = new ProductsProductIdInputModel(pp.getProductId());
-		ProductProfit productProfit = pd.getProfitPercentage(p);
-		double unitPrice = pp.getCostPrice() / pp.getQuantity();
+		double salesPrice = unitPrice + ((unitPrice * productProfit.getProfitPercentage()) / 100);
 
-		double salePrice = unitPrice + ((unitPrice * productProfit.getProfitPercentage()) / 100);
-
-		SalePrice s = new SalePrice(salePrice);
-		return s;
-
+		SalePrice salePrice = new SalePrice(salesPrice);
+		return salePrice;
 	}
 
+	/**
+	 * Calculates the total amount for a GRN (Goods Received Note) based on the list of products received.
+	 *
+	 * @param grnInputList The GRN input list containing product information.
+	 * @return The calculated GRN amount.
+	 */
 	public GrnAmount getGrnAmount(GrnInputList grnInputList) {
 		List<GrnInputProductsList> productsList = grnInputList.getProductsList();
 		double amount = 0;
-		for (GrnInputProductsList product : productsList)
+		for (GrnInputProductsList product : productsList) {
 			amount += product.getTotalPrice();
-		GrnAmount g = new GrnAmount(amount);
-		return g;
+		}
+		GrnAmount grnAmount = new GrnAmount(amount);
+		return grnAmount;
 	}
 }
