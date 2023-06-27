@@ -1,6 +1,7 @@
 package main.controllers;
 
 import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -17,22 +18,26 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import main.bll.login.PasswordChangeBLL;
 import main.bll.login.RandomNumberBLL;
 import main.bll.login.SendingEmailBLL;
+import main.dao.login.LoginDAO;
 import main.models.loginModel.inputModels.MailDetails;
 import main.models.loginModel.inputModels.credentials2;
 import main.models.loginModel.inputModels.password;
 import main.models.loginModel.outputmodels.AuthOutput;
+import main.models.userModels.outputModels.UserOutput;
+import main.service.procurement.LoginService;
 import main.service.procurement.ProcurementService;
 
 @Controller
 public class LoginController {
-	@Autowired
-	ProcurementService x;
+
 	@Autowired
 	RandomNumberBLL rn;
 	@Autowired
 	SendingEmailBLL sm;
 	@Autowired
 	PasswordChangeBLL cp;
+	@Autowired
+	LoginService loginService;
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String Home() {
 		return "login/login";
@@ -45,21 +50,24 @@ public class LoginController {
 
 	@RequestMapping(value = "/changepass", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public String changepass(password p) throws JsonProcessingException {
+	public AuthOutput changepass(password p) {
 		AuthOutput ao = cp.changePassword(p);
-		ObjectMapper ob=new ObjectMapper();
-		String json=ob.writeValueAsString(ao);
-		System.out.println(json);
-		return json;
+	    return ao;
 
 	}
 
 	@RequestMapping(value = "/sendotp", method = RequestMethod.GET)
-	public String sendmail(MailDetails md, Model m) throws MessagingException {
+	public String sendmail(MailDetails md, Model m)  {
 	
 	
 		m.addAttribute("mail", md.getMail());
-		sm.sendEmail(md);
+		try {
+			sm.sendEmail(md);
+		} catch (AddressException e) {
+			e.printStackTrace();
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
 
 		return "login/ChangePassword";
 
@@ -69,26 +77,21 @@ public class LoginController {
 
 	@RequestMapping(value = "/check", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public String check(MailDetails md, Model m) throws MessagingException, JsonProcessingException {
-		System.out.println("hello");
-		System.out.println("mail" + md.getMail());
-		ObjectMapper ob=new ObjectMapper();
-		String json=ob.writeValueAsString(x.check(md));
-		System.out.println(json);
-		return json;
+	public AuthOutput check(MailDetails md, Model m) throws MessagingException, JsonProcessingException {
+
+		AuthOutput s=loginService.check(md);
+		return s;
 	
 
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE )
 	@ResponseBody
-	public String login(credentials2 md, Model m) throws MessagingException, JsonProcessingException {
+	public AuthOutput login(credentials2 md, Model m) throws MessagingException, JsonProcessingException {
 		System.out.println("hello");
-		System.out.println(x.getAuthent(md));
-		ObjectMapper ob=new ObjectMapper();
-		String json=ob.writeValueAsString(x.getAuthent(md));
-		System.out.println(json);
-		return json;
+		System.out.println(loginService.getAuthent(md));
+		AuthOutput s=loginService.getAuthent(md);
+		return s;
 
 	}
 

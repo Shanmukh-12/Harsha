@@ -5,7 +5,8 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import main.models.purchaseReturns.entityModels.ImPurchaseReturnProduct;
+import main.models.purchaseReturns.entityModels.PurchaseReturnProducts;
+
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 
@@ -23,7 +24,7 @@ public class PurchaseReturnInput {
 		this.grn_cost = grn_cost;
 	}
 
-	private List<ImPurchaseReturnProduct> purchaseReturnProducts;
+	private List<PurchaseReturnProducts> purchaseReturnProducts;
 
 	// Constructors, getters, and setters
 
@@ -38,7 +39,7 @@ public class PurchaseReturnInput {
 	}
 
 	public PurchaseReturnInput(String vendor_id, String grn_no, BigDecimal grn_cost, String purchase_return_description,
-			List<ImPurchaseReturnProduct> purchaseReturnProducts) {
+			List<PurchaseReturnProducts> purchaseReturnProducts) {
 		super();
 		this.vendor_id = vendor_id;
 		this.grn_no = grn_no;
@@ -63,11 +64,11 @@ public class PurchaseReturnInput {
 		this.grn_no = grn_no;
 	}
 
-	public List<ImPurchaseReturnProduct> getPurchaseReturnProducts() {
+	public List<PurchaseReturnProducts> getPurchaseReturnProducts() {
 		return purchaseReturnProducts;
 	}
 
-	public void setPurchaseReturnProducts(List<ImPurchaseReturnProduct> purchaseReturnProducts) {
+	public void setPurchaseReturnProducts(List<PurchaseReturnProducts> purchaseReturnProducts) {
 		this.purchaseReturnProducts = purchaseReturnProducts;
 	}
 

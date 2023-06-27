@@ -101,6 +101,6 @@
 	
 	<!-- enable the configuration of transactional behavior based on annotations -->
 	<tx:annotation-driven transaction-manager="transactionManager" />
-    <beans:bean id="ProcurementDAO" class="main.dal.procurement.ProcurementDAL" autowire="byName"/>
-      
+<tx:annotation-driven transaction-manager="transactionManager" />
+    <beans:bean id="ProcurementDAO" class="main.dal.purchasesDAL.PurchasesDAL" autowire="byName"/>      
 </beans:beans>

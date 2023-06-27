@@ -3,24 +3,21 @@ package main.dao.procurement;
 import java.util.ArrayList;
 import java.util.List;
 
-import main.models.loginModel.inputModels.MailDetails;
-import main.models.loginModel.inputModels.credentials2;
-import main.models.loginModel.inputModels.password;
-import main.models.procurementModels.dtomodels.PurchaseJoinClass;
-import main.models.procurementModels.dtomodels.PurchaseReturnJoinClass;
+
+import main.models.procurementModels.dtomodels.PurchaseOrdersDTO;
+import main.models.procurementModels.dtomodels.PurchaseReturnDTO;
 import main.models.procurementModels.inputmodels.ProductInputMapping;
 import main.models.procurementModels.inputmodels.PurchaseId;
 import main.models.procurementModels.inputmodels.PurchaseReturnId;
 import main.models.procurementModels.inputmodels.PurchasesFilter;
 import main.models.procurementModels.inputmodels.PurchasesReturnFilter;
-import main.models.procurementModels.outputmodels.ImPurchaseOrderOutput;
-import main.models.procurementModels.outputmodels.PurchaseReturnOutput;
-import main.models.purchaseOrder.entityModels.Im_Purchase_Order;
-import main.models.purchaseReturns.entityModels.ImPurchaseReturn;
+import main.models.procurementModels.outputmodels.PurchaseOrderDetails;
+import main.models.procurementModels.outputmodels.PurchaseReturnDetails;
+import main.models.purchaseOrder.entityModels.PurchaseOrder;
+import main.models.purchaseReturns.entityModels.PurchaseReturn;
 import main.models.userModels.entities.User;
-import main.models.userModels.outputModels.UserOutput;
-import main.models.warehouseModels.dtomodels.JoinClass2;
-import main.models.warehouseModels.dtomodels.joinclass;
+import main.models.warehouseModels.dtomodels.ProductDetailsDTO;
+import main.models.warehouseModels.dtomodels.ProductsDataDTO;
 import main.models.warehouseModels.outputmodels.ProductCategoryCount;
 import main.models.warehouseModels.outputmodels.TotalStock;
 import main.models.warehouseModels.outputmodels.TotalWarehouseVal;
@@ -28,23 +25,17 @@ import main.models.warehouseModels.outputmodels.VendorCount;
 
 public interface ProcurementDAO {
 
-	public boolean persist(User stud);
+	public List<PurchaseReturnDTO> getPurchaseReturnProducts(PurchaseReturnId x);
 
-	public List<PurchaseId> getPurchaseId(PurchasesFilter p);
+	public List<PurchaseOrdersDTO> getPurchaseProducts(PurchaseId x);
 
-	public List<PurchaseReturnId> getPurchaseReturnsList(PurchasesReturnFilter p);
+	public void persistPurchase(PurchaseOrder stud);
 
-	public List<PurchaseReturnJoinClass> getPurchaseReturnProducts(PurchaseReturnId x);
+	public void persistPurchaseReturn(PurchaseReturn stud, ProductInputMapping pm);
 
-	public List<PurchaseJoinClass> getPurchaseProducts(PurchaseId x);
+	public List<ProductsDataDTO> getDashboardData();
 
-	public Im_Purchase_Order persistpurchase(Im_Purchase_Order stud);
-
-	public ImPurchaseReturn persistpurchasereturn(ImPurchaseReturn stud, ProductInputMapping pm);
-
-	public List<joinclass> getAllData();
-
-	public List<JoinClass2> getProductsCount();
+	public List<ProductDetailsDTO> getProductsCount();
 
 	public ArrayList<TotalStock> getTotalStock();
 
@@ -54,22 +45,47 @@ public interface ProcurementDAO {
 
 	public VendorCount getVendorsCount();
 
-	public UserOutput check(MailDetails m);
+	
+	public List<PurchaseOrderDetails> getAllPurchaseOrders();
+	
+	public List<PurchaseOrderDetails> getPurchaseOrdersByVendor(PurchasesFilter p);
+	
+	public List<PurchaseOrderDetails> getPurchaseOrdersByVendorAndDateRange(PurchasesFilter p);
+	
+	public List<PurchaseOrderDetails> getPurchaseOrdersByVendorAndStartDate(PurchasesFilter p);
+	
+	public List<PurchaseOrderDetails> getPurchaseOrdersByDateRange(PurchasesFilter p);
+	
+	public List<PurchaseOrderDetails> getPurchaseOrdersByStartDate(PurchasesFilter p);
+	
+	public List<PurchaseOrderDetails> getPurchaseOrdersByEndDate(PurchasesFilter p);
 
-	public void getData(MailDetails m, String num);
+	public PurchaseOrderDetails getPurchaseOrderDetailsById(PurchaseId p);
 
-	public UserOutput getRow(password p);
+	public PurchaseReturnDetails getPurchaseReturnsListDetailsById(PurchaseReturnId p);
+	
+	public List<PurchaseReturnDetails> getDefaultPurchaseReturns();
 
-	public void getRow2(password p);
+    public List<PurchaseReturnDetails> getPurchaseReturnsByVendorId(PurchasesReturnFilter p);
 
-	public UserOutput getAuthent(credentials2 s);
+    public List<PurchaseReturnDetails> getPurchaseReturnsByVendorAndStartDate(PurchasesReturnFilter p);
 
-	public List<ImPurchaseOrderOutput> getPurchaseId2(PurchasesFilter p);
+    public List<PurchaseReturnDetails> getPurchaseReturnsByVendorAndDateRange(PurchasesReturnFilter p);
 
-	public List<PurchaseReturnOutput> getPurchaseReturnsList2(PurchasesReturnFilter p);
+    public List<PurchaseReturnDetails> getPurchaseReturnsByVendorAndGrnCost(PurchasesReturnFilter p);
 
-	public ImPurchaseOrderOutput getPurchaseId3(PurchaseId p);
+    public List<PurchaseReturnDetails> getPurchaseReturnsByVendorGrnCostAndStartDate(PurchasesReturnFilter p);
 
-	public PurchaseReturnOutput getPurchaseReturnsList3(PurchaseReturnId p);
+    public List<PurchaseReturnDetails> getPurchaseReturnsByVendorGrnCostAndDateRange(PurchasesReturnFilter p);
+
+    public List<PurchaseReturnDetails> getPurchaseReturnsByDateRange(PurchasesReturnFilter p);
+
+    public List<PurchaseReturnDetails> getPurchaseReturnsByStartDate(PurchasesReturnFilter p);
+
+    public List<PurchaseReturnDetails> getPurchaseReturnsByGrnCost(PurchasesReturnFilter p);
+
+    public List<PurchaseReturnDetails> getPurchaseReturnsByGrnCostAndStartDate(PurchasesReturnFilter p);
+
+    public List<PurchaseReturnDetails> getPurchaseReturnsByGrnCostAndDateRange(PurchasesReturnFilter p);
 
 }

@@ -6,7 +6,6 @@ public class PurchasesReturnFilter {
 
 	private String purchase_return_date = null;
 	private String purchase_return_date1 = null;;
-
 	private int vendor_id = 0;
 	private double grn_value=0;
 

@@ -51,7 +51,7 @@ public class Products {
 	private String productStatus;
 
 	@Column(name = "profit_percentage")
-	private double profitPercentage;
+	private double profitPercentage=0;
 
 	// Fields from im_Products_Stock table
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
