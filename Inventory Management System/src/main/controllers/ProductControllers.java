@@ -22,6 +22,7 @@ import main.models.productModels.inputModels.CategoryRequest2;
 import main.models.productModels.inputModels.HSNInputModel;
 import main.models.productModels.inputModels.ProductsProductIdInputModel;
 import main.models.productModels.inputModels.ProductsProductIdandBatchNoInputModel;
+import main.models.productModels.outputModels.ProductIdListOutput;
 import main.models.productModels.outputModels.ProductStockData;
 import main.models.productModels.outputModels.ProductsReOrderList;
 
@@ -37,26 +38,29 @@ public class ProductControllers {
 //It returns the Product Categories
 	@PostMapping("/getProductCategories")
 	public @ResponseBody List<ProductsCategory> getProductCategories(Model model) {
+		
+		 // listing the CategoryIds by category by calling productsDao Interface method.
 		List<ProductsCategory> productCategory = productCategoryDAO.getProductCategories();
-		System.out.println(productCategory);
 		return productCategory;
 	}
 	
+	
 //It return productsIds and productNames by taking the categoryId as an input
-	@PostMapping("/getProducts")
-    public @ResponseBody List<ProductStockData> getProducts(String categoryId, Model model) {
+	@PostMapping("/getProductsIds")
+    public @ResponseBody List<ProductIdListOutput> getProducts(String categoryId, Model model) {
+		
 	 ObjectMapper objectMapper = new ObjectMapper();
 	 CategoryRequest categoryRequest = null;
 	try {
+		//Reading the input JSon into the Input CategoryRequest Class
 		categoryRequest = objectMapper.readValue(categoryId,CategoryRequest.class);
 	} catch (Exception e) {
-		// TODO Auto-generated catch block
 		e.printStackTrace();
 	} 
-	 System.out.println(categoryRequest.getCategoryId());
 
         int selectedCategoryId = categoryRequest.getCategoryId();
-        List<ProductStockData> products = productsDAO.getProductsByCategory(selectedCategoryId);
+        // listing the ProductsIds by category by calling productsDao Interface method.
+        List<ProductIdListOutput> products = productsDAO.getProductsByCategoryId(selectedCategoryId);
         return products;
     }
 //It return products Data by taking the categoryId as an input
@@ -64,12 +68,9 @@ public class ProductControllers {
 	public @ResponseBody List<ProductStockData> getProducts(
 			@ModelAttribute("categoryInputModel") CategoryRequest categoryInputModel, Model model) {
 
-		System.out.println(categoryInputModel.getCategoryId());
-
-		System.out.println("hello");
 
 		int selectedCategoryId = categoryInputModel.getCategoryId();
-
+	 // listing the Products Details by category by calling productsDao Interface method.
 		List<ProductStockData> products = productsDAO.getProductsByCategory(selectedCategoryId);
 		System.out.println(products);
 		return products;
@@ -81,9 +82,9 @@ public class ProductControllers {
 			@ModelAttribute("productsProductIdInputModel") ProductsProductIdInputModel productsProductIdInputModel,
 			Model model) {
 
-		System.out.println(productsProductIdInputModel.getProductId());
-
 		int selectedProductId = productsProductIdInputModel.getProductId();
+		
+		 // listing the Product BatchNos by category by calling productsDao Interface method.
 		List<ProductStockData> batchesNos = productsDAO.getProductsByProductId(selectedProductId);
 		System.out.println(batchesNos);
 		return batchesNos;
@@ -97,43 +98,61 @@ public class ProductControllers {
 
 		int selectedProductId = productsProductIdandBatchNoInputModel.getProductId();
 		int selectedBatchNo = productsProductIdandBatchNoInputModel.getBatchNo();
-		ProductStockData quantity = productsDAO.getQuantityandpriceByProductIdOrBatchNo(selectedProductId,
+		// listing the Product quantity  and price by category by calling productsDao Interface method.
+		ProductStockData quantityOrPrice = productsDAO.getQuantityandpriceByProductIdOrBatchNo(selectedProductId,
 				selectedBatchNo);
-		return quantity;
+		return quantityOrPrice;
 	}
 
 //It returns List of Re-order Products 
 	@PostMapping("/getReOrderProductsData")
 	public @ResponseBody List<ProductsReOrderList> getReOrderLevelProducts(Model model) {
-        System.out.println("Ciriya");
-		List<ProductsReOrderList> list = productsDAO.getReOrderLevelProducts();
-		System.out.println(list);
-		return list;
+		
+		// listing the Re-order Products List  category by calling productsDao Interface method.
+		List<ProductsReOrderList> reOrderlist = productsDAO.getReOrderLevelProducts();
+
+		return reOrderlist;
 	}
 	
 //It persist the category created by procurement team
 	@PostMapping("/createCategory")
 	@ResponseBody
 	public String saveCategory(@ModelAttribute("categoryInputModel") CategoryRequest2 categoryInputModel) {
-System.out.println(categoryInputModel.toString());
 		ModelMapper modelMapper = new ModelMapper();
+		try {
+		//Mapping the input model to the Entity Model by using Model Mapping.
 		ProductsCategory productsCategory = modelMapper.map(categoryInputModel, ProductsCategory.class);
-		System.out.println(productsCategory.toString());
 		productsDAO.saveCategory(productsCategory);
-		return "null";
+		
+		}
+		catch(Exception e) {
+			return "Can't created the New Category";
+		}
+		return  "Succesfully created the New Category";
 	}
 	
 	
 //It persist the HSN created by the procurement team
 	@PostMapping("/createHSN")
-	@ResponseBody
-	public String saveHSN(@ModelAttribute("hsnInputModel") HSNInputModel hsnInputModel) {
-       System.out.println(hsnInputModel.toString());
+	
+	public @ResponseBody String saveHSN(@ModelAttribute("hsnInputModel") HSNInputModel hsnInputModel) {
+
 		ModelMapper modelMapper = new ModelMapper();
+		try {
+			
+		//Mapping the input model to the Entity Model by using Model Mapping.
 		HSNEntityModel hsnEntityModel = modelMapper.map(hsnInputModel, HSNEntityModel.class);
-		System.out.println(hsnEntityModel.toString());
+		
 		productsDAO.saveHSN(hsnEntityModel);
-		return "null";
+		
+		
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			return "Can't Created the new HSN";
+		}
+		return "Succesfully Created the new HSN";
+
 	}
 
 }

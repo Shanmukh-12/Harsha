@@ -1,0 +1,191 @@
+@charset "ISO-8859-1";
+
+  #product-details-table{
+    background-color: white;
+      height: 50px;
+      overflow-y: scroll;
+      width:1000px;
+  
+  }
+  
+    #htag{
+  position: relative;
+  top: 10px;
+  margin-left: 450px;
+  margin-bottom:30px;
+
+  }
+  
+  #h1tag
+  {   
+     position: relative;
+    top: 10px;
+     margin-left: 500px;
+  }
+
+   #addButton
+    {
+        margin-left: 450px;
+        border-radius:6px;
+       width:120px;
+      height:40px;
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+      
+    }
+    table {
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    th, td {
+    text-align:center;
+      border: 1px solid black;
+      padding: 8px;
+    }
+
+    .delete-button {
+      background-color: #f44336;
+      border: none;
+      color: white;
+      padding: 6px 12px;
+       font-weight: bold;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 14px;
+      margin: 4px 2px;
+      cursor: pointer;
+      border-radius:6px;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .form-input {
+      width: 100px;
+      padding: 5px;
+      margin-bottom: 10px;
+    }
+
+     #products-table {
+      background-color: white;
+      height: 50px;
+      overflow-y: scroll;
+      width:1000px;
+  
+    }
+    
+    #first_table {
+       height: 200px;
+        margin-left:50px;
+      overflow-y: scroll;
+    }
+    
+    
+
+    #createIndentButtonId{
+    margin-left:450px;
+    border-radius:6px;
+    width:80px;
+    height:40px;
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+     
+    }
+    #stores-dropdown
+    {
+     display:flex;
+     margin-left:650px;
+     padding-bottom:10px;
+     
+    }
+     #indents-dropdown
+    {
+     display:flex;
+     margin-left:640px;
+     padding-bottom:10px;
+     
+    }
+    #product-category{
+    
+     padding-left:20px;
+     padding-right:20px;
+     
+    
+    }
+    #stores-dropdown label{
+     display: block;
+      font-weight: bold;
+      font-size: 20px;
+      color: #333;
+      margin-left:200px;
+      margin-right: 10px;
+      margin-bottom:20px;
+    }
+     #indents-dropdown label{
+     display: block;
+      font-weight: bold;
+      font-size: 20px;
+      color: #333;
+      margin-bottom: 10px;
+      margin-left:200px;
+      margin-right: 10px;
+    }
+    #products-table input,select{
+    
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    width: 80px;
+    }
+    .delete-btn{
+    
+        background-color: #ff0000;
+      color: #fff;
+      border: none;
+       color: white;
+      font-weight: bold;
+      padding: 6px 12px;
+      cursor: pointer;
+      border-radius:6px;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    .add-btn{
+    border-radius:6px;
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    #addedproducts{
+    margin-left:50px;
+    }
+  .no-data {
+  text-align: center;
+  background-color: #f8f8f8;
+  color: #555;
+  font-weight: bold;
+  padding: 10px;
+}
+
+.no-data:before {
+
+  font-size: 18px;
+}
+
+#dropdown-div{
+margin-bottom:20px;
+}

@@ -10,120 +10,11 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"></script> <!-- Include the Bootstrap JavaScript library -->
-    <style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 700, 'GRAD' 0, 'opsz' 10;
-        }
-
-        :root {
-        --main-bg-color: #bef7f5;
-        --main-text-color: #009d63;
-        --second-text-color: #bbbec5;
-        --second-bg-color: #bef7f5;
-    }
-
-        .primary-text {
-            color: var(--main-text-color);
-        }
-
-        .second-text {
-            color: var(--second-text-color);
-        }
-
-        .primary-bg {
-            background-color: var(--main-bg-color);
-        }
-
-        .secondary-bg {
-            background-color: var(--second-bg-color);
-        }
-
-        .rounded-full {
-            border-radius: 100%;
-        }
-
-        #wrapper {
-            overflow-x: hidden;
-            background-image: linear-gradient(to right, #baf3d7, #c2f5de, #cbf7e4, #d4f8ea, #ddfaef);
-        }
-
-        #sidebar-wrapper {
-            min-height: 100vh;
-            margin-left: -15rem;
-            -webkit-transition: margin 0.25s ease-out;
-            -moz-transition: margin 0.25s ease-out;
-            -o-transition: margin 0.25s ease-out;
-            transition: margin 0.25s ease-out;
-        }
-
-        #sidebar-wrapper .sidebar-heading {
-            padding: 0.875rem 1.25rem;
-            font-size: 1.2rem;
-        }
-
-        #sidebar-wrapper .list-group {
-            width: 15rem;
-        }
-
-        #page-content-wrapper {
-            min-width: 100vw;
-        }
-
-        #wrapper.toggled #sidebar-wrapper {
-            margin-left: 0;
-        }
-
-        #menu-toggle {
-            cursor: pointer;
-        }
-
-        .list-group-item {
-            border: none;
-            padding: 20px 30px;
-        }
-
-        .list-group-item.active {
-            background-color: transparent;
-            color: var(--main-text-color);
-            font-weight: bold;
-            border: none;
-        }
-
-        .dropdown-menu {
-            background-color: #c1efde;
-            color: var(--main-text-color);
-        }
-
-        .dropdown-item {
-            background-color: #c1efde;
-            color: black;
-            font-weight: bold;
-        }
-
-        .dropdown-item:hover {
-            background-color: white;
-            color: #009d63;
-        }
-    </style>
     
-    
- <script>
-   
-    function Myfunction(controllerUrl) {
-            $.ajax({
-                url: controllerUrl,
-                method: "POST",
-                success: function(response) {
-                    $("#content").html(response);
-                },
-                error: function() {
-                    console.log("AJAX call error");
-                }
-            });  
-        
-    }
-   
-   </script>
+    <link rel="stylesheet" href="./inventoryHome/styles/inventoryHomeStyles.css">
+    <script src="./inventoryHome/scripts/inventoryHomeScript.js"></script>
+
+
     
 </head>
 
@@ -232,14 +123,7 @@
         </div>
     </div>
 </div>
-<script>
-    var el = document.getElementById("wrapper");
-    var toggleButton = document.getElementById("menu-toggle");
 
-    toggleButton.onclick = function () {
-        el.classList.toggle("toggled");
-    };
-</script>
 
 </body>
 </html>

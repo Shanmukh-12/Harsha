@@ -13,16 +13,17 @@ import main.models.productModels.entities.ProductsCategory;
 
 @Component
 public class ProductsCategoryDAL implements ProductCategoryDAO {
-
+ 
 	@PersistenceContext
 	private EntityManager entityManager;
-    //Getting Product Category Information ID,Name
+	
+    //Getting Product Category ID,Category Name
 	@Transactional
 	public List<ProductsCategory> getProductCategories() {
-		List<ProductsCategory> l = entityManager.createQuery("SELECT v FROM ProductsCategory v").getResultList();
-		for (ProductsCategory v : l) {
-			System.out.println(v.toString());
-		}
-		return l;
+		
+		// Returns the List of CategoryIds List and category Names.
+		List<ProductsCategory> categoryList = entityManager.createQuery("SELECT v FROM ProductsCategory v").getResultList();
+
+		return categoryList;
 	}
 }
