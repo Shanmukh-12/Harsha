@@ -84,9 +84,11 @@
 
 <!-- CSS resource -->
 <mvc:resources mapping="storeHome/styles/**" location="/WEB-INF/styles/store/" />
+<mvc:resources mapping="HomeProcurement/styles/**" location="/WEB-INF/styles/procurement/" />
 
 <!-- JavaScript resource -->
 <mvc:resources mapping="storeHome/scripts/**" location="/WEB-INF/scripts/store/" />
+<mvc:resources mapping="HomeProcurement/scripts/**" location="/WEB-INF/scripts/procurement/" />
 
 
 	<!-- Transactions -->

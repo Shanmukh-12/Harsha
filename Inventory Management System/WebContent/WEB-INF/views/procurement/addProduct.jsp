@@ -1,52 +1,5 @@
-<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Insert title here</title>
- 
-  <style>
-    form {
-      background-color: #fff;
-      padding: 20px;
-      border-radius: 5px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-    
-    label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-    }
-    
-    select, input[type="text"], input[type="number"], textarea {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      box-sizing: border-box;
-      margin-bottom: 10px;
-    }
-    
-    textarea {
-      resize: vertical;
-    }
-    
-    input[type="button"] {
-      background-color: #4CAF50;
-      color: #fff;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    
-    input[type="button"]:hover {
-      background-color: #45a049;
-    }
-    .product
-    {
-    	margin-top:50px;
-    }
-  </style>
+    <link rel="stylesheet" href="./HomeProcurement/styles/addProductStyles.css">
 </head>
 <body style="height: 851px; width: 1096px">
 <div id="product" align="centre">
@@ -84,4 +37,4 @@
   </form>
   </div>
 </body>
-</html>
+
