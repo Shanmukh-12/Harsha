@@ -28,79 +28,74 @@ import main.models.vendorModels.outputModels.VendorOutput;
 @Controller
 public class VendorController {
 
-	@Autowired
-	public VendorsDAO vendorDAO;
-	@Autowired
-	ModelMapper mapper;
+    @Autowired
+    public VendorsDAO vendorDAO; // Autowired dependency injection for VendorsDAO
+    @Autowired
+    ModelMapper mapper; // Autowired dependency injection for ModelMapper
 
-	// Saving Vendor Data
-	@PostMapping("/saveVendor")
-	public String saveVendor(@RequestBody String data, Model model) {
-		VendorInput vendorInput = null;
-		ObjectMapper objectMapper = new ObjectMapper();
-		try {
-			vendorInput = objectMapper.readValue(data, VendorInput.class);
-			System.out.println(vendorInput);
-		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		Vendor v = mapper.map(vendorInput, Vendor.class);
-		vendorDAO.saveVendor(v);
-		return "admin/adminHome";
+    // Saving Vendor Data
+    @PostMapping("/saveVendor")
+    public String saveVendor(@RequestBody String data, Model model) {
+        VendorInput vendorInput = null;
+        ObjectMapper objectMapper = new ObjectMapper(); // Object mapper for JSON serialization/deserialization
+        try {
+            vendorInput = objectMapper.readValue(data, VendorInput.class); // Deserialize the JSON string to VendorInput object
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        Vendor vendor = mapper.map(vendorInput, Vendor.class); // Map VendorInput to Vendor using ModelMapper
+        vendorDAO.saveVendor(vendor); // Save the Vendor object using vendorDAO
+        return "admin/adminHome";
+    }
 
-	}
+    // Getting Vendor Id and Name for Dropdown
+    @PostMapping("/getVendor")
+    public @ResponseBody List<VendorOutput> deleteVendor(Model model) {
+        List<Vendor> vendors = vendorDAO.getAllVendors(); // Retrieve all vendors from the database using vendorDAO
 
-	// Getting Vendor Id and Name for Dropdown
-	@PostMapping("/getVendor")
-	public @ResponseBody List<VendorOutput> deleteVendor(Model model) {
+        // Map each Vendor object to VendorOutput using ModelMapper and collect into a list
+        List<VendorOutput> vendorOutputs = vendors.stream()
+                .map(vendor -> mapper.map(vendor, VendorOutput.class))
+                .collect(Collectors.toList());
 
-		List<Vendor> vendors = vendorDAO.getAllVendors();
+        return vendorOutputs; // Return the list of VendorOutput objects as a JSON response
+    }
 
-		List<VendorOutput> vendorOutputs = vendors.stream().map(vendor -> mapper.map(vendor, VendorOutput.class))
-				.collect(Collectors.toList());
+    // Updating Vendor Information
+    @RequestMapping(value = "/getVendorData", method = RequestMethod.POST)
+    @ResponseBody
+    public Vendor getVendorData(@RequestBody VendorId vendorId) {
+        Vendor vendor = vendorDAO.getVendorData(vendorId); // Retrieve vendor data based on the given VendorId using vendorDAO
+        return vendor; // Return the Vendor object as a JSON response
+    }
 
-		return vendorOutputs;
-	}
+    @PostMapping("/updateVendor")
+    @ResponseBody
+    public String updateVendor(@RequestBody Vendor vendor) {
+        vendorDAO.updateVendor(vendor); // Update the vendor information in the database using vendorDAO
+        return "admin/success";
+    }
 
-	// Updating Vendor Information
-	@RequestMapping(value = "/getVendorData", method = RequestMethod.POST)
-	@ResponseBody
-	public Vendor getVendorData(@RequestBody VendorId v) {
-		Vendor vendor = vendorDAO.getVendorData(v);
-		return vendor;
-	}
+    // Soft Deleting the Vendor
+    @PostMapping("/delete")
+    @ResponseBody
+    public String deleteVendor(@RequestBody VendorId vendor) {
+        vendorDAO.deleteVendor(vendor); // Soft delete the vendor based on the given VendorId using vendorDAO
+        return "admin/success";
+    }
 
-	@PostMapping("/updateVendor")
-	@ResponseBody
-	public String updateVendor(@RequestBody Vendor vendor) {
-		vendorDAO.updateVendor(vendor);
-		return "admin/success";
-	}
+    // Getting Vendor Information
+    @GetMapping("/showVendors")
+    public @ResponseBody List<Vendor> showVendors() {
+        return vendorDAO.getAllVendors(); // Retrieve all vendors from the database using vendorDAO and return as a JSON response
+    }
 
-	// Soft Deleting the Vendor
-	@PostMapping("/delete")
-	@ResponseBody
-	public String deleteVendor(@RequestBody VendorId vendor) {
-		vendorDAO.deleteVendor(vendor);
-		return "admin/success";
-	}
-
-	// Getting Vendor Information
-	@GetMapping("/showVendors")
-	public @ResponseBody List<Vendor> showVendors() {
-		return vendorDAO.getAllVendors();
-	}
-
-	/* filter */
-	@PostMapping("/vendorStatus")
-	public @ResponseBody List<Vendor> vendorStatus(VendorStatus vendorStatus) {
-		System.out.println(vendorStatus.toString());
-		List<Vendor> l = vendorDAO.getActiveVendors(vendorStatus);
-		return l;
-	}
-
+    /* filter */
+    @PostMapping("/vendorStatus")
+    public @ResponseBody List<Vendor> vendorStatus(VendorStatus vendorStatus) {
+        List<Vendor> vendor = vendorDAO.getVendorStatus(vendorStatus); // Retrieve active vendors based on the given VendorStatus using vendorDAO
+        return vendor; // Return the list of Vendor objects as a JSON response
+    }
 }

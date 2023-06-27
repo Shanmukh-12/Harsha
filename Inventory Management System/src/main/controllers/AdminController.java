@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-public class AdminControllers {
+public class AdminController {
 
 	// Warehouse and Home page
 	@RequestMapping(value = { "/adminHome" })
@@ -73,13 +73,13 @@ public class AdminControllers {
 
 	/* User */
 
-	// Add user Page
+	//Redirect to Add user Page
 	@GetMapping("/addUserPage")
 	public String addUser() {
 		return "admin/addUser";
 	}
 
-	// Delete User Page
+	//redirect to Delete User Page
 	@GetMapping("/deleteUserPage")
 	public String deleteUser() {
 		return "admin/deleteUser";
@@ -91,7 +91,7 @@ public class AdminControllers {
 		return "admin/userData";
 	}
 
-	// Product Categories
+	// redirect to Product Categories page
 	@GetMapping("/productCategories")
 	public String getProductCategories() {
 		return "admin/productCategories";
