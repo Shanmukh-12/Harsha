@@ -32,6 +32,11 @@
 	<beans:property name="password" value="pff123" />
 </beans:bean>
  -->
+ <!-- CSS resource -->
+<mvc:resources mapping="/adminHome/styles/**" location="/WEB-INF/styles/admin/" />
+
+<!-- JavaScript resource -->
+<mvc:resources mapping="/adminHome/scripts/**" location="/WEB-INF/scripts/admin/" />
 
 <!-- <beans:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 	<beans:property name="driverClassName" value="org.postgresql.Driver" />
