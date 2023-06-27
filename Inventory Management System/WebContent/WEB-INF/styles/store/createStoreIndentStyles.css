@@ -1,0 +1,74 @@
+@charset "ISO-8859-1";
+
+        .container {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0 auto;
+            max-width: 600px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        #indentForm{
+            display: flex;
+            margin-bottom: 20px;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+            text-align: right;
+            vertical-align: middle;
+        }
+
+        input[type="text"],select {
+            width: 200px;
+            padding: 5px;
+            vertical-align: middle;
+        }
+
+        button {
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            vertical-align: middle;
+        }
+
+        table {
+            width: auto;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .deleteButton {
+            padding: 5px 10px;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            cursor: pointer;
+            vertical-align: middle;
+        }
+
+        .error {
+            color: red;
+            font-weight: bold;
+        }
