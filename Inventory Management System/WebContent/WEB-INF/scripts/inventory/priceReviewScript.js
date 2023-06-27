@@ -129,6 +129,7 @@
         document.getElementById("batchnoid").value = "";
         document.getElementById("originalcostid").value = "";
         document.getElementById("modifiedcostid").value = "";
+        document.getElementById("maxretailpriceid").value = "";
         document.getElementById("reasonid").value = "";
     	}
       }

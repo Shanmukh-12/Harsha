@@ -5,7 +5,7 @@
 <head>
   <title>Adjustments</title>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>  
-   <link rel="stylesheet" href="./inventoryHome/styles/adjustments.css">
+   <link rel="stylesheet" href="./inventoryHome/styles/adjustmentsStyles.css">
 <script src="./inventoryHome/scripts/adjustmentsScript.js"></script>
 
 </head>
@@ -15,7 +15,7 @@
 <div id="adjustmenttable">
 <div id="adjustmentsformdivid">
 
-   <form onsubmit="return validateForm()">
+   <form onsubmit="return validateForm()" id="adjustments-form">
     <label for="productcategoryid">Product Category:</label>
     <select id="productcategoryid" name="ProductCategory" onblur="validateProductCategory()">
       <option value="" >Select Category</option>
@@ -45,7 +45,7 @@
     <span id="currentstock-error" class="error-message"></span>
     
     <label for="reasonid">Reason:</label>
-    <textarea id="reasonid" name="Reason" rows="4" cols="42" onblur="validateReason()"></textarea>
+    <textarea id="reasonid" name="Reason" rows="4" cols="45" onblur="validateReason()"></textarea>
     <span id="reason-error" class="error-message"></span>
     
     <button type="button" id="addButton" onclick="addProduct()">Add Stock</button>
@@ -54,9 +54,9 @@
    
    <div id="addedproducts">
    <div id="headingid">
-    <h4>Adjustments List</h4>
+    <h4><b>Adjustments List</b></h4>
     </div>
-     <form>
+     <form id="added-products-form">
   <table class="table bg-white rounded shadow-sm  table-hover" id="products-table">
     <thead>
       <tr>

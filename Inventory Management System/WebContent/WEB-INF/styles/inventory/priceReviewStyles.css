@@ -4,10 +4,9 @@
   position: relative;
   top: 10px;
   margin-left: 450px;
+  margin-bottom:50px;
 
   }
-
- 
 
     #adjustmenttable
     {
@@ -21,13 +20,6 @@
       width:350px;
      margin-left:0px;
      margin-right:500px;
-    }
-  #addedproducts
-    {
-      position:relative;
-
-      margin-top:62px;
-      margin-left:150px;
     }
      #headingtag
     {
@@ -62,14 +54,15 @@
     }
     
 
-    form {
+    #form-div-id {
       max-width: 400px;
-      margin-top: 60px;
-       margin-left: 50px;
       padding: 20px;
       background-color: #ffffff;
       border: 1px solid #ccc;
       border-radius: 4px;
+       margin-left:70px;
+      margin-top:50px;
+      margin-right:200px;
     }
 
     label {
@@ -142,10 +135,7 @@
       
     }
     
-    #form-div-id{
-      margin-left:70px;
-      margin-top:50px;
-    }
+
     #heading-price-review{
        margin-left:100px;
        margin-bottom:20px;

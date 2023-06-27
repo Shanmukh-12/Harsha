@@ -10,15 +10,17 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"></script> <!-- Include the Bootstrap JavaScript library -->
-    
-    <link rel="stylesheet" href="./inventoryHome/styles/inventoryHomeStyles.css">
     <script src="./inventoryHome/scripts/inventoryHomeScript.js"></script>
+    <link rel="stylesheet" href="./inventoryHome/styles/inventoryHomeStyles.css">
+   
 
 
     
 </head>
 
+
 <body>
+
 <div class="d-flex" id="wrapper">
     <!-- Sidebar -->
     <div class="bg-white" id="sidebar-wrapper">

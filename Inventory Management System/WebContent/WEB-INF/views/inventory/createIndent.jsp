@@ -4,8 +4,8 @@
   <title>Create Indent</title>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   
-  <link rel="stylesheet" href="./inventoryHome/styles/adjustmentsList.css">
-  <script src="./inventoryHome/scripts/adjustmentsListScript.js"></script>
+  <link rel="stylesheet" href="./inventoryHome/styles/createIndentStyles.css">
+  <script src="./inventoryHome/scripts/createIndentScript.js"></script>
 </head>
 <body>
   <div id="htag">
