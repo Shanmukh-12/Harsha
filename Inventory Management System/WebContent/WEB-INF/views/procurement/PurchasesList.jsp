@@ -10,6 +10,29 @@
 <head>
     <meta charset="UTF-8">
     <style>
+    .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #f9f9f9;
+            padding: 10px 0;
+            right: 110px;
+        }
+
+        .pagination button {
+            margin: 0 5px;
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            cursor: pointer;
+        }
+
+        .pagination button.active {
+            background-color: #e6e6e6;
+        }
     
     .PurchasesClass
 	{
@@ -185,10 +208,12 @@
         </div>
     </div>
 </div>
+<div class="pagination"></div>
 </body>
 
 
 <script>
+var defaultPageSize = 3;
 $(document).ready(function() {
 	 function showVendors() {
 		    $.ajax({
@@ -217,53 +242,59 @@ $(document).ready(function() {
 		  showVendors();
 		  });
   $(document).ready(function() {
-	  tk();
-	
-    function tk() {
-      
-    	var vendorIdf=$("#vendorId option:selected").val();
-     	  var vendorId=parseInt(vendorIdf || 0);
-      var expectedDate = $("#expectedDate").val();
-      var expectedDate1 = $("#expectedDate1").val();
-      console.log(expectedDate1)
-     
-      console.log(vendorId);
-      console.log(expectedDate);
-      $.ajax({
-          url: "getPurchaseIdDetails",
-          method:"GET",
-          
-          data: {
-            "vendor_id": vendorId,
-            "purchase_order_expected_date": expectedDate,
-            "purchase_order_expected_date1": expectedDate1
+	  var defaultPageSize = 3;
+	  tk(1, defaultPageSize);
+	  function tk(pageNumber,pageSize) {
+	      
+		  	var vendorIdf=$("#vendorId option:selected").val();
+		   	  var vendorId=parseInt(vendorIdf || 0);
+		    var expectedDate = $("#expectedDate").val();
+		    var expectedDate1 = $("#expectedDate1").val();
+		    console.log(expectedDate1)
+		   
+		    console.log(vendorId);
+		    console.log(expectedDate);
 
-          },
-         	
-         	  
-          success: function(response) {
-        	  
-        	  console.log(this.url);
-        	  console.log(response);
-        	  var PurchasesId= $("#PurchasesId");
-        	  setPurchaseOrderData(response);
-        	  
-        	  
-             
-          },
-      error: function () {
-    	  console.log(this.url);
-    	  console.log("AJAX call error");
-      }
-          
-      
-          
-      });
-      
+		    $.ajax({
+		        url: "getPurchaseIdDetails",
+		        method:"GET",
+		        
+		        data: {
+		          "vendor_id": vendorId,
+		          "purchase_order_expected_date": expectedDate,
+		          "purchase_order_expected_date1": expectedDate1,
+		          "page": pageNumber,
+		  	      "pageSize": pageSize
 
-    };
+		        },
+		       	
+		       	  
+		        success: function(response) {
+		      	  
+		      	  console.log(this.url);
+		      	  console.log(response);
+		      	  var PurchasesId= $("#PurchasesId");
+		      	  setPurchaseOrderData(response);
+		      	updatePagination(response.totalPages, response.currentPage);
+		      	  
+		      	  
+		           
+		        },
+		    error: function () {
+		  	  console.log(this.url);
+		  	  console.log("AJAX call error");
+		    }
+		        
+		    
+		        
+		    });
+		    
+
+		  };
+    
   });
-  function tk() {
+ 
+  function tk(pageNumber,pageSize) {
       
   	var vendorIdf=$("#vendorId option:selected").val();
    	  var vendorId=parseInt(vendorIdf || 0);
@@ -273,6 +304,7 @@ $(document).ready(function() {
    
     console.log(vendorId);
     console.log(expectedDate);
+
     $.ajax({
         url: "getPurchaseIdDetails",
         method:"GET",
@@ -280,7 +312,9 @@ $(document).ready(function() {
         data: {
           "vendor_id": vendorId,
           "purchase_order_expected_date": expectedDate,
-          "purchase_order_expected_date1": expectedDate1
+          "purchase_order_expected_date1": expectedDate1,
+          "page": pageNumber,
+  	      "pageSize": pageSize
 
         },
        	
@@ -291,6 +325,7 @@ $(document).ready(function() {
       	  console.log(response);
       	  var PurchasesId= $("#PurchasesId");
       	  setPurchaseOrderData(response);
+      	updatePagination(response.totalPages, response.currentPage);
       	  
       	  
            
@@ -306,6 +341,78 @@ $(document).ready(function() {
     
 
   };
+  function getItems(pageNumber, pageSize) {
+	  var pageRequest = {
+	    page: pageNumber,
+	    pageSize: pageSize
+	  };
+
+	  $.ajax({
+	    url: 'items',
+	    type: 'GET',
+	    data: pageRequest,
+	    success: function(response) {
+	      // Process the response and update the UI with the items
+	      displayItems(response);
+	      updatePagination(response.totalPages, response.currentPage);
+	    },
+	    error: function(error) {
+	      console.error('Error retrieving items:', error);
+	    }
+	  });
+	}
+
+
+
+	// Function to update the pagination UI
+	function updatePagination(totalPages, currentPage) {
+	  var paginationContainer = document.getElementsByClassName("pagination")[0];
+	  paginationContainer.innerHTML = "";
+
+	  var maxVisibleButtons = 5; // Maximum number of visible buttons
+	  var startPage = Math.max(currentPage - Math.floor(maxVisibleButtons / 2), 1);
+	  var endPage = Math.min(startPage + maxVisibleButtons - 1, totalPages);
+
+	  // "Previous" button
+	  var previousButton = document.createElement("button");
+	  previousButton.innerText = "Previous";
+	  if (currentPage === 1) {
+	    previousButton.disabled = true;
+	  } else {
+	    previousButton.addEventListener("click", function() {
+	      getItems(currentPage - 1, defaultPageSize);
+	    });
+	  }
+	  paginationContainer.appendChild(previousButton);
+
+	  // Visible page buttons
+	  for (var i = startPage; i <= endPage; i++) {
+	    var button = document.createElement("button");
+	    button.innerText = i;
+	    if (i === currentPage) {
+	      button.classList.add("active");
+	    }
+	    button.addEventListener("click", function() {
+	      var page = parseInt(this.innerText);
+	      tk(page, defaultPageSize);
+	    });
+	    paginationContainer.appendChild(button);
+	  }
+
+	  // "Next" button
+	  var nextButton = document.createElement("button");
+	  nextButton.innerText = "Next";
+	  if (currentPage === totalPages) {
+	    nextButton.disabled = true;
+	  } else {
+	    nextButton.addEventListener("click", function() {
+	    tk(currentPage + 1, defaultPageSize);
+	    });
+	  }
+	  paginationContainer.appendChild(nextButton);
+	}
+
+
   function mapPurchaseOrderData2(data) {
 	  var container = $(".container");
 
@@ -394,14 +501,15 @@ $(document).ready(function() {
     
   function setPurchaseOrderData(data) {
 	  var container = $(".container");
-
+	  var items = data.items;
+	  var totalPages = data.totalPages;
 	  // Clear existing data
 	  container.empty();
 	  var h1Element = $('<h1 class="text-center mb-4" align="center">Purchases Data</h1>');
 	    $('.container').append(h1Element);
 
 	  // Iterate over each purchase order
-	  $.each(data, function(index, order) {
+	  $.each(data.items, function(index, order) {
 	    var purchaseId = order.purchase_order_id;
 	    var vendorId = order.vendor_id;
 	    var expectedDate = order.purchase_order_expected_date;
@@ -455,6 +563,23 @@ $(document).ready(function() {
 	    // Append the issue block to the container
 	    container.append(issueBlock);
 	  });
+	  var paginationContainer = document.getElementsByClassName("pagination")[0];
+	  paginationContainer.innerHTML = "";
+
+	  for (var i = 1; i <= totalPages; i++) {
+	    var button = document.createElement("button");
+	    button.innerText = i;
+	    button.addEventListener("click", function() {
+	      // Handle button click event to load items for the selected page
+	      getItems(parseInt(this.innerText), pageSize);
+	    });
+
+	    if (i === data.currentPage) {
+	      button.classList.add("active");
+	    }
+
+	    paginationContainer.appendChild(button);
+	  }
 	}
 
   function clearSelection() {

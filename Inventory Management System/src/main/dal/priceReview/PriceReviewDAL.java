@@ -22,34 +22,20 @@ public class PriceReviewDAL implements PriceReviewDAO {
 
 	@PersistenceContext
 	private EntityManager entityManager;
-	/* getPriceReview method is used to retrieve a list of price reviews and uses entityManager to create a 
-query to select all the PriceReviewList entities.
 
-The PriceReviewList class represents the entity mapping for the im_priceReview (pr_id, pr_date)
-table in the database.
- */
 	@Transactional
 	public List<PriceReviewList> getPriceReview() {
-		try{
 		List<PriceReviewList> l = entityManager.createQuery("SELECT v FROM PriceReviewList v").getResultList();
 		for (PriceReviewList v : l) {
 			System.out.println(v.toString());
 		}
 		return l;
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
 	}
-/* The savePriceReview method is responsible for persisting the PriceReviewList object and 
-its associated PriceReviewProductsList objects into the database.
 
- The PriceReviewProductsList class represents the entity mapping for the im_priceReview_items table, including the composite primary key (pr_id, product_id, batch_no)
-*/
 	@Transactional
 	public boolean savePriceReview(PriceReviewList priceReviewList) {
-		try{
+		System.out.println("Inside priceReviewDao");
+		System.out.println(priceReviewList);
 		entityManager.persist(priceReviewList);
 		List<PriceReviewProductsList> prl;
 		prl = priceReviewList.getProductsList();
@@ -65,18 +51,12 @@ its associated PriceReviewProductsList objects into the database.
 			ips.setProductSalePrice(s.getNew_price());
 		}
 		return true;
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
 
 	}
-/* getPriceReviewProductsList method displays the list of all the products whose prices were 
-modified according to their price review Id */
+
 	@Transactional
 	public List<PriceReviewProductsListData> getPriceReviewProductsList(PriceReviewInputList pricereviewid) {
-try{
+
 		int data = pricereviewid.getPr_id();
 		System.out.println(data);
 		@SuppressWarnings("unchecked")
@@ -91,138 +71,93 @@ try{
 			System.out.println("Inside " + p);
 
 		return s;
-}
-catch(Exception e)
-{
-	e.printStackTrace();
-}
 
 	}
-// This method filters Price Review ID's by product category Id, product Id and From date
+
 	@Override
 	public List<PriceReviewFilterOutput> getFilterDataByCategoryIdProductIdFrom(
 			PriceReviewFilterInput priceReviewFilterInput) {
-
-		try{
+		@SuppressWarnings("unchecked")
 		List<PriceReviewFilterOutput> lst = entityManager.createQuery(
 				"SELECT NEW main.models.priceReviewModels.outputModels.PriceReviewFilterOutput(e.priceReviewId, e.priceReviewDate)"
 						+ " FROM PriceReviewFilter e"
 						+ " JOIN main.models.priceReviewModels.entities.PriceReviewProductsList pi ON e.priceReviewId = pi.pr_id"
 						+ " JOIN main.models.productModels.entities.Products p ON p.productId = pi.product_id"
-						+ " WHERE p.productId = :productId and e.priceReviewDate between :fromDate and :toDate and p.category = :categoryId"
-						+ " GROUP BY e.priceReviewId, e.priceReviewDate")
-				.setParameter("categoryId", priceReviewFilterInput.getProductCategoryId())
+						+ " WHERE p.productId = :productId and e.priceReviewDate between :fromDate and :toDate")
 				.setParameter("productId", priceReviewFilterInput.getProductId())
 				.setParameter("fromDate", priceReviewFilterInput.getFromDate())
 				.setParameter("toDate", priceReviewFilterInput.getToDate()).getResultList();
 		return lst;
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
 
 	}
-// This method filters Price Review ID's by product category Id and product Id
+
 	@Override
 	public List<PriceReviewFilterOutput> getFilterDataByCategoryIdProductId(
 			PriceReviewFilterInput priceReviewFilterInput) {
-		try{
+		@SuppressWarnings("unchecked")
 		List<PriceReviewFilterOutput> lst = entityManager.createQuery(
 				"SELECT NEW main.models.priceReviewModels.outputModels.PriceReviewFilterOutput(e.priceReviewId, e.priceReviewDate)"
 						+ " FROM PriceReviewFilter e"
 						+ " JOIN main.models.priceReviewModels.entities.PriceReviewProductsList pi ON e.priceReviewId = pi.pr_id"
 						+ " JOIN main.models.productModels.entities.Products p ON p.productId = pi.product_id"
-						+ " WHERE p.productId = :productId and e.priceReviewDate <= :toDate and p.category = :categoryId"
-						+ " GROUP BY e.priceReviewId, e.priceReviewDate")
-				.setParameter("categoryId", priceReviewFilterInput.getProductCategoryId())
+						+ " WHERE p.productId = :productId and e.priceReviewDate <= :toDate")
 				.setParameter("productId", priceReviewFilterInput.getProductId())
 				.setParameter("toDate", priceReviewFilterInput.getToDate()).getResultList();
 		return lst;
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
 	}
-// This method filters Price Review ID's by product category Id and From Date
+
 	@Override
 	public List<PriceReviewFilterOutput> getFilterDataByCategoryIdFrom(PriceReviewFilterInput priceReviewFilterInput) {
-		try{
+		@SuppressWarnings("unchecked")
 		List<PriceReviewFilterOutput> lst = entityManager.createQuery(
 				"SELECT NEW main.models.priceReviewModels.outputModels.PriceReviewFilterOutput(e.priceReviewId, e.priceReviewDate)"
 						+ " FROM PriceReviewFilter e"
 						+ " JOIN main.models.priceReviewModels.entities.PriceReviewProductsList pi ON e.priceReviewId = pi.pr_id"
 						+ " JOIN main.models.productModels.entities.Products p ON p.productId = pi.product_id"
-						+ " WHERE  p.category = :categoryId and e.priceReviewDate between :fromDate and :toDate"
-						+ " GROUP BY e.priceReviewId, e.priceReviewDate")
-				.setParameter("categoryId", priceReviewFilterInput.getProductCategoryId())
+						+ " WHERE e.priceReviewDate between :fromDate and :toDate")
 				.setParameter("fromDate", priceReviewFilterInput.getFromDate())
 				.setParameter("toDate", priceReviewFilterInput.getToDate()).getResultList();
 		return lst;
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
 	}
-// This method filters Price Review ID's by product category Id
+
 	@Override
 	public List<PriceReviewFilterOutput> getFilterDataByCategoryId(PriceReviewFilterInput priceReviewFilterInput) {
-		try{
+		@SuppressWarnings("unchecked")
 		List<PriceReviewFilterOutput> lst = entityManager.createQuery(
 				"SELECT NEW main.models.priceReviewModels.outputModels.PriceReviewFilterOutput(e.priceReviewId, e.priceReviewDate)"
 						+ " FROM PriceReviewFilter e"
 						+ " JOIN main.models.priceReviewModels.entities.PriceReviewProductsList pi ON e.priceReviewId = pi.pr_id"
 						+ " JOIN main.models.productModels.entities.Products p ON p.productId = pi.product_id"
-						+ " WHERE p.category = :categoryId and e.priceReviewDate <= : toDate"
-						+ " GROUP BY e.priceReviewId, e.priceReviewDate")
-				.setParameter("categoryId", priceReviewFilterInput.getProductCategoryId())
+						+ " WHERE e.priceReviewDate <= : toDate")
 				.setParameter("toDate", priceReviewFilterInput.getToDate()).getResultList();
 		return lst;
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
 	}
-// This method filters Price Review ID's by From date
+
 	@Override
 	public List<PriceReviewFilterOutput> getFilterDataByFrom(PriceReviewFilterInput priceReviewFilterInput) {
-		try{
+		@SuppressWarnings("unchecked")
 		List<PriceReviewFilterOutput> lst = entityManager.createQuery(
 				"SELECT NEW main.models.priceReviewModels.outputModels.PriceReviewFilterOutput(e.priceReviewId, e.priceReviewDate)"
 						+ " FROM PriceReviewFilter e"
 						+ " JOIN main.models.priceReviewModels.entities.PriceReviewProductsList pi ON e.priceReviewId = pi.pr_id"
 						+ " JOIN main.models.productModels.entities.Products p ON p.productId = pi.product_id"
-						+ " WHERE e.priceReviewDate between :fromDate and :toDate"
-						+ " GROUP BY e.priceReviewId, e.priceReviewDate")
+						+ " WHERE e.priceReviewDate between :fromDate and :toDate")
 				.setParameter("fromDate", priceReviewFilterInput.getFromDate())
 				.setParameter("toDate", priceReviewFilterInput.getToDate()).getResultList();
 		return lst;
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
 	}
-// This method filters Price Review ID's by To date
+
 	@Override
 	public List<PriceReviewFilterOutput> getFilterDataByTo(PriceReviewFilterInput priceReviewFilterInput) {
-		try{
+		@SuppressWarnings("unchecked")
 		List<PriceReviewFilterOutput> lst = entityManager.createQuery(
 				"SELECT NEW main.models.priceReviewModels.outputModels.PriceReviewFilterOutput(e.priceReviewId, e.priceReviewDate)"
 						+ " FROM PriceReviewFilter e"
 						+ " JOIN main.models.priceReviewModels.entities.PriceReviewProductsList pi ON e.priceReviewId = pi.pr_id"
 						+ " JOIN main.models.productModels.entities.Products p ON p.productId = pi.product_id"
-						+ " WHERE e.priceReviewDate <= :toDate" + " GROUP BY e.priceReviewId, e.priceReviewDate")
+						+ " WHERE e.priceReviewDate <= :toDate")
 				.setParameter("toDate", priceReviewFilterInput.getToDate()).getResultList();
 		return lst;
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
 	}
 
 }
