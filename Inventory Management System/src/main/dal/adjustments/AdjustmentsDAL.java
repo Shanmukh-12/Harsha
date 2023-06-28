@@ -33,14 +33,15 @@ public class AdjustmentsDAL implements AdjustmentsDAO {
 
 	@Transactional
 
-	public List<AdjustmentsList> getAdjustments() {
+	public List<AdjustmentsList> getAdjustments() throws AdjustmentsException {
 		List<AdjustmentsList> adjustmentsList = null;
 		try {
 			adjustmentsList = entityManager.createQuery("SELECT v FROM AdjustmentsList v").getResultList();
+			return adjustmentsList;
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new AdjustmentsException("Error occurred while retrieving Adjustments List", e);
 		}
-		return adjustmentsList;
+
 	}
 
 	/*
@@ -53,7 +54,7 @@ public class AdjustmentsDAL implements AdjustmentsDAO {
 
 	@Transactional
 
-	public boolean saveAdjustments(AdjustmentsList adjustmentsList) {
+	public boolean saveAdjustments(AdjustmentsList adjustmentsList) throws AdjustmentsException {
 		try {
 			entityManager.persist(adjustmentsList);
 			List<AdjustmentsProductsList> adjustmentsProductsList;
@@ -72,8 +73,7 @@ public class AdjustmentsDAL implements AdjustmentsDAO {
 			}
 			return true;
 		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
+			throw new AdjustmentsException("Error occurred while saving Adjustments List", e);
 		}
 
 	}
@@ -84,7 +84,8 @@ public class AdjustmentsDAL implements AdjustmentsDAO {
 	 */
 	@Transactional
 
-	public List<AdjustmentProductsListData> getAdjustmentProductsList(AdjustmentsInputList adjustmentid) {
+	public List<AdjustmentProductsListData> getAdjustmentProductsList(AdjustmentsInputList adjustmentid)
+			throws AdjustmentsException {
 		List<AdjustmentProductsListData> productsList = null;
 		try {
 			int data = adjustmentid.getAdjs_id();
@@ -95,24 +96,21 @@ public class AdjustmentsDAL implements AdjustmentsDAO {
 							+ "JOIN main.models.productModels.entities.ProductsCategory pc ON p.category = pc.productCategoryId "
 							+ "WHERE e.adjs_id = :data",
 					AdjustmentProductsListData.class).setParameter("data", data).getResultList();
-			/*
-			 * for (AdjustmentProductsListData p : s) System.out.println("Inside " + p);
-			 */
+			return productsList;
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new AdjustmentsException("Error occurred while retrieving Adjustments Products List", e);
 		}
-		return productsList;
 
 	}
 
 	// This method filters Adjustment ID's by product category Id, product Id and From date
 	@Override
 	public List<AdjustmentsFilterOutput> getFilterDataByCategoryIdProductIdFrom(
-			AdjustmentsFilterInput adjustmentsFilterInput) {
+			AdjustmentsFilterInput adjustmentsFilterInput) throws AdjustmentsException {
 		try {
 
-			List<AdjustmentsFilterOutput> lst = entityManager.createQuery(
+			List<AdjustmentsFilterOutput> adjustmentsFilterOutput = entityManager.createQuery(
 					"SELECT NEW main.models.adjustmentsModels.outputModels.AdjustmentsFilterOutput(e.adjustmentID, e.adjustmentDate)"
 							+ " FROM AdjustmentsFilter e"
 							+ " JOIN main.models.adjustmentsModels.entities.AdjustmentsProductsList ai ON e.adjustmentID = ai.adjs_id"
@@ -123,21 +121,20 @@ public class AdjustmentsDAL implements AdjustmentsDAO {
 					.setParameter("productId", adjustmentsFilterInput.getProductId())
 					.setParameter("fromDate", adjustmentsFilterInput.getFromDate())
 					.setParameter("toDate", adjustmentsFilterInput.getToDate()).getResultList();
-			return lst;
+			return adjustmentsFilterOutput;
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new AdjustmentsException("Error occurred while applying filters", e);
 
 		}
-		return null;
 
 	}
 
 	// This method filters Adjustment ID's by product category Id and product Id
 	@Override
 	public List<AdjustmentsFilterOutput> getFilterDataByCategoryIdProductId(
-			AdjustmentsFilterInput adjustmentsFilterInput) {
+			AdjustmentsFilterInput adjustmentsFilterInput) throws AdjustmentsException {
 		try {
-			List<AdjustmentsFilterOutput> lst = entityManager.createQuery(
+			List<AdjustmentsFilterOutput> adjustmentsFilterOutput = entityManager.createQuery(
 					"SELECT NEW main.models.adjustmentsModels.outputModels.AdjustmentsFilterOutput(e.adjustmentID, e.adjustmentDate)"
 							+ " FROM AdjustmentsFilter e"
 							+ " JOIN main.models.adjustmentsModels.entities.AdjustmentsProductsList ai ON e.adjustmentID = ai.adjs_id"
@@ -147,18 +144,19 @@ public class AdjustmentsDAL implements AdjustmentsDAO {
 					.setParameter("categoryId", adjustmentsFilterInput.getProductCategoryId())
 					.setParameter("productId", adjustmentsFilterInput.getProductId())
 					.setParameter("toDate", adjustmentsFilterInput.getToDate()).getResultList();
-			return lst;
+			return adjustmentsFilterOutput;
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new AdjustmentsException("Error occurred while applying filters", e);
 		}
-		return null;
+
 	}
 
 	// This method filters Adjustment ID's by product category Id and From Date
 	@Override
-	public List<AdjustmentsFilterOutput> getFilterDataByCategoryIdFrom(AdjustmentsFilterInput adjustmentsFilterInput) {
+	public List<AdjustmentsFilterOutput> getFilterDataByCategoryIdFrom(AdjustmentsFilterInput adjustmentsFilterInput)
+			throws AdjustmentsException {
 		try {
-			List<AdjustmentsFilterOutput> lst = entityManager.createQuery(
+			List<AdjustmentsFilterOutput> adjustmentsFilterOutput = entityManager.createQuery(
 					"SELECT NEW main.models.adjustmentsModels.outputModels.AdjustmentsFilterOutput(e.adjustmentID, e.adjustmentDate)"
 							+ " FROM AdjustmentsFilter e"
 							+ " JOIN main.models.adjustmentsModels.entities.AdjustmentsProductsList ai ON e.adjustmentID = ai.adjs_id"
@@ -168,18 +166,19 @@ public class AdjustmentsDAL implements AdjustmentsDAO {
 					.setParameter("categoryId", adjustmentsFilterInput.getProductCategoryId())
 					.setParameter("fromDate", adjustmentsFilterInput.getFromDate())
 					.setParameter("toDate", adjustmentsFilterInput.getToDate()).getResultList();
-			return lst;
+			return adjustmentsFilterOutput;
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new AdjustmentsException("Error occurred while applying filters", e);
 		}
-		return null;
+
 	}
 
 	// This method filters Adjustment ID's by product category Id
 	@Override
-	public List<AdjustmentsFilterOutput> getFilterDataByCategoryId(AdjustmentsFilterInput adjustmentsFilterInput) {
+	public List<AdjustmentsFilterOutput> getFilterDataByCategoryId(AdjustmentsFilterInput adjustmentsFilterInput)
+			throws AdjustmentsException {
 		try {
-			List<AdjustmentsFilterOutput> lst = entityManager.createQuery(
+			List<AdjustmentsFilterOutput> adjustmentsFilterOutput = entityManager.createQuery(
 					"SELECT NEW main.models.adjustmentsModels.outputModels.AdjustmentsFilterOutput(e.adjustmentID, e.adjustmentDate)"
 							+ " FROM AdjustmentsFilter e"
 							+ " JOIN main.models.adjustmentsModels.entities.AdjustmentsProductsList ai ON e.adjustmentID = ai.adjs_id"
@@ -189,19 +188,20 @@ public class AdjustmentsDAL implements AdjustmentsDAO {
 					.setParameter("categoryId", adjustmentsFilterInput.getProductCategoryId())
 					.setParameter("toDate", adjustmentsFilterInput.getToDate()).getResultList();
 
-			return lst;
+			return adjustmentsFilterOutput;
 		} catch (Exception e) {
 
-			e.printStackTrace();
+			throw new AdjustmentsException("Error occurred while applying filters", e);
 		}
-		return null;
+
 	}
 
 	// This method filters Adjustment ID's by From date
 	@Override
-	public List<AdjustmentsFilterOutput> getFilterDataByFrom(AdjustmentsFilterInput adjustmentsFilterInput) {
+	public List<AdjustmentsFilterOutput> getFilterDataByFrom(AdjustmentsFilterInput adjustmentsFilterInput)
+			throws AdjustmentsException {
 		try {
-			List<AdjustmentsFilterOutput> lst = entityManager.createQuery(
+			List<AdjustmentsFilterOutput> adjustmentsFilterOutput = entityManager.createQuery(
 					"SELECT NEW main.models.adjustmentsModels.outputModels.AdjustmentsFilterOutput(e.adjustmentID, e.adjustmentDate)"
 							+ " FROM AdjustmentsFilter e"
 							+ " JOIN main.models.adjustmentsModels.entities.AdjustmentsProductsList ai ON e.adjustmentID = ai.adjs_id"
@@ -210,29 +210,30 @@ public class AdjustmentsDAL implements AdjustmentsDAO {
 							+ " GROUP BY e.adjustmentID, e.adjustmentDate")
 					.setParameter("fromDate", adjustmentsFilterInput.getFromDate())
 					.setParameter("toDate", adjustmentsFilterInput.getToDate()).getResultList();
-			return lst;
+			return adjustmentsFilterOutput;
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new AdjustmentsException("Error occurred while applying filters", e);
 		}
-		return null;
+
 	}
 
 	// This method filters Adjustment ID's by To date
 	@Override
-	public List<AdjustmentsFilterOutput> getFilterDataByTo(AdjustmentsFilterInput adjustmentsFilterInput) {
+	public List<AdjustmentsFilterOutput> getFilterDataByTo(AdjustmentsFilterInput adjustmentsFilterInput)
+			throws AdjustmentsException {
 		try {
-			List<AdjustmentsFilterOutput> lst = entityManager.createQuery(
+			List<AdjustmentsFilterOutput> adjustmentsFilterOutput = entityManager.createQuery(
 					"SELECT NEW main.models.adjustmentsModels.outputModels.AdjustmentsFilterOutput(e.adjustmentID, e.adjustmentDate)"
 							+ " FROM AdjustmentsFilter e"
 							+ " JOIN main.models.adjustmentsModels.entities.AdjustmentsProductsList ai ON e.adjustmentID = ai.adjs_id"
 							+ " JOIN main.models.productModels.entities.Products p ON p.productId = ai.product_id"
 							+ " WHERE e.adjustmentDate <= :toDate" + " GROUP BY e.adjustmentID, e.adjustmentDate")
 					.setParameter("toDate", adjustmentsFilterInput.getToDate()).getResultList();
-			return lst;
+			return adjustmentsFilterOutput;
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new AdjustmentsException("Error occurred while applying filters", e);
 		}
-		return null;
+
 	}
 
 }

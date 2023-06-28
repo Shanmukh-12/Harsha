@@ -30,15 +30,17 @@ public class PriceReviewDAL implements PriceReviewDAO {
 	 * The PriceReviewList class represents the entity mapping for the im_priceReview (pr_id, pr_date) table in the
 	 * database.
 	 */
+	@SuppressWarnings("unchecked")
 	@Transactional
-	public List<PriceReviewList> getPriceReview() {
+	public List<PriceReviewList> getPriceReview() throws PriceReviewException {
 		List<PriceReviewList> priceReviewList = null;
 		try {
 			priceReviewList = entityManager.createQuery("SELECT v FROM PriceReviewList v").getResultList();
+			return priceReviewList;
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new PriceReviewException("Error occured while retrieving price reviews list", e);
 		}
-		return priceReviewList;
+
 	}
 
 	/*
@@ -49,7 +51,7 @@ public class PriceReviewDAL implements PriceReviewDAO {
 	 * composite primary key (pr_id, product_id, batch_no)
 	 */
 	@Transactional
-	public boolean savePriceReview(PriceReviewList priceReviewList) {
+	public boolean savePriceReview(PriceReviewList priceReviewList) throws PriceReviewException {
 		try {
 			entityManager.persist(priceReviewList);
 			List<PriceReviewProductsList> priceReviewProductsList = priceReviewList.getProductsList();
@@ -60,15 +62,15 @@ public class PriceReviewDAL implements PriceReviewDAO {
 				entityManager.persist(product);
 
 				ProductStock productStock = (ProductStock) entityManager
-						.createQuery("select s from ProductStock s where s.productId=:prodId and s.batchNo=:batchNo")
+						.createQuery(
+								" SELECT s from ProductStock s where s.productId = :prodId and s.batchNo = :batchNo ")
 						.setParameter("prodId", product.getProduct_id()).setParameter("batchNo", product.getBatch_no())
 						.getSingleResult();
 				productStock.setProductSalePrice(product.getNew_price());
 			}
 			return true;
 		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
+			throw new PriceReviewException("Error occured while saving price reviews list", e);
 		}
 
 	}
@@ -77,8 +79,10 @@ public class PriceReviewDAL implements PriceReviewDAO {
 	 * getPriceReviewProductsList method displays the list of all the products whose prices were modified according to
 	 * their price review Id
 	 */
+	@SuppressWarnings("unchecked")
 	@Transactional
-	public List<PriceReviewProductsListData> getPriceReviewProductsList(PriceReviewInputList pricereviewid) {
+	public List<PriceReviewProductsListData> getPriceReviewProductsList(PriceReviewInputList pricereviewid)
+			throws PriceReviewException {
 
 		List<PriceReviewProductsListData> productsList = null;
 
@@ -92,21 +96,22 @@ public class PriceReviewDAL implements PriceReviewDAO {
 							+ "JOIN main.models.productModels.entities.ProductsCategory pc ON p.category = pc.productCategoryId "
 							+ "WHERE e.pr_id = :data")
 					.setParameter("data", data).getResultList();
+			return productsList;
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new PriceReviewException("Error occured while retrieving price reviews products list", e);
 		}
-		return productsList;
 
 	}
 
 	// This method filters Price Review ID's by product category Id, product Id and From date
 	@Override
 	public List<PriceReviewFilterOutput> getFilterDataByCategoryIdProductIdFrom(
-			PriceReviewFilterInput priceReviewFilterInput) {
+			PriceReviewFilterInput priceReviewFilterInput) throws PriceReviewException {
 
 		try {
-			List<PriceReviewFilterOutput> lst = entityManager.createQuery(
+			@SuppressWarnings("unchecked")
+			List<PriceReviewFilterOutput> priceReviewFilterOutput = entityManager.createQuery(
 					"SELECT NEW main.models.priceReviewModels.outputModels.PriceReviewFilterOutput(e.priceReviewId, e.priceReviewDate)"
 							+ " FROM PriceReviewFilter e"
 							+ " JOIN main.models.priceReviewModels.entities.PriceReviewProductsList pi ON e.priceReviewId = pi.pr_id"
@@ -117,20 +122,20 @@ public class PriceReviewDAL implements PriceReviewDAO {
 					.setParameter("productId", priceReviewFilterInput.getProductId())
 					.setParameter("fromDate", priceReviewFilterInput.getFromDate())
 					.setParameter("toDate", priceReviewFilterInput.getToDate()).getResultList();
-			return lst;
+			return priceReviewFilterOutput;
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new PriceReviewException("Error occurred while applying filters", e);
 		}
-		return null;
 
 	}
 
 	// This method filters Price Review ID's by product category Id and product Id
 	@Override
 	public List<PriceReviewFilterOutput> getFilterDataByCategoryIdProductId(
-			PriceReviewFilterInput priceReviewFilterInput) {
+			PriceReviewFilterInput priceReviewFilterInput) throws PriceReviewException {
 		try {
-			List<PriceReviewFilterOutput> lst = entityManager.createQuery(
+			@SuppressWarnings("unchecked")
+			List<PriceReviewFilterOutput> priceReviewFilterOutput = entityManager.createQuery(
 					"SELECT NEW main.models.priceReviewModels.outputModels.PriceReviewFilterOutput(e.priceReviewId, e.priceReviewDate)"
 							+ " FROM PriceReviewFilter e"
 							+ " JOIN main.models.priceReviewModels.entities.PriceReviewProductsList pi ON e.priceReviewId = pi.pr_id"
@@ -140,18 +145,20 @@ public class PriceReviewDAL implements PriceReviewDAO {
 					.setParameter("categoryId", priceReviewFilterInput.getProductCategoryId())
 					.setParameter("productId", priceReviewFilterInput.getProductId())
 					.setParameter("toDate", priceReviewFilterInput.getToDate()).getResultList();
-			return lst;
+			return priceReviewFilterOutput;
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new PriceReviewException("Error occurred while applying filters", e);
 		}
-		return null;
+
 	}
 
 	// This method filters Price Review ID's by product category Id and From Date
 	@Override
-	public List<PriceReviewFilterOutput> getFilterDataByCategoryIdFrom(PriceReviewFilterInput priceReviewFilterInput) {
+	public List<PriceReviewFilterOutput> getFilterDataByCategoryIdFrom(PriceReviewFilterInput priceReviewFilterInput)
+			throws PriceReviewException {
 		try {
-			List<PriceReviewFilterOutput> lst = entityManager.createQuery(
+			@SuppressWarnings("unchecked")
+			List<PriceReviewFilterOutput> priceReviewFilterOutput = entityManager.createQuery(
 					"SELECT NEW main.models.priceReviewModels.outputModels.PriceReviewFilterOutput(e.priceReviewId, e.priceReviewDate)"
 							+ " FROM PriceReviewFilter e"
 							+ " JOIN main.models.priceReviewModels.entities.PriceReviewProductsList pi ON e.priceReviewId = pi.pr_id"
@@ -161,18 +168,20 @@ public class PriceReviewDAL implements PriceReviewDAO {
 					.setParameter("categoryId", priceReviewFilterInput.getProductCategoryId())
 					.setParameter("fromDate", priceReviewFilterInput.getFromDate())
 					.setParameter("toDate", priceReviewFilterInput.getToDate()).getResultList();
-			return lst;
+			return priceReviewFilterOutput;
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new PriceReviewException("Error occurred while applying filters", e);
 		}
-		return null;
+
 	}
 
 	// This method filters Price Review ID's by product category Id
 	@Override
-	public List<PriceReviewFilterOutput> getFilterDataByCategoryId(PriceReviewFilterInput priceReviewFilterInput) {
+	public List<PriceReviewFilterOutput> getFilterDataByCategoryId(PriceReviewFilterInput priceReviewFilterInput)
+			throws PriceReviewException {
 		try {
-			List<PriceReviewFilterOutput> lst = entityManager.createQuery(
+			@SuppressWarnings("unchecked")
+			List<PriceReviewFilterOutput> priceReviewFilterOutput = entityManager.createQuery(
 					"SELECT NEW main.models.priceReviewModels.outputModels.PriceReviewFilterOutput(e.priceReviewId, e.priceReviewDate)"
 							+ " FROM PriceReviewFilter e"
 							+ " JOIN main.models.priceReviewModels.entities.PriceReviewProductsList pi ON e.priceReviewId = pi.pr_id"
@@ -181,18 +190,20 @@ public class PriceReviewDAL implements PriceReviewDAO {
 							+ " GROUP BY e.priceReviewId, e.priceReviewDate")
 					.setParameter("categoryId", priceReviewFilterInput.getProductCategoryId())
 					.setParameter("toDate", priceReviewFilterInput.getToDate()).getResultList();
-			return lst;
+			return priceReviewFilterOutput;
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new PriceReviewException("Error occurred while applying filters", e);
 		}
-		return null;
+
 	}
 
 	// This method filters Price Review ID's by From date
 	@Override
-	public List<PriceReviewFilterOutput> getFilterDataByFrom(PriceReviewFilterInput priceReviewFilterInput) {
+	public List<PriceReviewFilterOutput> getFilterDataByFrom(PriceReviewFilterInput priceReviewFilterInput)
+			throws PriceReviewException {
 		try {
-			List<PriceReviewFilterOutput> lst = entityManager.createQuery(
+			@SuppressWarnings("unchecked")
+			List<PriceReviewFilterOutput> priceReviewFilterOutput = entityManager.createQuery(
 					"SELECT NEW main.models.priceReviewModels.outputModels.PriceReviewFilterOutput(e.priceReviewId, e.priceReviewDate)"
 							+ " FROM PriceReviewFilter e"
 							+ " JOIN main.models.priceReviewModels.entities.PriceReviewProductsList pi ON e.priceReviewId = pi.pr_id"
@@ -201,29 +212,31 @@ public class PriceReviewDAL implements PriceReviewDAO {
 							+ " GROUP BY e.priceReviewId, e.priceReviewDate")
 					.setParameter("fromDate", priceReviewFilterInput.getFromDate())
 					.setParameter("toDate", priceReviewFilterInput.getToDate()).getResultList();
-			return lst;
+			return priceReviewFilterOutput;
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new PriceReviewException("Error occurred while applying filters", e);
 		}
-		return null;
+
 	}
 
 	// This method filters Price Review ID's by To date
 	@Override
-	public List<PriceReviewFilterOutput> getFilterDataByTo(PriceReviewFilterInput priceReviewFilterInput) {
+	public List<PriceReviewFilterOutput> getFilterDataByTo(PriceReviewFilterInput priceReviewFilterInput)
+			throws PriceReviewException {
 		try {
-			List<PriceReviewFilterOutput> lst = entityManager.createQuery(
+			@SuppressWarnings("unchecked")
+			List<PriceReviewFilterOutput> priceReviewFilterOutput = entityManager.createQuery(
 					"SELECT NEW main.models.priceReviewModels.outputModels.PriceReviewFilterOutput(e.priceReviewId, e.priceReviewDate)"
 							+ " FROM PriceReviewFilter e"
 							+ " JOIN main.models.priceReviewModels.entities.PriceReviewProductsList pi ON e.priceReviewId = pi.pr_id"
 							+ " JOIN main.models.productModels.entities.Products p ON p.productId = pi.product_id"
 							+ " WHERE e.priceReviewDate <= :toDate" + " GROUP BY e.priceReviewId, e.priceReviewDate")
 					.setParameter("toDate", priceReviewFilterInput.getToDate()).getResultList();
-			return lst;
+			return priceReviewFilterOutput;
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new PriceReviewException("Error occurred while applying filters", e);
 		}
-		return null;
+
 	}
 
 }
