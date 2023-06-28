@@ -41,10 +41,7 @@ public class LoginController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String Home() {
 		// BasicConfigurator.configure();
-		Logger logger = LoggerFactory.getLogger(LoginController.class);
-		logger.info("Your Message -from log file!!");
-		System.out.println("in login");
-		logger.error("Failed to process the request .");
+	
 		return "login/login";
 
 	}
