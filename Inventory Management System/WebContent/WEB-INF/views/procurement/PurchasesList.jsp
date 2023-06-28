@@ -341,26 +341,7 @@ $(document).ready(function() {
     
 
   };
-  function getItems(pageNumber, pageSize) {
-	  var pageRequest = {
-	    page: pageNumber,
-	    pageSize: pageSize
-	  };
 
-	  $.ajax({
-	    url: 'items',
-	    type: 'GET',
-	    data: pageRequest,
-	    success: function(response) {
-	      // Process the response and update the UI with the items
-	      displayItems(response);
-	      updatePagination(response.totalPages, response.currentPage);
-	    },
-	    error: function(error) {
-	      console.error('Error retrieving items:', error);
-	    }
-	  });
-	}
 
 
 
