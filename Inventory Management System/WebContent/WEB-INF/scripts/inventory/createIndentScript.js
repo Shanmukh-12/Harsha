@@ -10,12 +10,11 @@ var addedProductIds = [];
 var addButtons;
 
 $(document).ready(function () {
- 
+ showBufferingLayer();
     	 $.ajax({
      	     url :"getProductCategories",
      	     method :"post",
      	   success : function(data) {
-				 showBufferingLayer();
 				if (data.indexOf("Error:") === 0) {
 					console.log("msdfnshf");
 				var stringList = data;
@@ -40,7 +39,6 @@ $(document).ready(function () {
           },
      	    	  
      	});	
-
     	 $.ajax({
     	        url: "getReOrderProductsData",
     	        method: "post",
@@ -67,17 +65,17 @@ $(document).ready(function () {
 
     	            // Check if the product ID is already added
     	            if (addedProductIds.includes(productId)) {
-    	              alert('This product is already added.');
+    	              toastr.info('This product is already added.');
     	              return;
     	            }
 
     	            addRowToSelectedTable(row);
     	            addedProductIds.push(productId);
     	          });
-
+               
     	        },
     	        error: function() {
-    	          alert('Error occurred while retrieving Products by categoryId.');
+    	           toastr.error('Error occurred while retrieving ReOder Products.');
     	        }
     	      });
 
@@ -109,17 +107,18 @@ $(document).ready(function () {
 
             // Check if the product ID is already added
             if (addedProductIds.includes(productId)) {
-              alert('This product is already added.');
+              toastr.info('This product is already added.');
               return;
             }
 
             addRowToSelectedTable(row);
             addedProductIds.push(productId);
           });
-
+            hideBufferingLayer();
         },
         error: function() {
-          alert('Error occurred while retrieving Products by categoryId.');
+            toastr.error('Error occurred while retrieving categories.');
+          hideBufferingLayer();
         }
       });
       
@@ -158,21 +157,24 @@ $(document).ready(function () {
 
     	            // Check if the product ID is already added
     	            if (addedProductIds.includes(productId)) {
-    	              alert('This product is already added.');
+    	               toastr.info('This product is already added.');
     	              return;
     	            }
 
     	            addRowToSelectedTable(row);
     	            addedProductIds.push(productId);
 		          });
-                hideBufferingLayer();
+		          hideBufferingLayer();
 		        },
 		        error: function() {
-		            alert('Error occurred while retrieving categories.');
-		         hideBufferingLayer();
+		            toastr.error('Error occurred while retrieving Products.');
+		            hideBufferingLayer();
+		        
 		   	   }
 		   	    	  
 		   	});
+		   	
+		   	
 			});
       
       
@@ -242,7 +244,7 @@ $(document).ready(function () {
 // Ajax call to create an Inventory Indent.    
      function createIndent()
      {
-		 showBufferingLayer();
+	   showBufferingLayer();
      	var data = getTableData();
      	const jsonData = JSON.stringify(data);
      	$.ajax({
@@ -253,11 +255,19 @@ $(document).ready(function () {
      		{
      			$('#products-table tbody').empty();
      			hideBufferingLayer();
-     			alert('Succesfully created Indents to the Procurement');
+     			toastr.success("Succesfully Inventory Indent has been Created");
      			
      			
-     		}
+     		},
+     		error: function(xhr, textStatus, errorThrown) {
+                    var errorResponse = xhr.responseJSON;
+                    if (errorResponse) {
+                      // Append the error message to the specified <div> element
+                        toastr.error(errorResponse.message);
+                    } 
+
+     		
      	
-     	});
+     	     }
      }
     
