@@ -11,6 +11,9 @@
 <script src="./inventoryHome/scripts/indentsScript.js"></script>
 </head>
 <body>
+<div class="overlay" id="buffering-layer">
+        <div class="spinner"></div>
+    </div>
     <form method="post" action="">
             <h1 id="heading-indent" >Indents List</h1>
             <div class="filters">

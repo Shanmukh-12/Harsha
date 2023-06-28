@@ -1,19 +1,43 @@
- var addedProductIds = [];
-  var addButtons;
-    $(document).ready(function() {
-    
+ function showBufferingLayer() {
+  document.getElementById('buffering-layer').style.display = 'flex';
+}
+
+function hideBufferingLayer() {
+  document.getElementById('buffering-layer').style.display = 'none';
+}
+
+var addedProductIds = [];
+var addButtons;
+
+$(document).ready(function () {
+ 
     	 $.ajax({
      	     url :"getProductCategories",
      	     method :"post",
      	   success : function(data) {
+				 showBufferingLayer();
+				if (data.indexOf("Error:") === 0) {
+					console.log("msdfnshf");
+				var stringList = data;
+
+        // Access and use the list of strings
+        for (var i = 0; i < stringList.length; i++) {
+			console.log("lkjskjk");
+             var errorMessage = stringList[i].substring(6);
+             toastr.error(errorMessage);
+        }
+			
+            
+            }
+				else{
               $.each(data, function(index, category) {
                   var option = '<option value="' + category.productCategoryId + '">' + category.productCategoryName + '</option>';
                   $('#product-category').append(option);
               });
+              }
+             hideBufferingLayer();
+              
           },
-          error: function() {
-              alert('Error occurred while retrieving categories.');
-          }
      	    	  
      	});	
 
@@ -50,7 +74,6 @@
     	            addRowToSelectedTable(row);
     	            addedProductIds.push(productId);
     	          });
-
 
     	        },
     	        error: function() {
@@ -102,7 +125,7 @@
       
       
       $("#product-category").change(function(){
-			
+			 showBufferingLayer();
 			
 		   	$.ajax({
 		   	     url :"getProductStockData",
@@ -142,11 +165,11 @@
     	            addRowToSelectedTable(row);
     	            addedProductIds.push(productId);
 		          });
-
+                hideBufferingLayer();
 		        },
 		        error: function() {
 		            alert('Error occurred while retrieving categories.');
-		        
+		         hideBufferingLayer();
 		   	   }
 		   	    	  
 		   	});
@@ -219,6 +242,7 @@
 // Ajax call to create an Inventory Indent.    
      function createIndent()
      {
+		 showBufferingLayer();
      	var data = getTableData();
      	const jsonData = JSON.stringify(data);
      	$.ajax({
@@ -228,8 +252,9 @@
      		success:function(page)
      		{
      			$('#products-table tbody').empty();
+     			hideBufferingLayer();
      			alert('Succesfully created Indents to the Procurement');
-     			 
+     			
      			
      		}
      	

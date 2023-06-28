@@ -10,9 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-
+import main.dal.products.ProductsDAOException;
 import main.dao.products.ProductCategoryDAO;
 import main.dao.products.ProductsDAO;
 import main.models.productModels.entities.HSNEntityModel;
@@ -40,27 +38,34 @@ public class ProductControllers {
 	public @ResponseBody List<ProductsCategory> getProductCategories(Model model) {
 		
 		 // listing the CategoryIds by category by calling productsDao Interface method.
-		List<ProductsCategory> productCategory = productCategoryDAO.getProductCategories();
+		List<ProductsCategory> productCategory = null;
+		try {
+			productCategory = productCategoryDAO.getProductCategories();
+		} catch (ProductsDAOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return productCategory;
 	}
 	
 	
 //It return productsIds and productNames by taking the categoryId as an input
 	@PostMapping("/getProductsIds")
-    public @ResponseBody List<ProductIdListOutput> getProducts(String categoryId, Model model) {
-		
-	 ObjectMapper objectMapper = new ObjectMapper();
-	 CategoryRequest categoryRequest = null;
-	try {
-		//Reading the input JSon into the Input CategoryRequest Class
-		categoryRequest = objectMapper.readValue(categoryId,CategoryRequest.class);
-	} catch (Exception e) {
-		e.printStackTrace();
-	} 
+    public @ResponseBody List<ProductIdListOutput> getProductsIDs(@ModelAttribute("categoryInputModel") CategoryRequest categoryInputModel, Model model) {
 
-        int selectedCategoryId = categoryRequest.getCategoryId();
         // listing the ProductsIds by category by calling productsDao Interface method.
-        List<ProductIdListOutput> products = productsDAO.getProductsByCategoryId(selectedCategoryId);
+        List<ProductIdListOutput> products=null;
+        
+		try {
+			
+			products = productsDAO.getProductsByCategoryId(categoryInputModel);
+			
+		} 
+		catch (ProductsDAOException e) {
+			
+			model.addAttribute("error",e.getMessage());
+		}
+		
         return products;
     }
 //It return products Data by taking the categoryId as an input
@@ -69,10 +74,18 @@ public class ProductControllers {
 			@ModelAttribute("categoryInputModel") CategoryRequest categoryInputModel, Model model) {
 
 
-		int selectedCategoryId = categoryInputModel.getCategoryId();
 	 // listing the Products Details by category by calling productsDao Interface method.
-		List<ProductStockData> products = productsDAO.getProductsByCategory(selectedCategoryId);
-		System.out.println(products);
+		List<ProductStockData> products=null;
+		try {
+			
+			products = productsDAO.getProductsByCategory(categoryInputModel);
+		
+		}
+		catch (ProductsDAOException e) {
+
+			
+			model.addAttribute("error",e.getMessage());
+		}
 		return products;
 	}
 	
@@ -84,9 +97,17 @@ public class ProductControllers {
 
 		int selectedProductId = productsProductIdInputModel.getProductId();
 		
-		 // listing the Product BatchNos by category by calling productsDao Interface method.
-		List<ProductStockData> batchesNos = productsDAO.getProductsByProductId(selectedProductId);
-		System.out.println(batchesNos);
+		// listing the Product BatchNos by category by calling productsDao Interface method.
+		List<ProductStockData> batchesNos =null;
+		
+		try {
+			
+			batchesNos = productsDAO.getProductsByProductId(selectedProductId);
+			
+		} catch (ProductsDAOException e) {
+			
+			model.addAttribute("error",e.getMessage());
+		}
 		return batchesNos;
 	}
 
@@ -96,11 +117,17 @@ public class ProductControllers {
 			@ModelAttribute("productsProductIdandBatchNoInputModel") ProductsProductIdandBatchNoInputModel productsProductIdandBatchNoInputModel,
 			Model model) {
 
-		int selectedProductId = productsProductIdandBatchNoInputModel.getProductId();
-		int selectedBatchNo = productsProductIdandBatchNoInputModel.getBatchNo();
 		// listing the Product quantity  and price by category by calling productsDao Interface method.
-		ProductStockData quantityOrPrice = productsDAO.getQuantityandpriceByProductIdOrBatchNo(selectedProductId,
-				selectedBatchNo);
+		ProductStockData quantityOrPrice=null;
+		
+		try {
+			
+			quantityOrPrice = productsDAO.getQuantityandpriceByProductIdOrBatchNo(productsProductIdandBatchNoInputModel);
+			
+		} catch (ProductsDAOException e) {
+			
+			model.addAttribute("error",e.getMessage());
+		}
 		return quantityOrPrice;
 	}
 
@@ -109,7 +136,16 @@ public class ProductControllers {
 	public @ResponseBody List<ProductsReOrderList> getReOrderLevelProducts(Model model) {
 		
 		// listing the Re-order Products List  category by calling productsDao Interface method.
-		List<ProductsReOrderList> reOrderlist = productsDAO.getReOrderLevelProducts();
+		List<ProductsReOrderList> reOrderlist=null;
+		try {
+			
+			reOrderlist = productsDAO.getReOrderLevelProducts();
+			
+		} catch (ProductsDAOException e) {
+			
+			model.addAttribute("error",e.getMessage());
+			
+		}
 
 		return reOrderlist;
 	}
@@ -125,7 +161,8 @@ public class ProductControllers {
 		productsDAO.saveCategory(productsCategory);
 		
 		}
-		catch(Exception e) {
+		catch(ProductsDAOException e) {
+			e.printStackTrace();
 			return "Can't created the New Category";
 		}
 		return  "Succesfully created the New Category";
@@ -144,10 +181,8 @@ public class ProductControllers {
 		HSNEntityModel hsnEntityModel = modelMapper.map(hsnInputModel, HSNEntityModel.class);
 		
 		productsDAO.saveHSN(hsnEntityModel);
-		
-		
 		}
-		catch(Exception e) {
+		catch(ProductsDAOException e) {
 			e.printStackTrace();
 			return "Can't Created the new HSN";
 		}
