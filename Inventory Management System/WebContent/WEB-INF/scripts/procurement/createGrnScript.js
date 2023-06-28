@@ -64,30 +64,23 @@ function addToGRNList(button) {
 			newCell.innerHTML = '<button onclick="deleteFromGRNList(this)">Delete</button>';
 		} else if (i === 10) {
 			newCell.innerHTML = '<input id="bonusId" type="number" min="0" value="0" oninput="this.value = this.value.replace(/[^0-9]/g, \'\')">';
-		}
-		else if (i === 4) {
+		} else if (i === 4) {
 			newCell.innerHTML = '<input id="cgst" type="number" min="0" value="0" oninput="this.value = this.value.replace(/[^0-9]/g, \'\')">';
-		}
-		else if (i === 5) {
+		} else if (i === 5) {
 			newCell.innerHTML = '<input id="sgst" type="number" min="0" value="0" oninput="this.value = this.value.replace(/[^0-9]/g, \'\')">';
-		}
-		else if (i === 6) {
+		} else if (i === 6) {
 			newCell.innerHTML = '<input id="igst" type="number" min="0" value="0" oninput="this.value = this.value.replace(/[^0-9]/g, \'\')">';
 
 
-		}
-		else if (i === 7) {
+		} else if (i === 7) {
 			newCell.innerHTML = '<input id="totalprice" type="number" min="0" value="0" oninput="this.value = this.value.replace(/[^0-9]/g, \'\')">';
 
 
-		}
-		else if (i === 11) {
+		} else if (i === 11) {
 			newCell.innerHTML = '<input id="mrp" type="number" min="0" value="0" oninput="this.value = this.value.replace(/[^0-9]/g, \'\')">';
 
 
-		}
-
-		else if (i === 8) {
+		} else if (i === 8) {
 			newCell.innerHTML = '<input id="batchno" type="number" min="0" value="0" oninput="this.value = this.value.replace(/[^0-9]/g, \'\')">';
 
 
@@ -172,9 +165,11 @@ function createGRN() {
 	$.ajax({
 		url: "makeGrn",
 		method: "post",
-		data: { "jsonData": jsonData },
+		data: {
+			"jsonData": jsonData
+		},
 		success: function(page) {
-		alert("created successfully");
+			alert("created successfully");
 		}
 
 	});
@@ -247,14 +242,14 @@ function getPurchaseItems() {
 
 		success: function(response) {
 
-			populatePurchasedItemsTable(response);
+				populatePurchasedItemsTable(response);
 
-		}
-
-
+			}
 
 
-		,
+
+
+			,
 		error: function() {
 			console.log("AJAX call error");
 		}
@@ -265,6 +260,7 @@ function getPurchaseItems() {
 
 
 };
+
 function populatePurchasedItemsTable(data) {
 	var purchasedItemsTable = document.getElementById("purchasedItemsTable");
 	var tbody = purchasedItemsTable.getElementsByTagName("tbody")[0];

@@ -1,4 +1,3 @@
-
 $(document).ready(function() {
 	applyFilter();
 	displayVendors();
@@ -12,7 +11,7 @@ function applyFilter() {
 	var cost = parseInt(costidf || 0);
 	var fromDate = $("#fromDate").val();
 	var toDate = $("#toDate").val();
-	
+
 	$.ajax({
 		url: "getGrnList",
 		method: "GET",
@@ -33,7 +32,7 @@ function applyFilter() {
 
 		},
 		error: function() {
-		
+
 			console.log("AJAX call error");
 		}
 
@@ -43,7 +42,7 @@ function applyFilter() {
 
 function displayVendors() {
 	$.ajax({
-		url:  "showVendors",
+		url: "showVendors",
 		method: "GET",
 		success: function(response) {
 			populateVendorOptions(response);
@@ -102,28 +101,28 @@ function PurchaseOrderData(data) {
 	var mainDiv = $('<div class="issues-block"></div>');
 
 	// Create the Purchase ID heading
-	var purchaseIdHeading = $('<h4 class="store-indent-id" id="PurchasesId">Purchase ID: <span class="bold">'
-		+ data.purchase_order_id + '</span></h4>');
+	var purchaseIdHeading = $('<h4 class="store-indent-id" id="PurchasesId">Purchase ID: <span class="bold">' +
+		data.purchase_order_id + '</span></h4>');
 
 	// Create the issue details div
 	var issueDetailsDiv = $('<div class="issue-details"></div>');
 
 	// Create and append the span elements for the details
-	var vendorIdSpan = $('<span class="label">Vendor ID:</span><span>'
-		+ data.vendor_id + '</span>');
-	var expectedDateSpan = $('<span class="label">Purchase Order Expected Date:</span><span>'
-		+ data.purchase_order_expected_date + '</span>');
-	var amountSpan = $('<span class="label">Purchase Order amount:</span><span>'
-		+ data.purchase_order_amount + '</span>');
+	var vendorIdSpan = $('<span class="label">Vendor ID:</span><span>' +
+		data.vendor_id + '</span>');
+	var expectedDateSpan = $('<span class="label">Purchase Order Expected Date:</span><span>' +
+		data.purchase_order_expected_date + '</span>');
+	var amountSpan = $('<span class="label">Purchase Order amount:</span><span>' +
+		data.purchase_order_amount + '</span>');
 
 	// Append the detail span elements to the issue details div
 	issueDetailsDiv.append(vendorIdSpan, expectedDateSpan,
 		amountSpan);
 
 	// Create the "View Products" button
-	var viewProductsButton = $('<button type="button" value="view products" class="btn-issues" onclick="getGRNProducts('
-		+ data.purchase_order_id
-		+ ')">View Products</button>');
+	var viewProductsButton = $('<button type="button" value="view products" class="btn-issues" onclick="getGRNProducts(' +
+		data.purchase_order_id +
+		')">View Products</button>');
 
 	// Append all the elements to the main container div
 	mainDiv.append(purchaseIdHeading, issueDetailsDiv,
@@ -150,11 +149,11 @@ function getPurchaseId() {
 
 		success: function(response) {
 
-			mapJSONToHTML(response);
+				mapJSONToHTML(response);
 
-		}
+			}
 
-		,
+			,
 		error: function() {
 			console.log(this.url);
 			console.log("AJAX call error");
@@ -163,9 +162,11 @@ function getPurchaseId() {
 	});
 
 };
+
 function refresh() {
 	applyFilter();
 }
+
 function appendGRNDataToContainer(data) {
 	const container = document.querySelector('.container');
 	$(".container").empty();
@@ -256,7 +257,8 @@ function clearSelection() {
 	$('#vendorId').val('');
 
 }
-function  getGRNProducts(grnId) {
+
+function getGRNProducts(grnId) {
 
 	console.log(vendorId);
 
@@ -271,11 +273,11 @@ function  getGRNProducts(grnId) {
 
 		success: function(response) {
 
-			createTable(response);
+				createTable(response);
 
-		}
+			}
 
-		,
+			,
 		error: function() {
 
 			console.log("AJAX call error");
@@ -284,6 +286,7 @@ function  getGRNProducts(grnId) {
 	});
 
 };
+
 function createTable(data) {
 	// Create the table element
 	const table = document.createElement('table');
