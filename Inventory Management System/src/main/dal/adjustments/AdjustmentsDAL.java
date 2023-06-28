@@ -31,12 +31,20 @@ table in the database.
  */
 
 	@Transactional
+	
 	public List<AdjustmentsList> getAdjustments() {
+		try{
 		List<AdjustmentsList> l = entityManager.createQuery("SELECT v FROM AdjustmentsList v").getResultList();
 		for (AdjustmentsList v : l) {
 			System.out.println(v.toString());
 		}
+	
 		return l;
+	 } 
+	 catch(Exception e)
+	 {
+		 e.printStackTrace();
+	 }
 	}
 
 /* The saveAdjustments method is responsible for persisting the AdjustmentsList object and 
@@ -46,8 +54,9 @@ its associated AdjustmentsProductsList objects into the database.
 */
 
 	@Transactional
+	
 	public boolean saveAdjustments(AdjustmentsList adjustmentsList) {
-		
+	try{	
 		entityManager.persist(adjustmentsList);
 		List<AdjustmentsProductsList> apl;
 		apl = adjustmentsList.getProductsList();
@@ -62,15 +71,22 @@ its associated AdjustmentsProductsList objects into the database.
 			ips.setProductStock(s.getUpdated_stock());
 		}
 		return true;
+	} 
+	catch(Exception e)
+	{
+		 e.printStackTrace();
+		 return false;
+	}
 
 	}
 
 /* getAdjustmentProductsList method displays the list of all the products that were 
 adjusted according to their adjustment Id */
     @Transactional
+	
 	public List<AdjustmentProductsListData> getAdjustmentProductsList(AdjustmentsInputList adjustmentid) {
 		int data = adjustmentid.getAdjs_id();
-		
+	try{	
 		List<AdjustmentProductsListData> s = entityManager.createQuery(
 				"SELECT NEW main.models.adjustmentsModels.outputModels.AdjustmentProductsListData(e.product_id, p.productName, pc.productCategoryName, e.batch_no, e.current_stock, e.updated_stock, e.adjs_desc) "
 						+ "FROM AdjustmentsProductsList e "
@@ -82,6 +98,11 @@ adjusted according to their adjustment Id */
 			System.out.println("Inside " + p); */
 
 		return s;
+	} 
+	catch(Exception e)
+	{
+		e.printStackTrace();
+    }
 
 	}
 
@@ -91,6 +112,7 @@ adjusted according to their adjustment Id */
 	@Override
 	public List<AdjustmentsFilterOutput> getFilterDataByCategoryIdProductIdFrom(
 			AdjustmentsFilterInput adjustmentsFilterInput) {
+		try{
 		
 		List<AdjustmentsFilterOutput> lst = entityManager.createQuery(
 				"SELECT NEW main.models.adjustmentsModels.outputModels.AdjustmentsFilterOutput(e.adjustmentID, e.adjustmentDate)"
@@ -103,7 +125,13 @@ adjusted according to their adjustment Id */
 				.setParameter("productId", adjustmentsFilterInput.getProductId())
 				.setParameter("fromDate", adjustmentsFilterInput.getFromDate())
 				.setParameter("toDate", adjustmentsFilterInput.getToDate()).getResultList();
-		return lst;
+		     return lst;
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+
+			}
 
 	}
 
@@ -111,7 +139,7 @@ adjusted according to their adjustment Id */
 	@Override
 	public List<AdjustmentsFilterOutput> getFilterDataByCategoryIdProductId(
 			AdjustmentsFilterInput adjustmentsFilterInput) {
-		
+		try{
 		List<AdjustmentsFilterOutput> lst = entityManager.createQuery(
 				"SELECT NEW main.models.adjustmentsModels.outputModels.AdjustmentsFilterOutput(e.adjustmentID, e.adjustmentDate)"
 						+ " FROM AdjustmentsFilter e"
@@ -122,13 +150,18 @@ adjusted according to their adjustment Id */
 				.setParameter("categoryId", adjustmentsFilterInput.getProductCategoryId())
 				.setParameter("productId", adjustmentsFilterInput.getProductId())
 				.setParameter("toDate", adjustmentsFilterInput.getToDate()).getResultList();
-		return lst;
+		      return lst;
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
 	}
 
 	// This method filters Adjustment ID's by product category Id and From Date
 	@Override
 	public List<AdjustmentsFilterOutput> getFilterDataByCategoryIdFrom(AdjustmentsFilterInput adjustmentsFilterInput) {
-		
+		try{
 		List<AdjustmentsFilterOutput> lst = entityManager.createQuery(
 				"SELECT NEW main.models.adjustmentsModels.outputModels.AdjustmentsFilterOutput(e.adjustmentID, e.adjustmentDate)"
 						+ " FROM AdjustmentsFilter e"
@@ -141,11 +174,16 @@ adjusted according to their adjustment Id */
 				.setParameter("toDate", adjustmentsFilterInput.getToDate()).getResultList();
 		return lst;
 	}
+	catch(Execption e)
+	{
+		e.printStackTrace();
+	}
+	}
 
 // This method filters Adjustment ID's by product category Id
 	@Override
 	public List<AdjustmentsFilterOutput> getFilterDataByCategoryId(AdjustmentsFilterInput adjustmentsFilterInput) {
-		
+	try{	
 		List<AdjustmentsFilterOutput> lst = entityManager.createQuery(
 				"SELECT NEW main.models.adjustmentsModels.outputModels.AdjustmentsFilterOutput(e.adjustmentID, e.adjustmentDate)"
 						+ " FROM AdjustmentsFilter e"
@@ -158,10 +196,16 @@ adjusted according to their adjustment Id */
 		
 		return lst;
 	}
+	catch(Exception e)
+	{
+
+		e.printStackTrace();
+	}
+	}
 // This method filters Adjustment ID's by From date
 	@Override
 	public List<AdjustmentsFilterOutput> getFilterDataByFrom(AdjustmentsFilterInput adjustmentsFilterInput) {
-		
+	try{	
 		List<AdjustmentsFilterOutput> lst = entityManager.createQuery(
 				"SELECT NEW main.models.adjustmentsModels.outputModels.AdjustmentsFilterOutput(e.adjustmentID, e.adjustmentDate)"
 						+ " FROM AdjustmentsFilter e"
@@ -173,11 +217,16 @@ adjusted according to their adjustment Id */
 				.setParameter("toDate", adjustmentsFilterInput.getToDate()).getResultList();
 		return lst;
 	}
+	catch(Exception e)
+	{
+		e.printStackTrace();
+	}
+	}
 
 // This method filters Adjustment ID's by To date
 	@Override
 	public List<AdjustmentsFilterOutput> getFilterDataByTo(AdjustmentsFilterInput adjustmentsFilterInput) {
-		
+	try{	
 		List<AdjustmentsFilterOutput> lst = entityManager.createQuery(
 				"SELECT NEW main.models.adjustmentsModels.outputModels.AdjustmentsFilterOutput(e.adjustmentID, e.adjustmentDate)"
 						+ " FROM AdjustmentsFilter e"
@@ -186,6 +235,11 @@ adjusted according to their adjustment Id */
 						+ " WHERE e.adjustmentDate <= :toDate" + " GROUP BY e.adjustmentID, e.adjustmentDate")
 				.setParameter("toDate", adjustmentsFilterInput.getToDate()).getResultList();
 		return lst;
+	}
+	catch(Exception e)
+	{
+		e.printStackTrace();
+	}
 	}
 
 }
