@@ -18,6 +18,7 @@ import main.models.storeModels.entities.Store;
 import main.models.storeModels.entities.StoreIndentData;
 import main.models.storeModels.inputmodels.StoreFilters;
 import main.models.storeModels.outputmodels.StoreIds;
+import main.service.store.interfaces.StoreService;
 
 @Controller
 public class StoreDataContoroller {
@@ -25,6 +26,9 @@ public class StoreDataContoroller {
 	@Autowired
 	// Autowired dependency for StoreIndentsDao
 	StoreIndentsDao storeIndentsDao;
+
+	@Autowired
+	StoreService storeService;
 
 	@Autowired
 	// Autowired dependency for ModelMapper
@@ -63,45 +67,8 @@ public class StoreDataContoroller {
 			e.printStackTrace();
 		}
 
-		List<StoreIndentData> storeIndents = null;
-
-		if (storeFilters.getStoreId() != 0) {
-			if (storeFilters.getIndentStatus().length() > 0) {
-				if (storeFilters.getFromDate() != null) {
-					// Fetching store indents by filter data with store ID, indent status, and from date
-					storeIndents = storeIndentsDao.getStoreIndentsListByIdStatusFrom(storeFilters);
-				} else {
-					// Fetching store indents by filter data with store ID and indent status
-					storeIndents = storeIndentsDao.getStoreIndentsListByIdStatus(storeFilters);
-				}
-			} else {
-				if (storeFilters.getFromDate() != null) {
-					// Fetching store indents by filter data with store ID and from date
-					storeIndents = storeIndentsDao.getStoreIndentsListByIdFrom(storeFilters);
-				} else {
-					// Fetching store indents by filter data with store ID
-					storeIndents = storeIndentsDao.getStoreIndentsListById(storeFilters);
-				}
-			}
-		} else {
-			if (storeFilters.getIndentStatus().length() > 0) {
-				if (storeFilters.getFromDate() != null) {
-					// Fetching store indents by filter data with indent status and from date
-					storeIndents = storeIndentsDao.getStoreIndentsListByStatusFrom(storeFilters);
-				} else {
-					// Fetching store indents by filter data with indent status
-					storeIndents = storeIndentsDao.getStoreIndentsListByStatus(storeFilters);
-				}
-			} else {
-				if (storeFilters.getFromDate() != null) {
-					// Fetching store indents by filter data with from date
-					storeIndents = storeIndentsDao.getStoreIndentsListByFrom(storeFilters);
-				} else {
-					// Fetching store indents by filter data with to date
-					storeIndents = storeIndentsDao.getStoreIndentsListByTo(storeFilters);
-				}
-			}
-		}
+		// Getting the store return data based on the input filters
+		List<StoreIndentData> storeIndents = storeService.getStoreIndetnsByFilterData(storeFilters);
 
 		// Returning the list of StoreIndentData
 		return storeIndents;
