@@ -34,45 +34,43 @@ public class IndentsController {
 		ObjectMapper objectMapper = new ObjectMapper();
 		ModelMapper modelMapper = new ModelMapper();
 		InventoryIndentsInputList inventoryIndentsInputList = null;
-
+        
 		try {
-			inventoryIndentsInputList = objectMapper.readValue(jsonData, InventoryIndentsInputList.class);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		    // place JSON data into Inventory Indents Input List.
+			   inventoryIndentsInputList = objectMapper.readValue(jsonData, InventoryIndentsInputList.class);
+		    // place Input List data into Inventory Indents Entity Model.
+		       InventoryIndentsList inventoryIndentsList = modelMapper.map(inventoryIndentsInputList,InventoryIndentsList.class);
 
-		InventoryIndentsList inventoryIndentsList = modelMapper.map(inventoryIndentsInputList,
-				InventoryIndentsList.class);
+		       m.addAttribute("data", inventoryIndentsList);
 
-		m.addAttribute("data", inventoryIndentsList);
-		System.out.println(inventoryIndentsList.toString());
+		       inventoryIndentsDAO.saveInventoryIndent(inventoryIndentsList);
+            }  
+        catch(Exception e) {
+	        e.printStackTrace();
+            }
 
-		inventoryIndentsDAO.saveInventoryIndent(inventoryIndentsList);
-
-		return "inventory/createIndent";
+		  return "inventory/createIndent";
 	}
 
 	
 //It returns the InventoryIndentProductList page by taking IndentId as input
 	@PostMapping("/getInventoryIndentProductsList")
 	public String  getInventoryIndentProductsList(String indentId, Model m) {
-		System.out.println("in the controller");
 		ObjectMapper objectMapper = new ObjectMapper();
-		System.out.println(indentId);
 		IndentId indentid = null;
 		try {
+			
+		// Place Input List data into Indents Entity Model.
 			indentid = objectMapper.readValue(indentId, IndentId.class);
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
-
+		 // returns the Inventory Products List.
 		List<InventoryIndentProductListData> inventoryIndentProductListData = inventoryIndentsDAO
 				.getInventoryIndentProductsList(indentid);
 
 		m.addAttribute("productsList", inventoryIndentProductListData);
 
-		for (InventoryIndentProductListData s : inventoryIndentProductListData)
-			System.out.println(s);
 
 		return "inventory/indentProducts";
 	}
@@ -82,16 +80,16 @@ public class IndentsController {
 	@GetMapping("/getInventoryIndentProductsListData")
 	@ResponseBody
 	public List<InventoryIndentProductListData>  getInventoryIndentProductsListData(String indentId, Model m) {
-		System.out.println("in the controller");
 		ObjectMapper objectMapper = new ObjectMapper();
-		System.out.println(indentId);
 		IndentId indentid = null;
 		try {
+			
+		// place IndentsID into Inventory IndentsID Input Model .
 			indentid = objectMapper.readValue(indentId, IndentId.class);
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
-
+		 // returns the Inventory Products List.
 		List<InventoryIndentProductListData> inventoryIndentProductListData = inventoryIndentsDAO
 				.getInventoryIndentProductsList(indentid);
 
@@ -106,15 +104,17 @@ public class IndentsController {
 		ObjectMapper objectMapper = new ObjectMapper();
 		objectMapper.registerModule(new JavaTimeModule());
 		try {
+			
+		// place Filters JSON data into FilterInput Model .
 			filterInput = objectMapper.readValue(filters, FilterInput.class);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+      // returns the indents list of objects to the FilteredIndents List.
+		List<FilteredIndent> indentsList = inventoryIndentsDAO.getfilterIndents(filterInput);
 
-		List<FilteredIndent> sl = inventoryIndentsDAO.getfilterIndents(filterInput);
-
-		return sl;
+		return indentsList;
 	}
 
 }

@@ -5,58 +5,11 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <style>
-  #product-details-table{
-    background-color: white;
-      height: 50px;
-      overflow-y: scroll;
-      width:1000px;
-  
-  }
-    #htag{
-  position: relative;
-  top: 20px;
-  }
-    table {
-      border-collapse: collapse;
-      margin-bottom: 20px;
-    }
-
-    th, td {
-    text-align:center;
-      border: 1px solid black;
-      padding: 8px;
-    }
-
-
-    
-    #first_table {
-       height: 200px;
-      
-      overflow-y: scroll;
-    }
-    
-    
-
-    #products-dropdown
-    {
-    display:flex;
-     margin-left:650px;
-     padding-bottom:5px;
-     
-    }
-    #products-dropdown label{
-    display: block;
-      font-weight: bold;
-      color: #333;
-      margin-bottom: 5px;
-    }
-
-  </style>
+  <link rel="stylesheet" href="./inventoryHome/styles/adjustmentProductsStyles.css">
 </head>
 <body>
   <h2 align="center">Adjustment Products List</h2>
-  <div style="margin-bottom:20px; margin-left:50px;">
+  <div id="adjustmentsProductsid">
 
   
   <div id="first_table">
