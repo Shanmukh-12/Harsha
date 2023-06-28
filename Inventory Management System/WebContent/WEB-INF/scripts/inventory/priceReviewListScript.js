@@ -101,7 +101,7 @@
         $.ajax({
           url: "getPriceReviewProductsList",
           method: "post",
-          data:{"pr_id":JSON.stringify(data)},
+          data:{"prId":JSON.stringify(data)},
           success: function (response) {
             $("#modalContent").html(response);
             $("#productsModal").modal("show");
