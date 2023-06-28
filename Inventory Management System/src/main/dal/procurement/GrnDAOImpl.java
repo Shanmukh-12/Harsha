@@ -29,7 +29,8 @@ import main.models.purchaseOrder.entityModels.Im_Purchase_Order_Products;
 
 @Component
 public class GrnDAOImpl implements GrnDAO {
-
+	
+	
 	@PersistenceContext
 	EntityManager entityManager;
 
@@ -38,6 +39,7 @@ public class GrnDAOImpl implements GrnDAO {
 
 	@Transactional
 	public boolean saveGrn(ImGrn imGrn) {
+		
 		try {
 			// Persist the main GRN object
 			entityManager.persist(imGrn);
