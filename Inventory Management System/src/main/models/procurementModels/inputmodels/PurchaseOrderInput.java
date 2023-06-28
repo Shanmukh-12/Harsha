@@ -7,7 +7,8 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import main.models.purchaseOrder.entityModels.Im_Purchase_Order_Products;
+import main.models.purchaseOrder.entityModels.PurchaseOrderProducts;
+
 
 public class PurchaseOrderInput {
 
@@ -103,15 +104,15 @@ public class PurchaseOrderInput {
 		this.last_updated_date = last_updated_date;
 	}
 
-	public List<Im_Purchase_Order_Products> getChildren() {
+	public List<PurchaseOrderProducts> getChildren() {
 		return children;
 	}
 
-	public void setChildren(List<Im_Purchase_Order_Products> children) {
+	public void setChildren(List<PurchaseOrderProducts> children) {
 		this.children = children;
 	}
 
-	private List<Im_Purchase_Order_Products> children;
+	private List<PurchaseOrderProducts> children;
 
 	// Getters and Setters
 
@@ -126,7 +127,7 @@ public class PurchaseOrderInput {
 
 	public PurchaseOrderInput(int purchase_order_id, Date purchase_order_date, BigDecimal purchase_order_amount,
 			int vendor_id, Date purchase_order_expected_date, String purchase_order_status, int user_id,
-			String last_updated_user, Date last_updated_date, List<Im_Purchase_Order_Products> children) {
+			String last_updated_user, Date last_updated_date, List<PurchaseOrderProducts> children) {
 		super();
 		this.purchase_order_id = purchase_order_id;
 		this.purchase_order_date = purchase_order_date;

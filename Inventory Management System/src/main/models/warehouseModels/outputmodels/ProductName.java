@@ -3,7 +3,8 @@ package main.models.warehouseModels.outputmodels;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import main.models.productModels.entities.im_products;
+import main.models.productModels.entities.ProductsEntity;
+
 
 @Component
 @Scope("prototype")
@@ -19,7 +20,7 @@ public class ProductName {
 		this.product_name = product_name;
 	}
 
-	public ProductName(im_products s) {
+	public ProductName(ProductsEntity s) {
 		super();
 		this.product_name = s.getProduct_name();
 	}

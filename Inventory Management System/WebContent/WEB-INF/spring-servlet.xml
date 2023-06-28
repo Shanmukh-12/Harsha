@@ -25,6 +25,12 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
+	<!-- CSS resource -->
+<mvc:resources mapping="inventoryHome/styles/**" location="/WEB-INF/styles/inventory/" />
+
+<!-- JavaScript resource -->
+<mvc:resources mapping="inventoryHome/scripts/**" location="/WEB-INF/scripts/inventory/" />
+	
      <!-- <beans:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 	<beans:property name="driverClassName" value="org.postgresql.Driver" />
 	<beans:property name="url" value="jdbc:postgresql://192.168.110.48:5432/plf_training" />
@@ -32,6 +38,11 @@
 	<beans:property name="password" value="pff123" />
 </beans:bean>
  -->
+ <!-- CSS resource -->
+<mvc:resources mapping="/adminHome/styles/**" location="/WEB-INF/styles/admin/" />
+
+<!-- JavaScript resource -->
+<mvc:resources mapping="/adminHome/scripts/**" location="/WEB-INF/scripts/admin/" />
 
 <!-- <beans:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 	<beans:property name="driverClassName" value="org.postgresql.Driver" />
@@ -98,6 +109,6 @@
 	
 	<!-- enable the configuration of transactional behavior based on annotations -->
 	<tx:annotation-driven transaction-manager="transactionManager" />
-    <beans:bean id="ProcurementDAO" class="main.dal.procurement.ProcurementDAL" autowire="byName"/>
-      
+<tx:annotation-driven transaction-manager="transactionManager" />
+    <beans:bean id="ProcurementDAO" class="main.dal.purchasesDAL.PurchasesDAL" autowire="byName"/>      
 </beans:beans>

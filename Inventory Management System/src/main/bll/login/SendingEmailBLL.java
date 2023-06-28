@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import main.models.loginModel.inputModels.MailDetails;
+import main.service.procurement.LoginService;
 import main.service.procurement.ProcurementService;
 
 @Component
@@ -23,7 +24,7 @@ public class SendingEmailBLL {
 	@Autowired
 	RandomNumberBLL rn;
 	@Autowired
-	ProcurementService x;
+	LoginService loginService ;
 
 	public void sendEmail(MailDetails md) throws AddressException, MessagingException {
 		Properties prop = new Properties();
@@ -52,7 +53,7 @@ public class SendingEmailBLL {
 		msg.setSubject("password reset");
 		msg.setText("your otp is :" + number);
 		Transport.send(msg);
-		x.getDat(md, String.valueOf(number));
+		loginService.getDat(md, String.valueOf(number));
 
 	}
 

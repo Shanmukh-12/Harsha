@@ -3,7 +3,6 @@ package main.service.procurement;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.NoResultException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -11,25 +10,19 @@ import org.springframework.stereotype.Component;
 
 import main.bll.procurement.TotalStockBLL;
 import main.dao.procurement.ProcurementDAO;
-import main.models.loginModel.inputModels.MailDetails;
-import main.models.loginModel.inputModels.credentials2;
-import main.models.loginModel.inputModels.password;
-import main.models.loginModel.outputmodels.AuthOutput;
-import main.models.procurementModels.dtomodels.PurchaseJoinClass;
-import main.models.procurementModels.dtomodels.PurchaseReturnJoinClass;
+import main.models.procurementModels.dtomodels.PurchaseOrdersDTO;
+import main.models.procurementModels.dtomodels.PurchaseReturnDTO;
 import main.models.procurementModels.inputmodels.ProductInputMapping;
 import main.models.procurementModels.inputmodels.PurchaseId;
 import main.models.procurementModels.inputmodels.PurchaseReturnId;
 import main.models.procurementModels.inputmodels.PurchasesFilter;
 import main.models.procurementModels.inputmodels.PurchasesReturnFilter;
-import main.models.procurementModels.outputmodels.ImPurchaseOrderOutput;
-import main.models.procurementModels.outputmodels.PurchaseReturnOutput;
-import main.models.purchaseOrder.entityModels.Im_Purchase_Order;
-import main.models.purchaseReturns.entityModels.ImPurchaseReturn;
-import main.models.userModels.entities.User;
-import main.models.userModels.outputModels.UserOutput;
-import main.models.warehouseModels.dtomodels.JoinClass2;
-import main.models.warehouseModels.dtomodels.joinclass;
+import main.models.procurementModels.outputmodels.PurchaseOrderDetails;
+import main.models.procurementModels.outputmodels.PurchaseReturnDetails;
+import main.models.purchaseOrder.entityModels.PurchaseOrder;
+import main.models.purchaseReturns.entityModels.PurchaseReturn;
+import main.models.warehouseModels.dtomodels.ProductDetailsDTO;
+import main.models.warehouseModels.dtomodels.ProductsDataDTO;
 import main.models.warehouseModels.outputmodels.ProductCategoryCount;
 import main.models.warehouseModels.outputmodels.TotalOverallStock;
 import main.models.warehouseModels.outputmodels.TotalStock;
@@ -40,179 +33,182 @@ import main.models.warehouseModels.outputmodels.VendorCount;
 public class ProcurementService {
 	@Autowired
 	@Qualifier("ProcurementDAO")
-	ProcurementDAO sd;
+	ProcurementDAO procurementService;
 	@Autowired
-	VendorCount vc;
+	VendorCount vendorCount;
 	@Autowired
-	TotalStockBLL tb;
+	TotalStockBLL totalStockBLL;
 	@Autowired
-	ProductCategoryCount pcc;
+	ProductCategoryCount categoryCount;
 	@Autowired
-	TotalWarehouseVal twv;
+	TotalWarehouseVal totalWarehouseValue;
 	@Autowired
-	TotalOverallStock tsc;
-	@Autowired
-	AuthOutput ao;
-
-	@Autowired
-	public ProcurementService(@Qualifier("ProcurementDAO") ProcurementDAO sd) {
-		super();
-		this.sd = sd;
-	}
-
-	public void persistpurchase(Im_Purchase_Order stud) {
-		Im_Purchase_Order l = sd.persistpurchase(stud);
-		System.out.println(stud.getPurchase_order_id());
-
-	}
-
-	public void persistpurchasereturn(ImPurchaseReturn stud, ProductInputMapping pm) {
-		ImPurchaseReturn l = sd.persistpurchasereturn(stud, pm);
-		System.out.println(l.getPurchase_return_id());
-
-	}
-
-	public List<PurchaseJoinClass> getPurchaseProducts(PurchaseId x) {
-		List<PurchaseJoinClass> l = sd.getPurchaseProducts(x);
-
-		return l;
-
-	}
-
-	public List<PurchaseReturnJoinClass> getPurchaseReturnProducts(PurchaseReturnId x) {
-		List<PurchaseReturnJoinClass> l = sd.getPurchaseReturnProducts(x);
-		return l;
-
-	}
-
-	public List<PurchaseReturnId> getPurchaseReturnsList(PurchasesReturnFilter p) {
-
-		return sd.getPurchaseReturnsList(p);
-	}
-
-	public List<PurchaseId> getPurchaseId(PurchasesFilter p) {
-		List<PurchaseId> s = sd.getPurchaseId(p);
-		for (PurchaseId x : s) {
-			System.out.println(s.toString());
-		}
-		return s;
-
-	}
-
-	public TotalOverallStock getTotalStock() {
-		ArrayList<TotalStock> ts = sd.getTotalStock();
-
-		tsc.setTotal_product_stock(tb.getTotalStockQuantity(ts));
-		TotalOverallStock tsc2 = tsc;
-		return tsc2;
-
-	}
-
-	public List<PurchaseReturnOutput> getPurchaseReturnsList2(PurchasesReturnFilter p) {
-		List<PurchaseReturnOutput> l = sd.getPurchaseReturnsList2(p);
-		System.out.println(l.toString());
-		return l;
-	}
-
-	public List<ImPurchaseOrderOutput> getPurchaseId2(PurchasesFilter p) {
-		List<ImPurchaseOrderOutput> l = sd.getPurchaseId2(p);
-		System.out.println(l.toString());
-		return l;
-	}
-
-	public List<JoinClass2> getProductsCount() {
-
-		return sd.getProductsCount();
-
-	}
-
-	public TotalWarehouseVal getWarehouseValue() {
-		twv = sd.getWarehouseValue();
-		return twv;
-
-	}
-
-	public ProductCategoryCount getCategoriesCount() {
-		pcc=sd.getCategoriesCount();
-		System.out.println(pcc.toString());
-		return pcc;
-
-	}
-
-	public VendorCount getVendorsCount() {
-        VendorCount vc=sd.getVendorsCount();
+	TotalOverallStock totalStocks;
 	
-		return vc;
+
+   //to create new purchase orders
+	public void persistPurchase(PurchaseOrder purchase) {
+		procurementService.persistPurchase(purchase);
+	    // Persist the purchase order
+
+	}
+    
+	//to create new purchase returns
+	public void persistPurchaseReturn(PurchaseReturn purchaseReturn, ProductInputMapping productInputDetails) {
+		procurementService.persistPurchaseReturn(purchaseReturn, productInputDetails);
+	    // Persist the purchase return along with the product input mapping
+
+	}
+    
+	//to get products under purchase id
+	public List<PurchaseOrdersDTO> getPurchaseProducts(PurchaseId purchaseId) {
+		List<PurchaseOrdersDTO> PurchaseProductDetails = procurementService.getPurchaseProducts(purchaseId);
+		return PurchaseProductDetails;// Returns the purchase products based on the purchase ID
+
 
 	}
 
-	public boolean add(User s) {
-		return sd.persist(s);
-	}
+	//to get products under purchase return id
+	public List<PurchaseReturnDTO> getPurchaseReturnProducts(PurchaseReturnId x) {
+		List<PurchaseReturnDTO> PurchaseReturnProductDetails = procurementService.getPurchaseReturnProducts(x);
+		return PurchaseReturnProductDetails;// Returns the purchase return products based on the purchase ID
 
-	public List<joinclass> getAllData() {
-		return sd.getAllData();
-	}
-
-	public AuthOutput check(MailDetails m) {
-		try {
-			UserOutput s = sd.check(m);
-		} catch (NoResultException e) {
-			// No entity found, return false
-			ao.setAuthent("false");
-			return ao;
-		}
-
-		ao.setAuthent("true");
-		return ao;
 
 	}
 
-	public AuthOutput getAuthent(credentials2 c) {
-		try {
-			UserOutput s = sd.getAuthent(c);
-		} catch (NoResultException e) {
-			// No entity found, return false
-		     ao.setAuthent("login failed");
-			return ao;
-		}
-		ao.setAuthent("login success");
-
-		return ao;
-	}
-
-	public void getDat(MailDetails m, String num) {
-		System.out.println("hello");
-		sd.getData(m, num);
-		System.out.println("hello");
-	}
-
-	public UserOutput getRow(password m) {
-		return sd.getRow(m);
-	}
-
-	public void getRow2(password p) {
-		sd.getRow2(p);
+    //to get overall stock quantity
+	public TotalOverallStock getTotalStock() {
+		ArrayList<TotalStock> totalStockValue = procurementService.getTotalStock();
+		totalStocks.setTotal_product_stock(totalStockBLL.getTotalStockQuantity(totalStockValue));
+	    // Retrieve the total stock value and calculate the total product stock quantity
+		TotalOverallStock totalStock = totalStocks;
+		return totalStock;
 
 	}
 
-	public ImPurchaseOrderOutput getPurchaseId3(PurchaseId p) {
-		ImPurchaseOrderOutput s = sd.getPurchaseId3(p);
+   //to get total count of products in warehouse
+	public List<ProductDetailsDTO> getProductsCount() {
 
-		System.out.println(s.toString());
+		return procurementService.getProductsCount(); //returns  the count of products
 
-		return s;
+
+	}
+    
+	//gets the total value of products in warehouse
+	public TotalWarehouseVal getWarehouseValue() {
+		totalWarehouseValue = procurementService.getWarehouseValue();
+		return totalWarehouseValue;
+
+	}
+    
+	//gives total number of categories in warehouse
+	public ProductCategoryCount getCategoriesCount() {
+		categoryCount=procurementService.getCategoriesCount();
+		return categoryCount; //returns category count
+
+	}
+   
+	//gives count of total number of vendors
+	public VendorCount getVendorsCount() {
+        VendorCount vendorCount=procurementService.getVendorsCount();
+		return vendorCount;//return vendor count
 
 	}
 
-	public PurchaseReturnOutput getPurchaseReturnsList3(PurchaseReturnId p) {
-		PurchaseReturnOutput s = sd.getPurchaseReturnsList3(p);
-		System.out.println(s.toString());
-		return s;
+	//data for dashboard
+	public List<ProductsDataDTO> getDashboardData() {
+		return procurementService.getDashboardData();//returns all the data required for dashboard
 	}
 
-	// public List<PurchaseId> getPurchaseReturnsList() {
-	//
-	// }
+    
+	public PurchaseOrderDetails getPurchaseOrderDetailsById(PurchaseId purchaseId) {
+		PurchaseOrderDetails purchaseDetails = procurementService.getPurchaseOrderDetailsById(purchaseId);
+		return purchaseDetails; // Retrieve the purchase order details by ID and returns
+
+	}
+
+	public PurchaseReturnDetails getPurchaseReturnsListDetailsById(PurchaseReturnId purchaseReturnId ) {
+		PurchaseReturnDetails purchaseReturnDetails = procurementService.getPurchaseReturnsListDetailsById(purchaseReturnId );
+		return purchaseReturnDetails;    // Retrieve the purchase return details by ID and returns
+
+	}
+	
+	//retreives data based on filters entered
+	public List<PurchaseOrderDetails> getPurchaseIdDetails(PurchasesFilter purchasesFilter) {
+	    if (purchasesFilter.getVendor_id() == 0 && purchasesFilter.getPurchase_order_expected_date() == null
+	            && purchasesFilter.getPurchase_order_expected_date1() == null) {
+	        return procurementService.getAllPurchaseOrders();
+	        // If no vendor ID and no date range specified, retrieve all purchase orders
+	    } else if (purchasesFilter.getVendor_id() != 0 && purchasesFilter.getPurchase_order_expected_date() == null) {
+	        return procurementService.getPurchaseOrdersByVendor(purchasesFilter);
+	        // If vendor ID is specified but no date range, retrieve purchase orders by vendor
+	    } else if (purchasesFilter.getVendor_id() != 0 && purchasesFilter.getPurchase_order_expected_date() != null
+	            && purchasesFilter.getPurchase_order_expected_date1() != null) {
+	        return procurementService.getPurchaseOrdersByVendorAndDateRange(purchasesFilter);
+	        // If vendor ID and date range are specified, retrieve purchase orders by vendor and date range
+	    } else if (purchasesFilter.getVendor_id() != 0 && purchasesFilter.getPurchase_order_expected_date() != null
+	            && purchasesFilter.getPurchase_order_expected_date1() == null) {
+	        return procurementService.getPurchaseOrdersByVendorAndStartDate(purchasesFilter);
+	        // If vendor ID and start date are specified, retrieve purchase orders by vendor and start date
+	    } else if (purchasesFilter.getVendor_id() == 0 && purchasesFilter.getPurchase_order_expected_date() != null
+	            && purchasesFilter.getPurchase_order_expected_date1() != null) {
+	        return procurementService.getPurchaseOrdersByDateRange(purchasesFilter);
+	        // If no vendor ID and date range is specified, retrieve purchase orders by date range
+	    } else if (purchasesFilter.getVendor_id() == 0 && purchasesFilter.getPurchase_order_expected_date() != null
+	            && purchasesFilter.getPurchase_order_expected_date1() == null) {
+	        return procurementService.getPurchaseOrdersByStartDate(purchasesFilter);
+	        // If no vendor ID and start date are specified, retrieve purchase orders by start date
+	    } else if (purchasesFilter.getVendor_id() == 0 && purchasesFilter.getPurchase_order_expected_date() == null
+	            && purchasesFilter.getPurchase_order_expected_date1() != null) {
+	        return procurementService.getPurchaseOrdersByEndDate(purchasesFilter);
+	        // If no vendor ID and end date are specified, retrieve purchase orders by end date
+	    } else {
+	        return procurementService.getAllPurchaseOrders();
+	        // If none of the above conditions are met, retrieve all purchase orders
+	    }
+	}
+
+	public List<PurchaseReturnDetails> getPurchaseReturnsListDetails(PurchasesReturnFilter purchasesReturnFilter) {
+	    if (purchasesReturnFilter.getVendor_id() == 0 && purchasesReturnFilter.getPurchase_return_date() == null && purchasesReturnFilter.getGrn_value() == 0) {
+	        return procurementService.getDefaultPurchaseReturns();
+	        // If no vendor ID, return date, and GRN value specified, retrieve default purchase returns
+	    } else if (purchasesReturnFilter.getVendor_id() != 0 && purchasesReturnFilter.getPurchase_return_date() == null && purchasesReturnFilter.getGrn_value() == 0) {
+	        return procurementService.getPurchaseReturnsByVendorId(purchasesReturnFilter);
+	        // If vendor ID is specified but no return date and GRN value, retrieve purchase returns by vendor ID
+	    } else if (purchasesReturnFilter.getVendor_id() != 0 && purchasesReturnFilter.getPurchase_return_date() != null && purchasesReturnFilter.getPurchase_return_date1() == null && purchasesReturnFilter.getGrn_value() == 0) {
+	        return procurementService.getPurchaseReturnsByVendorAndStartDate(purchasesReturnFilter);
+	        // If vendor ID and start date are specified but no return date and GRN value, retrieve purchase returns by vendor ID and start date
+	    } else if (purchasesReturnFilter.getVendor_id() != 0 && purchasesReturnFilter.getPurchase_return_date() != null && purchasesReturnFilter.getPurchase_return_date1() != null && purchasesReturnFilter.getGrn_value() == 0) {
+	        return procurementService.getPurchaseReturnsByVendorAndDateRange(purchasesReturnFilter);
+	        // If vendor ID, start date, and end date are specified but no GRN value, retrieve purchase returns by vendor ID and date range
+	    } else if (purchasesReturnFilter.getVendor_id() != 0 && purchasesReturnFilter.getPurchase_return_date() == null && purchasesReturnFilter.getGrn_value() != 0) {
+	        return procurementService.getPurchaseReturnsByVendorAndGrnCost(purchasesReturnFilter);
+	        // If vendor ID and GRN value are specified but no return date, retrieve purchase returns by vendor ID and GRN value
+	    } else if (purchasesReturnFilter.getVendor_id() != 0 && purchasesReturnFilter.getPurchase_return_date() != null && purchasesReturnFilter.getPurchase_return_date1() == null && purchasesReturnFilter.getGrn_value() != 0) {
+	        return procurementService.getPurchaseReturnsByVendorGrnCostAndStartDate(purchasesReturnFilter);
+	        // If vendor ID, start date, and GRN value are specified but no return date, retrieve purchase returns by vendor ID, start date, and GRN value
+	    } else if (purchasesReturnFilter.getVendor_id() != 0 && purchasesReturnFilter.getPurchase_return_date() != null && purchasesReturnFilter.getPurchase_return_date1() != null && purchasesReturnFilter.getGrn_value() != 0) {
+	        return procurementService.getPurchaseReturnsByVendorGrnCostAndDateRange(purchasesReturnFilter);
+	        // If vendor ID, start date, end date, and GRN value are specified, retrieve purchase returns by vendor ID, date range, and GRN value
+	    } else if (purchasesReturnFilter.getVendor_id() == 0 && purchasesReturnFilter.getPurchase_return_date() != null && purchasesReturnFilter.getPurchase_return_date1() != null && purchasesReturnFilter.getGrn_value() == 0) {
+	        return procurementService.getPurchaseReturnsByDateRange(purchasesReturnFilter);
+	        // If no vendor ID, GRN value, and end date are specified but return date is specified, retrieve purchase returns by date range
+	    } else if (purchasesReturnFilter.getVendor_id() == 0 && purchasesReturnFilter.getPurchase_return_date() != null && purchasesReturnFilter.getPurchase_return_date1() == null && purchasesReturnFilter.getGrn_value() == 0) {
+	        return procurementService.getPurchaseReturnsByStartDate(purchasesReturnFilter);
+	        // If no vendor ID, GRN value, and start date are specified but return date is specified, retrieve purchase returns by start date
+	    } else if (purchasesReturnFilter.getVendor_id() == 0 && purchasesReturnFilter.getPurchase_return_date() == null && purchasesReturnFilter.getGrn_value() != 0) {
+	        return procurementService.getPurchaseReturnsByGrnCost(purchasesReturnFilter);
+	        // If no vendor ID, return date, and end date are specified but GRN value is specified, retrieve purchase returns by GRN value
+	    } else if (purchasesReturnFilter.getVendor_id() == 0 && purchasesReturnFilter.getPurchase_return_date() != null && purchasesReturnFilter.getPurchase_return_date1() == null && purchasesReturnFilter.getGrn_value() != 0) {
+	        return procurementService.getPurchaseReturnsByGrnCostAndStartDate(purchasesReturnFilter);
+	        // If no vendor ID, return date, and GRN value are specified but start date is specified, retrieve purchase returns by GRN value and start date
+	    } else if (purchasesReturnFilter.getVendor_id() == 0 && purchasesReturnFilter.getPurchase_return_date() != null && purchasesReturnFilter.getPurchase_return_date1() != null && purchasesReturnFilter.getGrn_value() != 0) {
+	        return procurementService.getPurchaseReturnsByGrnCostAndDateRange(purchasesReturnFilter);
+	        // If no vendor ID, return date, and GRN value are specified but start date and end date are specified, retrieve purchase returns by GRN value and date range
+	    } else {
+	        return procurementService.getDefaultPurchaseReturns();
+	        // If none of the above conditions are met, retrieve default purchase returns
+	    }
+	}
 
 }

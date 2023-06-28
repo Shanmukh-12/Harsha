@@ -1,13 +1,8 @@
 package main.controllers;
 
-import java.io.UnsupportedEncodingException;
 import java.util.List;
-
-import javax.mail.MessagingException;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -15,103 +10,71 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import main.models.procurementModels.dtomodels.PurchaseReturnJoinClass;
+import main.models.procurementModels.dtomodels.PurchaseReturnDTO;
 import main.models.procurementModels.inputmodels.ProductInputMapping;
 import main.models.procurementModels.inputmodels.PurchaseReturnId;
 import main.models.procurementModels.inputmodels.PurchaseReturnInput;
 import main.models.procurementModels.inputmodels.PurchasesReturnFilter;
-import main.models.procurementModels.outputmodels.PurchaseReturnOutput;
-import main.models.purchaseReturns.entityModels.ImPurchaseReturn;
+import main.models.procurementModels.outputmodels.PurchaseReturnDetails;
+import main.models.purchaseReturns.entityModels.PurchaseReturn;
 import main.service.procurement.ProcurementService;
 
 @Controller
 public class PurchaseReturnController {
 
 	@Autowired
-	ProcurementService x;
-    //gets all purchase return ids based on filter entered
+	ProcurementService procurementService;
 
-	@RequestMapping(value = "/getPurchaseReturnsList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	// Gets all purchase return ids and additional details based on the entered filter
+	@RequestMapping(value = "/getPurchaseReturnsListDetails", method = RequestMethod.GET)
 	@ResponseBody
-	public String getPurchaseReturnsList(@ModelAttribute PurchasesReturnFilter p, Model m)
-			throws MessagingException, JsonMappingException, JsonProcessingException, UnsupportedEncodingException {
-		System.out.println(p.getGrn_value());
-		System.out.println(p.getPurchase_return_date());
-		System.out.println(p.getVendor_id());
-		List<PurchaseReturnId> s = x.getPurchaseReturnsList(p);
-		ObjectMapper ob = new ObjectMapper();
-		System.out.println(ob.writeValueAsString(s));
-		return ob.writeValueAsString(s);
-
+	public List<PurchaseReturnDetails> getPurchaseReturnsListDetails(@ModelAttribute PurchasesReturnFilter purchasesReturnFilter, Model m)
+	{
+		List<PurchaseReturnDetails> purchaseReturnData = procurementService.getPurchaseReturnsListDetails(purchasesReturnFilter); // Retrieve purchase return details
+		return purchaseReturnData; //returns all purchase return id details
+		
 	}
-    //gets all purchase return ids and addditional details based on filter entered
+	
 
-	@RequestMapping(value = "/getPurchaseReturnsListDetails", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	// Gets all purchase return id details based on the entered purchase id
+	@RequestMapping(value = "/getPurchaseReturnsListDetailsById", method = RequestMethod.GET)
 	@ResponseBody
-	public String getPurchaseReturnsList2(@ModelAttribute PurchasesReturnFilter p, Model m)
-			throws MessagingException, JsonMappingException, JsonProcessingException, UnsupportedEncodingException {
-		System.out.println(p.getGrn_value());
-		System.out.println(p.getPurchase_return_date());
-		System.out.println(p.getPurchase_return_date1());
-		System.out.println(p.getVendor_id());
-		List<PurchaseReturnOutput> s = x.getPurchaseReturnsList2(p);
-		ObjectMapper ob = new ObjectMapper();
-		System.out.println(ob.writeValueAsString(s));
-		return ob.writeValueAsString(s);
-
+	public PurchaseReturnDetails getPurchaseReturnsListDetailsById(@ModelAttribute PurchaseReturnId purchasesReturnFilter, Model m) {
+		PurchaseReturnDetails purchaseReturnData = procurementService.getPurchaseReturnsListDetailsById(purchasesReturnFilter); // Retrieve purchase return details
+	    return  purchaseReturnData;//returns all purchase return details of single id
 	}
-    //gets all purchase return id  details based on purchase id entered
+	
 
-	@RequestMapping(value = "/getPurchaseReturnsListDetailsById", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	// Gets all products under the purchase return id, taking the purchase id as input
+	@RequestMapping(value = "/getPurchaseReturnProducts", method = RequestMethod.GET)
 	@ResponseBody
-	public String getPurchaseReturnsList2(@ModelAttribute PurchaseReturnId p, Model m)
-			throws MessagingException, JsonMappingException, JsonProcessingException, UnsupportedEncodingException {
-		System.out.println(p.getPurchase_return_id());
+	public List<PurchaseReturnDTO> getPurchaseReturnProducts(PurchaseReturnId s) {
+		List<PurchaseReturnDTO> purchaseReturnProductsData = procurementService.getPurchaseReturnProducts(s); // Retrieve purchase return products
+		return purchaseReturnProductsData; //returns all purchase return products under a id
+ 	}
 
-		PurchaseReturnOutput s = x.getPurchaseReturnsList3(p);
-		ObjectMapper ob = new ObjectMapper();
-		System.out.println(ob.writeValueAsString(s));
-		return ob.writeValueAsString(s);
-
-	}
-    //gets all products under purchase return id taking purchase id as input
-
-	@RequestMapping(value = "/getPurchaseReturnProducts", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ResponseBody
-	public String getPurchaseReturnProducts(PurchaseReturnId s) throws JsonProcessingException {
-		List<PurchaseReturnJoinClass> l = x.getPurchaseReturnProducts(s);
-		for (PurchaseReturnJoinClass r : l) {
-			System.out.println(r.toString());
-		}
-		ObjectMapper ob = new ObjectMapper();
-		System.out.println(ob.writeValueAsString(l));
-		return ob.writeValueAsString(l);
-
-	}
-
-	//create purchase return taking all products to be returned as input
+	 
+	// Creates a purchase return by taking all products to be returned as input
 	@RequestMapping(value = "/makePurchaseReturn", method = RequestMethod.POST)
 	@ResponseBody
-	public String makePurchseOrder(@RequestBody String json, Model m) throws JsonProcessingException {
-		System.out.println(json);
+	public void makePurchseOrder(@RequestBody String json, Model m) {
 		ObjectMapper objectMapper = new ObjectMapper();
-		ModelMapper mp = new ModelMapper();
+		ModelMapper mp = new ModelMapper();//create new instance of model mapper for data mapping
+		PurchaseReturnInput purchaseOrder;
+		try {
+			purchaseOrder = objectMapper.readValue(json, PurchaseReturnInput.class);
+			PurchaseReturn purchaseReturn = mp.map(purchaseOrder, PurchaseReturn.class); // Map PurchaseReturnInput to ImPurchaseReturn entity
+			ProductInputMapping pi = objectMapper.readValue(json, ProductInputMapping.class);// Map JSON to ProductInputMapping object
+			procurementService.persistPurchaseReturn(purchaseReturn, pi); // Persist purchase return and its products
+		} catch (JsonMappingException e) {	
+			e.printStackTrace();
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		} 
 
-		System.out.println("hii" + json);
-		PurchaseReturnInput purchaseOrder = objectMapper.readValue(json, PurchaseReturnInput.class);
-		ImPurchaseReturn purchaseReturn = mp.map(purchaseOrder, ImPurchaseReturn.class);
-		System.out.println(purchaseReturn.toString());
-		ProductInputMapping pi = objectMapper.readValue(json, ProductInputMapping.class);
-		System.out.println(pi.toString());
-		x.persistpurchasereturn(purchaseReturn, pi);
-
-		return null;
 
 	}
-
 }

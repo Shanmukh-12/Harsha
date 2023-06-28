@@ -9,17 +9,18 @@ import main.models.loginModel.inputModels.password;
 import main.models.loginModel.outputmodels.AuthOutput;
 import main.models.userModels.entities.User;
 import main.models.userModels.outputModels.UserOutput;
+import main.service.procurement.LoginService;
 import main.service.procurement.ProcurementService;
 
 @Component
 public class PasswordChangeBLL {
 	@Autowired
-	ProcurementService x;
+	LoginService loginService;
 	@Autowired
 	AuthOutput ao;
 
 	public AuthOutput changePassword(password p) {
-		UserOutput s = x.getRow(p);
+		UserOutput s = loginService.getRow(p);
 		System.out.println(s.toString());
 		if (!s.getOtpExpiryTime().isAfter(LocalDateTime.now())) {
 			System.out.println(s.getOtpExpiryTime());
@@ -27,7 +28,7 @@ public class PasswordChangeBLL {
 			return ao;
 			
 		} else if (s.getOtp().equals(p.getOtp())) {
-			x.getRow2(p);
+			loginService.getRow2(p);
 			ao.setAuthent("success");
 
 			return ao;
