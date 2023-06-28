@@ -1,15 +1,20 @@
 package main.controllers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class AdminController {
+	// private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 
 	// Warehouse and Home page
 	@RequestMapping(value = { "/adminHome" })
 	public String getHome() {
+		Logger logger = LoggerFactory.getLogger(AdminController.class);
+		logger.info("Your Message -from log file!!");
 		return "admin/adminHome";
 	}
 
@@ -24,8 +29,8 @@ public class AdminController {
 	public String getStoreStock() {
 		return "admin/storeStock";
 	}
-                                     /* Manipulating Users */
-/* Vendor */
+	/* Manipulating Users */
+	/* Vendor */
 
 	// Redirect to Add vendor page
 	@GetMapping("/addVendor")
@@ -73,13 +78,13 @@ public class AdminController {
 
 	/* User */
 
-	//Redirect to Add user Page
+	// Redirect to Add user Page
 	@GetMapping("/addUserPage")
 	public String addUser() {
 		return "admin/addUser";
 	}
 
-	//redirect to Delete User Page
+	// redirect to Delete User Page
 	@GetMapping("/deleteUserPage")
 	public String deleteUser() {
 		return "admin/deleteUser";

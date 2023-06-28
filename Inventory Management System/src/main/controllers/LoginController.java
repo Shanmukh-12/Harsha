@@ -3,6 +3,8 @@ package main.controllers;
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -13,19 +15,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import main.bll.login.PasswordChangeBLL;
 import main.bll.login.RandomNumberBLL;
 import main.bll.login.SendingEmailBLL;
-import main.dao.login.LoginDAO;
 import main.models.loginModel.inputModels.MailDetails;
 import main.models.loginModel.inputModels.credentials2;
 import main.models.loginModel.inputModels.password;
 import main.models.loginModel.outputmodels.AuthOutput;
-import main.models.userModels.outputModels.UserOutput;
 import main.service.procurement.LoginService;
-import main.service.procurement.ProcurementService;
 
 @Controller
 public class LoginController {
@@ -38,9 +36,17 @@ public class LoginController {
 	PasswordChangeBLL cp;
 	@Autowired
 	LoginService loginService;
+	// private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
+
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String Home() {
+		// BasicConfigurator.configure();
+		Logger logger = LoggerFactory.getLogger(LoginController.class);
+		logger.info("Your Message -from log file!!");
+		System.out.println("in login");
+		logger.error("Failed to process the request .");
 		return "login/login";
+
 	}
 
 	@RequestMapping(value = "/forgotrequest", method = RequestMethod.GET)
@@ -52,14 +58,13 @@ public class LoginController {
 	@ResponseBody
 	public AuthOutput changepass(password p) {
 		AuthOutput ao = cp.changePassword(p);
-	    return ao;
+		return ao;
 
 	}
 
 	@RequestMapping(value = "/sendotp", method = RequestMethod.GET)
-	public String sendmail(MailDetails md, Model m)  {
-	
-	
+	public String sendmail(MailDetails md, Model m) {
+
 		m.addAttribute("mail", md.getMail());
 		try {
 			sm.sendEmail(md);
@@ -73,29 +78,26 @@ public class LoginController {
 
 	}
 
-
-
 	@RequestMapping(value = "/check", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public AuthOutput check(MailDetails md, Model m) throws MessagingException, JsonProcessingException {
 
-		AuthOutput s=loginService.check(md);
+		AuthOutput s = loginService.check(md);
 		return s;
-	
 
 	}
 
-	@RequestMapping(value = "/login", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE )
+	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public AuthOutput login(credentials2 md, Model m) throws MessagingException, JsonProcessingException {
 		System.out.println("hello");
 		System.out.println(loginService.getAuthent(md));
-		AuthOutput s=loginService.getAuthent(md);
+		AuthOutput s = loginService.getAuthent(md);
 		return s;
 
 	}
 
-	//logout controller
+	// logout controller
 	@GetMapping("/logout")
 	public String logout() {
 		return "login/login";
