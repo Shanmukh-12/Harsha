@@ -31,12 +31,13 @@ public interface GrnDAO {
 	 */
 	public void updatePurchaseOrder(GrnInputList grnInputList);
 
-	/**
-	 * Retrieves a list of GRNs (Goods Received Notes) based on the specified filters.
-	 *
-	 * @return The list of GRNs matching the filters.
-	 */
-	public List<ImGrnOutputModel> getGrnList(GrnInputFilters g);
+	public List<ImGrnOutputModel> getGrnListByIdFrom(GrnInputFilters g);
+
+	public List<ImGrnOutputModel> getGrnListById(GrnInputFilters g);
+
+	public List<ImGrnOutputModel> getGrnListByFrom(GrnInputFilters g);
+
+	public List<ImGrnOutputModel> getGrnListByTo(GrnInputFilters g);
 
 	/**
 	 * Retrieves a list of products included in a specific GRN (Goods Received Note).

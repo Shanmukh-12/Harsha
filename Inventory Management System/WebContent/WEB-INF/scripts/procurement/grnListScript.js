@@ -7,20 +7,19 @@ function applyFilter() {
 
 	var vendorIdf = $("#vendorId option:selected").val();
 	var vendorId = parseInt(vendorIdf || 0);
-	var costidf = $("#cost option:selected").val();
-	var cost = parseInt(costidf || 0);
 	var fromDate = $("#fromDate").val();
 	var toDate = $("#toDate").val();
 
+	console.log(vendorId);
 	$.ajax({
 		url: "getGrnList",
 		method: "GET",
 
-		data: {
+		data: {"filters":JSON.stringify({
 			"vendor_id": vendorId,
-			"grn_amount": cost,
+			"grn_amount": 0,
 			"grnFromDate": fromDate,
-			"grnToDate": toDate
+			"grnToDate": toDate})
 
 		},
 
@@ -342,3 +341,18 @@ function showProductsModal() {
 	// Show the modal
 	$('#productsModal').modal('show');
 }
+
+
+ // Get the current date
+var currentDate = new Date();
+
+// Format the date as YYYY-MM-DD
+var formattedDate = currentDate.toISOString().split("T")[0];
+
+// Set the max attribute to the date with one day added
+document.getElementById("toDate").setAttribute("max", formattedDate);
+document.getElementById("fromDate").setAttribute("max", formattedDate);
+
+
+   document.getElementById("toDate").setAttribute("value", formattedDate);
+

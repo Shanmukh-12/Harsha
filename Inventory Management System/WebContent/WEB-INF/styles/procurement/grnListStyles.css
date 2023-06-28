@@ -13,18 +13,23 @@
 }
 
 .grnClass2 {
-	margin-top: 50px;
-	position: relative;
-	left: 440px;
-	font-size: 18px;
-	font-weight: bold;
-	color: #333;
-	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+	display: flex;
+    margin-top: 50px;
+    margin-left: 200px;
+    font-size: 18px;
+    font-weight: bold;
+    flex-direction: column;
+    align-items: center;
+}
+
+.grnFilters{
+	display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .container {
 	position: relative;
-	left: 130px;
 	max-width: 800px;
 	margin: 100 auto;
 	padding-top: 10px;

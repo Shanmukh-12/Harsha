@@ -1,6 +1,5 @@
 package main.dal.procurement;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -162,70 +161,59 @@ public class GrnDAOImpl implements GrnDAO {
 	}
 
 	@Transactional
-	public List<ImGrnOutputModel> getGrnList(GrnInputFilters g) {
-		if (g.getVendor_id() == 0 && g.getGrnFromDate() == null && g.getGrn_amount() == 0.0
-				&& g.getGrnToDate().equals(String.valueOf(LocalDate.now()))) {
+	public List<ImGrnOutputModel> getGrnListByIdFrom(GrnInputFilters g) {
+		// Execute the query with all filters set to default values
+		List<ImGrnOutputModel> imGrnOutputList = entityManager.createQuery(
+				"SELECT new main.models.grnModels.outputModels.ImGrnOutputModel(s.grnId, p.vendor_id, s.purchaseOrderId, s.grnDate, s.grnAmount)"
+						+ "FROM ImGrn s " + "JOIN Im_Purchase_Order p on  s.purchaseOrderId=p.purchase_order_id "
+						+ "where p.vendor_id=:vendorId and s.grnDate>=:fromDate and s.grnDate<=:toDate",
+				ImGrnOutputModel.class).setParameter("toDate", g.getGrnToDate())
+				.setParameter("fromDate", g.getGrnFromDate()).setParameter("vendorId", g.getVendor_id())
+				.getResultList();
+		for (ImGrnOutputModel i : imGrnOutputList)
+			System.out.println(i);
+		return imGrnOutputList;
+	}
 
-			// Execute the query with all filters set to default values
-			List<ImGrnOutputModel> imGrnOutputList = entityManager.createQuery(
-					"SELECT new main.models.grnModels.outputModels.ImGrnOutputModel(s.grnId, p.vendor_id, s.purchaseOrderId, s.grnDate, s.grnAmount) FROM ImGrn s JOIN Im_Purchase_Order p on  s.purchaseOrderId=p.purchase_order_id where s.grnDate<=:t",
-					ImGrnOutputModel.class).setParameter("t", LocalDate.parse(g.getGrnToDate())).getResultList();
-			return imGrnOutputList;
-		} else if (g.getVendor_id() != 0 && g.getGrnFromDate() == null && g.getGrn_amount() == 0
-				&& g.getGrnToDate().equals(String.valueOf(LocalDate.now()))) {
+	@Transactional
+	public List<ImGrnOutputModel> getGrnListById(GrnInputFilters g) {
+		// Execute the query with all filters set to default values
+		List<ImGrnOutputModel> imGrnOutputList = entityManager.createQuery(
+				"SELECT new main.models.grnModels.outputModels.ImGrnOutputModel(s.grnId, p.vendor_id, s.purchaseOrderId, s.grnDate, s.grnAmount)"
+						+ "FROM ImGrn s " + "JOIN Im_Purchase_Order p on  s.purchaseOrderId=p.purchase_order_id "
+						+ "where p.vendor_id=:vendorId and s.grnDate<=:toDate",
+				ImGrnOutputModel.class).setParameter("toDate", g.getGrnToDate())
+				.setParameter("vendorId", g.getVendor_id()).getResultList();
+		for (ImGrnOutputModel i : imGrnOutputList)
+			System.out.println(i);
+		return imGrnOutputList;
+	}
 
-			// Execute the query with the vendor ID filter
-			List<ImGrnOutputModel> imGrnOutputList = entityManager.createQuery(
-					"SELECT new main.models.grnModels.outputModels.ImGrnOutputModel(s.grnId, p.vendor_id, s.purchaseOrderId, s.grnDate, s.grnAmount) FROM ImGrn s JOIN Im_Purchase_Order p on  s.purchaseOrderId=p.purchase_order_id WHERE p.vendor_id =:v and s.grnDate<=:d",
-					ImGrnOutputModel.class).setParameter("v", g.getVendor_id())
-					.setParameter("d", LocalDate.parse(g.getGrnToDate())).getResultList();
+	@Transactional
+	public List<ImGrnOutputModel> getGrnListByFrom(GrnInputFilters g) {
+		// Execute the query with all filters set to default values
+		List<ImGrnOutputModel> imGrnOutputList = entityManager.createQuery(
+				"SELECT new main.models.grnModels.outputModels.ImGrnOutputModel(s.grnId, p.vendor_id, s.purchaseOrderId, s.grnDate, s.grnAmount)"
+						+ "FROM ImGrn s " + "JOIN Im_Purchase_Order p on  s.purchaseOrderId=p.purchase_order_id "
+						+ "where s.grnDate>=:fromDate and s.grnDate<=:toDate",
+				ImGrnOutputModel.class).setParameter("toDate", g.getGrnToDate())
+				.setParameter("fromDate", g.getGrnFromDate()).getResultList();
+		for (ImGrnOutputModel i : imGrnOutputList)
+			System.out.println(i);
+		return imGrnOutputList;
+	}
 
-			return imGrnOutputList;
-		} else if (g.getVendor_id() != 0 && g.getGrnFromDate() != null && g.getGrn_amount() == 0
-				&& g.getGrnToDate().equals(String.valueOf(LocalDate.now()))) {
-			// Execute the query with the vendor ID and date range filters
-			List<ImGrnOutputModel> imGrnOutputList = entityManager.createQuery(
-					"SELECT new main.models.grnModels.outputModels.ImGrnOutputModel(s.grnId, p.vendor_id, s.purchaseOrderId, s.grnDate, s.grnAmount) FROM ImGrn s JOIN Im_Purchase_Order p  on  s.purchaseOrderId=p.purchase_order_id  WHERE p.vendor_id = :v AND s.grnDate >= :d and s.grnDate<=:t",
-					ImGrnOutputModel.class).setParameter("v", g.getVendor_id())
-					.setParameter("d", LocalDate.parse(g.getGrnFromDate()))
-					.setParameter("t", LocalDate.parse(g.getGrnToDate())).getResultList();
-			return imGrnOutputList;
-		} else if (g.getVendor_id() != 0 && g.getGrnFromDate() != null && g.getGrn_amount() != 0
-				&& g.getGrnToDate().equals(String.valueOf(LocalDate.now()))) {
-			// Execute the query with the vendor ID, date range, and amount filters
-			List<ImGrnOutputModel> imGrnOutputList = entityManager.createQuery(
-					// check
-					"SELECT new main.models.grnModels.outputModels.ImGrnOutputModel(s.grnId, p.vendor_id, s.purchaseOrderId, s.grnDate, s.grnAmount) FROM ImGrn s JOIN Im_Purchase_Order p  on  s.purchaseOrderId=p.purchase_order_id  where p.vendor_id = :v AND s.grnDate>= :d and s.grnDate<=:t AND s.grnAmount = :a",
-					ImGrnOutputModel.class).setParameter("v", g.getVendor_id())
-					.setParameter("d", LocalDate.parse(g.getGrnFromDate())).setParameter("a", g.getGrn_amount())
-					.setParameter("t", LocalDate.parse(g.getGrnToDate())).getResultList();
-			return imGrnOutputList;
-		} else if (g.getVendor_id() != 0 && g.getGrnFromDate() == null && g.getGrn_amount() != 0
-				&& g.getGrnToDate().equals(String.valueOf(LocalDate.now()))) {
-			// Execute the query with the vendor ID and amount filters
-			List<ImGrnOutputModel> imGrnOutputList = entityManager.createQuery(
-
-					"SELECT new main.models.grnModels.outputModels.ImGrnOutputModel(s.grnId, p.vendor_id, s.purchaseOrderId, s.grnDate, s.grnAmount) FROM ImGrn s JOIN Im_Purchase_Order p  on  s.purchaseOrderId=p.purchase_order_id WHERE p.vendor_id = :v AND s.grnDate<=: and s.grnAmount = :a",
-					ImGrnOutputModel.class).setParameter("v", g.getVendor_id()).setParameter("a", g.getGrn_amount())
-					.getResultList();
-			return imGrnOutputList;
-		} else if (g.getVendor_id() == 0 && g.getGrnFromDate() == null && g.getGrn_amount() != 0
-				&& g.getGrnToDate().equals(String.valueOf(LocalDate.now()))) {
-			// Execute the query with the amount filter
-			List<ImGrnOutputModel> imGrnOutputList = entityManager.createQuery(
-
-					"SELECT new main.models.grnModels.outputModels.ImGrnOutputModel(s.grnId, p.vendor_id, s.purchaseOrderId, s.grnDate, s.grnAmount) FROM ImGrn s JOIN Im_Purchase_Order p  on  s.purchaseOrderId=p.purchase_order_id WHERE s.grnAmount = :a",
-					ImGrnOutputModel.class).setParameter("a", g.getGrn_amount()).getResultList();
-			return imGrnOutputList;
-		} else {
-			// Execute the query with the date range filter
-			List<ImGrnOutputModel> imGrnOutputList = entityManager.createQuery(
-					"SELECT new main.models.grnModels.outputModels.ImGrnOutputModel(s.grnId, p.vendor_id, s.purchaseOrderId, s.grnDate, s.grnAmount) FROM ImGrn s JOIN Im_Purchase_Order p on  s.purchaseOrderId=p.purchase_order_id where s.grnDate>=:v and s.grnDate<=:t",
-					ImGrnOutputModel.class).setParameter("v", LocalDate.parse(g.getGrnFromDate()))
-					.setParameter("t", LocalDate.parse(g.getGrnToDate())).getResultList();
-
-			return imGrnOutputList;
-		}
+	@Transactional
+	public List<ImGrnOutputModel> getGrnListByTo(GrnInputFilters g) {
+		// Execute the query with all filters set to default values
+		List<ImGrnOutputModel> imGrnOutputList = entityManager.createQuery(
+				"SELECT new main.models.grnModels.outputModels.ImGrnOutputModel(s.grnId, p.vendor_id, s.purchaseOrderId, s.grnDate, s.grnAmount)"
+						+ "FROM ImGrn s " + "JOIN Im_Purchase_Order p on  s.purchaseOrderId=p.purchase_order_id "
+						+ "where s.grnDate<=:toDate",
+				ImGrnOutputModel.class).setParameter("toDate", g.getGrnToDate()).getResultList();
+		for (ImGrnOutputModel i : imGrnOutputList)
+			System.out.println(i);
+		return imGrnOutputList;
 	}
 
 }
