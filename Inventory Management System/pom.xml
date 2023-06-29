@@ -1,3 +1,4 @@
+
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
@@ -15,6 +16,7 @@
 		<hibernate.version>5.6.11.Final</hibernate.version>
 
 	</properties>
+
 
 <dependencies>
 <dependency>
@@ -35,8 +37,6 @@
     <artifactId>spring-data-commons</artifactId>
     <version>2.7.8</version>
 </dependency>
-
-
 
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -123,10 +123,6 @@
 		</dependency>
 
 
-
-
-
-
 		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -181,6 +177,7 @@
 			<artifactId>slf4j-api</artifactId>
 			<version>1.7.32</version>
 		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -190,6 +187,7 @@
 				<directory>src/main/resources/</directory>
 			</resource>
 		</resources>
+
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
