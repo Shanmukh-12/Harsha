@@ -36,8 +36,8 @@ public class PriceReviewController {
 	}
 
 	/*
-	 * This method is responsible for persisting price review details (product category, product name, batch no, old price, new price
-	 * and reason) to DB
+	 * This method is responsible for persisting price review details (product category, product name, batch no, old
+	 * price, new price and reason) to DB
 	 */
 	@PostMapping("/createPriceReview")
 	public String updateData(String jsonData, Model model) {
@@ -53,9 +53,7 @@ public class PriceReviewController {
 			e.printStackTrace();
 		}
 
-		System.out.println(priceReviewInputList);
 		PriceReviewList priceReviewList = modelMapper.map(priceReviewInputList, PriceReviewList.class);
-		System.out.println(priceReviewList);
 
 		priceReviewDAO.savePriceReview(priceReviewList);
 
@@ -63,15 +61,15 @@ public class PriceReviewController {
 
 	}
 
-	// This method is for displaying the list of all the products in each  price review ID
+	// This method is for displaying the list of all the products in each price review ID
 	@PostMapping("/getPriceReviewProductsList")
-	public String getPriceReviewProductsList(String pr_id, Model m) {
-		System.out.println("in the controller");
+	public String getPriceReviewProductsList(String prId, Model m) {
+
 		ObjectMapper objectMapper = new ObjectMapper();
-		System.out.println(pr_id);
+
 		PriceReviewInputList pricereviewid = null;
 		try {
-			pricereviewid = objectMapper.readValue(pr_id, PriceReviewInputList.class);
+			pricereviewid = objectMapper.readValue(prId, PriceReviewInputList.class);
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
@@ -79,11 +77,7 @@ public class PriceReviewController {
 		List<PriceReviewProductsListData> priceReviewProductsListData = priceReviewDAO
 				.getPriceReviewProductsList(pricereviewid);
 
-		System.out.println("after dao");
 		m.addAttribute("productsList", priceReviewProductsListData);
-
-		for (PriceReviewProductsListData s : priceReviewProductsListData)
-			System.out.println(s);
 
 		return "inventory/priceReviewProducts";
 	}
@@ -100,11 +94,10 @@ public class PriceReviewController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println(priceReviewFilterInput);
 
-		List<PriceReviewFilterOutput> sl = priceReviewDAO
+		List<PriceReviewFilterOutput> priceReviewFilterOutput = priceReviewDAO
 				.getFilterDataByCategoryIdProductIdFrom(priceReviewFilterInput);
-		return sl;
+		return priceReviewFilterOutput;
 	}
 
 	// This method filters price review ID's by product category Id and product Id
@@ -118,10 +111,10 @@ public class PriceReviewController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println(priceReviewFilterInput);
 
-		List<PriceReviewFilterOutput> sl = priceReviewDAO.getFilterDataByCategoryIdProductId(priceReviewFilterInput);
-		return sl;
+		List<PriceReviewFilterOutput> priceReviewFilterOutput = priceReviewDAO
+				.getFilterDataByCategoryIdProductId(priceReviewFilterInput);
+		return priceReviewFilterOutput;
 	}
 
 	// This method filters price review ID's by product category Id and From Date
@@ -135,10 +128,10 @@ public class PriceReviewController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println(priceReviewFilterInput);
 
-		List<PriceReviewFilterOutput> sl = priceReviewDAO.getFilterDataByCategoryIdFrom(priceReviewFilterInput);
-		return sl;
+		List<PriceReviewFilterOutput> priceReviewFilterOutput = priceReviewDAO
+				.getFilterDataByCategoryIdFrom(priceReviewFilterInput);
+		return priceReviewFilterOutput;
 	}
 
 	// This method filters price review ID's by product category Id
@@ -152,10 +145,10 @@ public class PriceReviewController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println(priceReviewFilterInput);
 
-		List<PriceReviewFilterOutput> sl = priceReviewDAO.getFilterDataByCategoryId(priceReviewFilterInput);
-		return sl;
+		List<PriceReviewFilterOutput> priceReviewFilterOutput = priceReviewDAO
+				.getFilterDataByCategoryId(priceReviewFilterInput);
+		return priceReviewFilterOutput;
 	}
 
 	// This method filters price review ID's by From date
@@ -169,10 +162,10 @@ public class PriceReviewController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println(priceReviewFilterInput);
 
-		List<PriceReviewFilterOutput> sl = priceReviewDAO.getFilterDataByFrom(priceReviewFilterInput);
-		return sl;
+		List<PriceReviewFilterOutput> priceReviewFilterOutput = priceReviewDAO
+				.getFilterDataByFrom(priceReviewFilterInput);
+		return priceReviewFilterOutput;
 	}
 
 	// This method filters price review ID's by To date
@@ -186,10 +179,10 @@ public class PriceReviewController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println(priceReviewFilterInput);
 
-		List<PriceReviewFilterOutput> sl = priceReviewDAO.getFilterDataByTo(priceReviewFilterInput);
-		return sl;
+		List<PriceReviewFilterOutput> priceReviewFilterOutput = priceReviewDAO
+				.getFilterDataByTo(priceReviewFilterInput);
+		return priceReviewFilterOutput;
 	}
 
 }

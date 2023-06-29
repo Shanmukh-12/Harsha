@@ -1,0 +1,25 @@
+@charset "ISO-8859-1";
+
+.prnClass {
+	position: relative;
+	left: 500px;
+	font-size: 18px;
+	font-weight: bold;
+	color: #333;
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.prnfilterClass {
+	position: relative;
+	left: 1040px;
+}
+
+.prnfilterClass2 {
+	position: relative;
+	left: 1020px;
+}
+
+.prnfilterClass1 {
+	position: relative;
+	left: 460px;
+}

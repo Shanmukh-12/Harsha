@@ -3,11 +3,11 @@ package main.models.grnModels.inputModels;
 import java.time.LocalDate;
 
 public class GrnInputFilters {
-	private int vendor_id;
-	private double grn_amount;
+	private int vendor_id = 0;
+	private double grn_amount = 0;
 
-	private String grnFromDate = null;
-	private String grnToDate = null;
+	LocalDate grnFromDate;
+	LocalDate grnToDate;
 
 	public GrnInputFilters() {
 		super();
@@ -29,26 +29,13 @@ public class GrnInputFilters {
 		this.grn_amount = grn_amount;
 	}
 
-	public String getGrnFromDate() {
-		return grnFromDate;
+	@Override
+	public String toString() {
+		return "GrnInputFilters [vendor_id=" + vendor_id + ", grn_amount=" + grn_amount + ", grnFromDate=" + grnFromDate
+				+ ", grnToDate=" + grnToDate + "]";
 	}
 
-	public void setGrnFromDate(String grnFromDate) {
-		if (!grnFromDate.isEmpty())
-			this.grnFromDate = grnFromDate;
-	}
-
-	public String getGrnToDate() {
-		return String.valueOf(LocalDate.now());
-
-	}
-
-	public void setGrnToDate(String grnToDate) {
-		if (!grnToDate.isEmpty())
-			this.grnToDate = grnToDate;
-	}
-
-	public GrnInputFilters(int vendor_id, double grn_amount, String grnFromDate, String grnToDate) {
+	public GrnInputFilters(int vendor_id, double grn_amount, LocalDate grnFromDate, LocalDate grnToDate) {
 		super();
 		this.vendor_id = vendor_id;
 		this.grn_amount = grn_amount;
@@ -56,10 +43,20 @@ public class GrnInputFilters {
 		this.grnToDate = grnToDate;
 	}
 
-	@Override
-	public String toString() {
-		return "GrnInputFilters [vendor_id=" + vendor_id + ", grn_amount=" + grn_amount + ", grnFromDate=" + grnFromDate
-				+ ", grnToDate=" + grnToDate + "]";
+	public LocalDate getGrnFromDate() {
+		return grnFromDate;
+	}
+
+	public void setGrnFromDate(LocalDate grnFromDate) {
+		this.grnFromDate = grnFromDate;
+	}
+
+	public LocalDate getGrnToDate() {
+		return grnToDate;
+	}
+
+	public void setGrnToDate(LocalDate grnToDate) {
+		this.grnToDate = grnToDate;
 	}
 
 }

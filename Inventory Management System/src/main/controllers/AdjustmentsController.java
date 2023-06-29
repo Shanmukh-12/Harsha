@@ -26,22 +26,22 @@ public class AdjustmentsController {
 	@Autowired
 	AdjustmentsDAO adjustmentsDAO;
 
-	// The getAdjustments method is used to retrieve a list of all the Adjustments 
+	// The getAdjustments method is used to retrieve a list of all the Adjustments
 	@PostMapping("/adjustmentsListButton")
 	public String showDataPage(Model model) {
+
 		List<AdjustmentsList> adjustments = adjustmentsDAO.getAdjustments();
 		model.addAttribute("adjustments", adjustments);
+
 		return "inventory/adjustmentsList";
 	}
 
 	/*
-	 * The saveAdjustments method is responsible for persisting adjustments details (product category, product name, batch no, original stock, updated
-	 * stock and reason) to the database.
+	 * The saveAdjustments method is responsible for persisting adjustments details (product category, product name,
+	 * batch no, original stock, updated stock and reason) to the database.
 	 */
 	@PostMapping("/createAdjustments")
 	public String updateData(String jsonData, Model model) {
-
-		System.out.println(jsonData);
 
 		ObjectMapper objectMapper = new ObjectMapper();
 		ModelMapper modelMapper = new ModelMapper();
@@ -54,9 +54,7 @@ public class AdjustmentsController {
 			e.printStackTrace();
 		}
 
-		System.out.println(adjustmentsInputList);
 		AdjustmentsList adjustmentsList = modelMapper.map(adjustmentsInputList, AdjustmentsList.class);
-		System.out.println(adjustmentsList);
 
 		adjustmentsDAO.saveAdjustments(adjustmentsList);
 
@@ -66,13 +64,13 @@ public class AdjustmentsController {
 
 	// The getAdjustmentProductsList method is for displaying the list of all the products in each Adjustment ID
 	@PostMapping("/getAdjustmentProductsList")
-	public String getAdjustmentProductsList(String adjs_id, Model m) {
+	public String getAdjustmentProductsList(String adjsId, Model m) {
 
 		ObjectMapper objectMapper = new ObjectMapper();
 
 		AdjustmentsInputList adjustmentid = null;
 		try {
-			adjustmentid = objectMapper.readValue(adjs_id, AdjustmentsInputList.class);
+			adjustmentid = objectMapper.readValue(adjsId, AdjustmentsInputList.class);
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
@@ -81,9 +79,6 @@ public class AdjustmentsController {
 				.getAdjustmentProductsList(adjustmentid);
 
 		m.addAttribute("productsList", adjustmentProductsListData); // adding to the view
-
-		for (AdjustmentProductsListData s : adjustmentProductsListData)
-			System.out.println(s);
 
 		return "inventory/adjustmentProducts";
 	}
@@ -100,11 +95,10 @@ public class AdjustmentsController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 
-		List<AdjustmentsFilterOutput> sl = adjustmentsDAO
+		List<AdjustmentsFilterOutput> adjustmentsFilterOutput = adjustmentsDAO
 				.getFilterDataByCategoryIdProductIdFrom(adjustmentsFilterInput);
-		return sl;
+		return adjustmentsFilterOutput;
 	}
 
 	// This method filters Adjustment ID's by product category Id and product Id
@@ -118,10 +112,10 @@ public class AdjustmentsController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 
-		List<AdjustmentsFilterOutput> sl = adjustmentsDAO.getFilterDataByCategoryIdProductId(adjustmentsFilterInput);
-		return sl;
+		List<AdjustmentsFilterOutput> adjustmentsFilterOutput = adjustmentsDAO
+				.getFilterDataByCategoryIdProductId(adjustmentsFilterInput);
+		return adjustmentsFilterOutput;
 	}
 
 	// This method filters Adjustment ID's by product category Id and From Date
@@ -135,10 +129,10 @@ public class AdjustmentsController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 
-		List<AdjustmentsFilterOutput> sl = adjustmentsDAO.getFilterDataByCategoryIdFrom(adjustmentsFilterInput);
-		return sl;
+		List<AdjustmentsFilterOutput> adjustmentsFilterOutput = adjustmentsDAO
+				.getFilterDataByCategoryIdFrom(adjustmentsFilterInput);
+		return adjustmentsFilterOutput;
 	}
 
 	// This method filters Adjustment ID's by product category Id
@@ -152,10 +146,10 @@ public class AdjustmentsController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 
-		List<AdjustmentsFilterOutput> sl = adjustmentsDAO.getFilterDataByCategoryId(adjustmentsFilterInput);
-		return sl;
+		List<AdjustmentsFilterOutput> adjustmentsFilterOutput = adjustmentsDAO
+				.getFilterDataByCategoryId(adjustmentsFilterInput);
+		return adjustmentsFilterOutput;
 	}
 
 	// This method filters Adjustment ID's by From date
@@ -169,10 +163,10 @@ public class AdjustmentsController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 
-		List<AdjustmentsFilterOutput> sl = adjustmentsDAO.getFilterDataByFrom(adjustmentsFilterInput);
-		return sl;
+		List<AdjustmentsFilterOutput> adjustmentsFilterOutput = adjustmentsDAO
+				.getFilterDataByFrom(adjustmentsFilterInput);
+		return adjustmentsFilterOutput;
 	}
 
 	// This method filters Adjustment ID's by To date
@@ -186,10 +180,10 @@ public class AdjustmentsController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 
-		List<AdjustmentsFilterOutput> sl = adjustmentsDAO.getFilterDataByTo(adjustmentsFilterInput);
-		return sl;
+		List<AdjustmentsFilterOutput> adjustmentsFilterOutput = adjustmentsDAO
+				.getFilterDataByTo(adjustmentsFilterInput);
+		return adjustmentsFilterOutput;
 	}
 
 }

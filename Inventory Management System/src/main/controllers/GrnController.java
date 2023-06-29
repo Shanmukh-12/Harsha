@@ -24,6 +24,7 @@ import main.models.grnModels.inputModels.GrnInputFilters;
 import main.models.grnModels.inputModels.GrnInputList;
 import main.models.grnModels.outputModels.GrnListProductsOutputModel;
 import main.models.grnModels.outputModels.ImGrnOutputModel;
+import main.service.procurement.interfaces.GrnService;
 
 @Controller
 public class GrnController {
@@ -31,6 +32,8 @@ public class GrnController {
 	@Autowired
 	GrnDAO grndao;
 
+	@Autowired
+	GrnService grnService;
 	@Autowired
 	ModelMapper modelMapper;
 
@@ -107,27 +110,34 @@ public class GrnController {
 
 	@RequestMapping(value = "/getGrnList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public String getGrnList(GrnInputFilters grnInputFilter) {
+	public String getGrnList(String filters) {
+		ObjectMapper objectMapper = new ObjectMapper();
+		objectMapper.registerModule(new JavaTimeModule());
+
+		GrnInputFilters grnInputFilter = null;
 		try {
-
-			// Retrieve the list of ImGrnOutputModel objects from the GrnDAO based on the input filter
-			List<ImGrnOutputModel> l = grndao.getGrnList(grnInputFilter);
-
-			// Create an object mapper and register the JavaTimeModule for date/time serialization/deserialization
-			ObjectMapper objectMapper = new ObjectMapper();
-			objectMapper.registerModule(new JavaTimeModule());
-
-			// Convert the list of ImGrnOutputModel objects to JSON string
-			String jsonData = objectMapper.writeValueAsString(l);
-
-			// Return the JSON data as the response
-			return jsonData;
-		} catch (JsonProcessingException e) {
-			// Handle the JsonProcessingException and print the stack trace
+			// Deserializing filters string to StoreFilters object
+			grnInputFilter = objectMapper.readValue(filters, GrnInputFilters.class);
+		} catch (Exception e) {
 			e.printStackTrace();
-			// Return an error message or appropriate response
-			return "Error occurred while processing JSON data";
 		}
+
+		System.out.println(filters);
+		System.out.println("Inside contorller");
+		// Retrieve the list of ImGrnOutputModel objects from the GrnDAO based on the input filter
+		List<ImGrnOutputModel> l = grnService.getGrnList(grnInputFilter);
+
+		// Convert the list of ImGrnOutputModel objects to JSON string
+		String jsonData = null;
+		try {
+			jsonData = objectMapper.writeValueAsString(l);
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// Return the JSON data as the response
+		return jsonData;
 	}
 
 }

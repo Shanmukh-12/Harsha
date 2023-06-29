@@ -1,213 +1,83 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<head>
+
+<link rel="stylesheet"
+	href="./HomeProcurement/styles/purchasesListStyles.css">
+</head>
+<script src="./HomeProcurement/scripts/purchasesListScript.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 <script src="https://unpkg.com/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 
 
 
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <style>
-    .pagination {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            background-color: #f9f9f9;
-            padding: 10px 0;
-            right: 110px;
-        }
-
-        .pagination button {
-            margin: 0 5px;
-            padding: 5px 10px;
-            border: 1px solid #ccc;
-            background-color: #f9f9f9;
-            cursor: pointer;
-        }
-
-        .pagination button.active {
-            background-color: #e6e6e6;
-        }
-    
-    .PurchasesClass
-	{
-	position:relative;
-	left:500px;
-	 font-size: 18px;
-         font-weight: bold;
-         color: #333;
-         text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-	}
-	.purchaseClass1
-         {
-         position:relative;
-        right:70px;	
-         top:50px;
-        
-	     font-size: 18px;
-         font-weight: bold;
-         color: #333;
-         text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-         }
-         .purchaseClass2
-         {
-          position:relative;
-         left:550px;
-	     font-size: 18px;
-         font-weight: bold;
-         color: #333;
-         text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-         }
-        
-         .container {
-         position:relative;
-         left:130px;
-         max-width: 800px;
-         margin: 100 auto;
-         padding-top: 10px;
-         margin-left:170px;
-         }
-
-        .issues-block {
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            background-color: #fff;
-        }
-
-        .issues-block:hover {
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            background-color:#d8f2f0 ;
-            
-            
-        }
-
-        .issue-details{
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-         .label {
-            font-weight: bold;
-            
-        }
-
-
-        .btn-issues{
-               border-radius:6px;
-                background-color: #4CAF50;
-                 border: none;
-                 color: white;
-                 cursor: pointer;
-                 font-weight: bold;
-                box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
-            margin-left: 600px;
- 
-        }
-
-        .btn-issues:hover {
-            background-color:#4CAF50 ;
-            border-color: #4CAF50;
-        }
-        
-
-
-
-.bold {
-            font-weight: bold;
-            font-size: 25px;
-        }
-         .searchClass
-  {
-  position:relative;
-  z-index: 1;
- left:900px;
- top:55px;
-  }
-  
-  .refresh-icon {
-  display: inline-block;
-  cursor: pointer;
-}
-  .myElement {
-  width: 200px; /* Adjust the width as desired */
-  height: 100px; /* Adjust the height as desired */
-}
-        
-
-    </style>
-    
-         
-    
-    
-</head>
-<body>
-
 <label class="purchaseClass2">Select VendorID:</label>
-      <select id="vendorId" class="purchaseClass2"  >
-      <option value="">Select Vendor</option>
-         <option>20001</option>
-         <option>20002</option>
-         <option>20003</option>
-      </select>
+<select id="vendorId" class="purchaseClass2">
+	<option value="">Select Vendor</option>
+</select>
 
-      
-      <label class="purchaseClass1">Select Expected From Date:</label>
-      <input type="date" id="expectedDate" class="purchaseClass1">
-      <label class="purchaseClass1">Select Expected To Date:</label>
-      <input type="date" id="expectedDate1" class="purchaseClass1">
-      <input type="button" value="filter" onclick="tk()" class="purchaseClass1" style="color: white; background-color: green;">
-		
-	      <input type="button" value="clear" onclick="clearSelection()" class="purchaseClass1" style="color: white; background-color: green;">
-	
-	<br><br><br><br>
-	<input type="text" id="purchaseorderid" placeholder="Enter purchase id" class="searchClass" style="width:140px;">
-	<input type="button" onclick="tk3()" value="search" class="searchClass">
+
+<label class="purchaseClass1">Select Expected From Date:</label>
+<input type="date" id="expectedDate" class="purchaseClass1">
+<label class="purchaseClass1">Select Expected To Date:</label>
+<input type="date" id="expectedDate1" class="purchaseClass1">
+<input type="button" value="filter" onclick="tk()"
+	class="purchaseClass1" style="color: white; background-color: green;">
+
+<input type="button" value="clear" onclick="clearSelection()"
+	class="purchaseClass1" style="color: white; background-color: green;">
+
+<br>
+<br>
+<br>
+<br>
+<input type="text" id="purchaseorderid" placeholder="Enter purchase id"
+	class="searchClass" style="width: 140px;">
+<input type="button" onclick="tk3()" value="search" class="searchClass">
 <span class="refresh-icon searchClass" onclick="refresh()">&#x21bb;</span>
-	
+
 
 <form method="Get">
-    <div class="container" >
-        <h1 class="text-center mb-4">Purchases Data</h1>
-        
-            <div class="issues-block">
-                <h4 class="store-indent-id" id="PurchasesId">Purchase ID: <span class="bold">5001</span></h4>
-                <div class="issue-details" >
-                    <span class="label">Vendor ID:</span><span >A2345</span>
-                        <span class="label">Purchase Order Expected Date:</span><span >2023-12-29</span>
-                        <span class="label ">Purchase Order amount</span> <span >123EW</span>
-                </div>
-                
-                
-                <div>
-                <button type="button" value="view products" class="btn-issues" onclick="tk2(5001)">View Products</button>
-                </div>
-            </div>
-         
-    </div>
+	<div class="container">
+		<h1 class="text-center mb-4">Purchases Data</h1>
+
+		<div class="issues-block">
+			<h4 class="store-indent-id" id="PurchasesId">
+				Purchase ID: <span class="bold">5001</span>
+			</h4>
+			<div class="issue-details">
+				<span class="label">Vendor ID:</span><span>A2345</span> <span
+					class="label">Purchase Order Expected Date:</span><span>2023-12-29</span>
+				<span class="label ">Purchase Order amount</span> <span>123EW</span>
+			</div>
+
+
+			<div>
+				<button type="button" value="view products" class="btn-issues"
+					onclick="tk2(5001)">View Products</button>
+			</div>
+		</div>
+
+	</div>
 </form>
 <!-- Modal -->
-<div class="modal fade" id="productsModal" tabindex="-1" aria-labelledby="productsModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg" style="max-width: calc(100% - 200px);">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="productsModalLabel">Products</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" id="modalContent">
-                <!-- Modal content will be loaded dynamically here -->
-            </div>
-        </div>
-    </div>
+<div class="modal fade" id="productsModal" tabindex="-1"
+	aria-labelledby="productsModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg"
+		style="max-width: calc(100% - 200px);">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="productsModalLabel">Products</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal"
+					aria-label="Close"></button>
+			</div>
+			<div class="modal-body" id="modalContent">
+				<!-- Modal content will be loaded dynamically here -->
+			</div>
+		</div>
+	</div>
 </div>
+
 <div class="pagination"></div>
 </body>
 
@@ -658,3 +528,4 @@ function tk2(PurchasesId) {
      
 </script>
 </html>
+
