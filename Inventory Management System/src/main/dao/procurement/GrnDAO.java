@@ -1,48 +1,219 @@
-package main.dao.procurement;
+package main.dal.procurement;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import main.bll.procurement.GrnBll;
+import main.dao.procurement.GrnDAO;
 import main.models.grnModels.entities.ImGrn;
+import main.models.grnModels.entities.ImGrnProducts;
 import main.models.grnModels.inputModels.GrnIdInput;
 import main.models.grnModels.inputModels.GrnInputFilters;
 import main.models.grnModels.inputModels.GrnInputList;
+import main.models.grnModels.inputModels.GrnInputProductsList;
 import main.models.grnModels.outputModels.GrnListProductsOutputModel;
 import main.models.grnModels.outputModels.ImGrnOutputModel;
+import main.models.productModels.dto.ProductPrice;
+import main.models.productModels.dto.SalePrice;
+import main.models.productModels.entities.ProductStock;
+import main.models.purchaseOrder.entityModels.PurchaseOrderProducts;
 
-public interface GrnDAO {
+@Component
+public class GrnDAOImpl implements GrnDAO {
 
-	/**
-	 * Saves the GRN (Goods Received Note) entity to the database.
-	 *
-	 * @return true if the saving is successful, false otherwise.
-	 */
-	public boolean saveGrn(ImGrn imGrn);
+	@PersistenceContext
+	EntityManager entityManager;
 
-	/**
-	 * Updates the stock based on the received products in the GRN.
-	 *
-	 * @param grnInputList The GRN input list containing product information.
-	 */
-	public void updateStock(GrnInputList grnInputList);
+	@Autowired
+	GrnBll gb;
 
-	/**
-	 * Updates the purchase order based on the received products in the GRN.
-	 *
-	 */
-	public void updatePurchaseOrder(GrnInputList grnInputList);
+	@Transactional
+	public boolean saveGrn(ImGrn imGrn) {
+		try {
+			// Persist the main GRN object
+			entityManager.persist(imGrn);
 
-	public List<ImGrnOutputModel> getGrnListByIdFrom(GrnInputFilters g);
+			// Get the list of associated products from the GRN object
+			List<ImGrnProducts> productsList = imGrn.getProductsList();
 
-	public List<ImGrnOutputModel> getGrnListById(GrnInputFilters g);
+			// Iterate over each product and associate it with the GRN
+			for (ImGrnProducts product : productsList) {
+				// Set the GRN ID for the current product
+				product.setGrnId(imGrn.getGrnId());
 
-	public List<ImGrnOutputModel> getGrnListByFrom(GrnInputFilters g);
+				// Persist the product
+				entityManager.persist(product);
+			}
 
-	public List<ImGrnOutputModel> getGrnListByTo(GrnInputFilters g);
+			// Return true to indicate successful saving of the GRN
+			return true;
+		} catch (Exception e) {
+			// Handle any exceptions that occur during persistence
+			e.printStackTrace();
+			return false;
+		}
+	}
 
-	/**
-	 * Retrieves a list of products included in a specific GRN (Goods Received Note).
-	 *
-	 * @return The list of products included in the GRN.
-	 */
-	public List<GrnListProductsOutputModel> getGrnProducts(GrnIdInput gid);
+	@Override
+	@Transactional
+	public void updateStock(GrnInputList grnInputList) {
+		// Get the list of products from the GrnInputList object
+		List<GrnInputProductsList> productsList = grnInputList.getProductsList();
+
+		// Iterate over each product in the list
+		for (GrnInputProductsList product : productsList) {
+			System.out.println(product.getProductId() + " " + product.getBatchNo());
+
+			// Create a new ProductPrice object based on the product details
+			ProductPrice productPrice = new ProductPrice(product.getProductId(), product.getQuantity(),
+					product.getTotalPrice());
+
+			// Get the sale price for the product using a method from a class named gb
+			SalePrice s = gb.getProductSalePrice(productPrice);
+
+			try {
+				// Try to find existing stock for the product using productId and batchNo
+				ProductStock existingStock = (ProductStock) entityManager
+						.createQuery(
+								"SELECT s FROM ProductStock s WHERE s.productId = :productId AND s.batchNo = :batchNo")
+						.setParameter("productId", product.getProductId()).setParameter("batchNo", product.getBatchNo())
+						.getSingleResult();
+
+				// Update the existing stock with the additional quantity and sale price
+				existingStock.setProductStock(existingStock.getProductStock() + product.getQuantity());
+				existingStock.setProductSalePrice(s.getSalePrice());
+			} catch (NoResultException e) {
+				// If no existing stock found, create a new ProductStock object
+				ModelMapper mp = new ModelMapper();
+				ProductStock newStock = mp.map(product, ProductStock.class);
+				newStock.setProductCost(product.getTotalPrice() / product.getQuantity());
+				newStock.setProductMrp(product.getMrp());
+				newStock.setProductSalePrice(s.getSalePrice());
+				newStock.setProductStock(product.getQuantity());
+
+				// Persist the new stock in the database
+				entityManager.persist(newStock);
+			}
+		}
+	}
+
+	@Override
+	@Transactional
+	public void updatePurchaseOrder(GrnInputList grnInputList) {
+		// Get the list of products from the GrnInputList object
+		List<GrnInputProductsList> productsList = grnInputList.getProductsList();
+
+		// Iterate over each product in the list
+		for (GrnInputProductsList product : productsList) {
+			// Query the database to retrieve the corresponding PurchaseOrderProducts object
+			PurchaseOrderProducts p = (PurchaseOrderProducts) entityManager.createQuery(
+					"SELECT s FROM PurchaseOrderProducts s WHERE s.purchase_order_id = :purId AND s.product_id = :prodId")
+					.setParameter("purId", grnInputList.getPurchaseOrderId())
+					.setParameter("prodId", product.getProductId()).getSingleResult();
+
+			// Update the received quantity of the purchase order product
+			p.setQuantity_received(p.getQuantity_received() + product.getQuantity());
+		}
+	}
+
+	@Transactional
+	public List<GrnListProductsOutputModel> getGrnProducts(GrnIdInput grnIdInput) {
+		// Create a ModelMapper instance for object mapping
+		ModelMapper mapper = new ModelMapper();
+
+		// Create an empty list to store the GrnListProductsOutputModel objects
+		List<GrnListProductsOutputModel> grnProductsList = new ArrayList<>();
+
+		// Retrieve the ImGrn object from the database based on the provided GRN ID
+		ImGrn imGrn = (ImGrn) entityManager.createQuery("SELECT s FROM ImGrn s WHERE s.grnId = :x")
+				.setParameter("x", grnIdInput.getGrnId()).getSingleResult();
+
+		// Get the list of ImGrnProducts from the ImGrn object
+		List<ImGrnProducts> productsList = imGrn.getProductsList();
+
+		// Iterate over each ImGrnProducts object
+		for (ImGrnProducts product : productsList) {
+			// Map the ImGrnProducts object to a GrnListProductsOutputModel object using ModelMapper
+			GrnListProductsOutputModel grnListProductsOutputModel = mapper.map(product,
+					GrnListProductsOutputModel.class);
+
+			// Set additional properties of the GrnListProductsOutputModel object
+			grnListProductsOutputModel.setGrn_id(imGrn.getGrnId());
+			grnListProductsOutputModel.setProduct_id(product.getProductId());
+			grnListProductsOutputModel.setBatch_no(product.getBatchNo());
+			grnListProductsOutputModel.setTotalQuantity(product.getQuantity() + product.getBonus());
+
+			// Add the GrnListProductsOutputModel object to the list
+			grnProductsList.add(grnListProductsOutputModel);
+		}
+
+		// Return the list of GrnListProductsOutputModel objects
+		return grnProductsList;
+	}
+
+	@Transactional
+	public List<ImGrnOutputModel> getGrnListByIdFrom(GrnInputFilters g) {
+		// Execute the query with all filters set to default values
+		List<ImGrnOutputModel> imGrnOutputList = entityManager.createQuery(
+				"SELECT new main.models.grnModels.outputModels.ImGrnOutputModel(s.grnId, p.vendor_id, s.purchaseOrderId, s.grnDate, s.grnAmount)"
+						+ "FROM ImGrn s " + "JOIN Im_Purchase_Order p on  s.purchaseOrderId=p.purchase_order_id "
+						+ "where p.vendor_id=:vendorId and s.grnDate>=:fromDate and s.grnDate<=:toDate",
+				ImGrnOutputModel.class).setParameter("toDate", g.getGrnToDate())
+				.setParameter("fromDate", g.getGrnFromDate()).setParameter("vendorId", g.getVendor_id())
+				.getResultList();
+		for (ImGrnOutputModel i : imGrnOutputList)
+			System.out.println(i);
+		return imGrnOutputList;
+	}
+
+	@Transactional
+	public List<ImGrnOutputModel> getGrnListById(GrnInputFilters g) {
+		// Execute the query with all filters set to default values
+		List<ImGrnOutputModel> imGrnOutputList = entityManager.createQuery(
+				"SELECT new main.models.grnModels.outputModels.ImGrnOutputModel(s.grnId, p.vendor_id, s.purchaseOrderId, s.grnDate, s.grnAmount)"
+						+ "FROM ImGrn s " + "JOIN Im_Purchase_Order p on  s.purchaseOrderId=p.purchase_order_id "
+						+ "where p.vendor_id=:vendorId and s.grnDate<=:toDate",
+				ImGrnOutputModel.class).setParameter("toDate", g.getGrnToDate())
+				.setParameter("vendorId", g.getVendor_id()).getResultList();
+		for (ImGrnOutputModel i : imGrnOutputList)
+			System.out.println(i);
+		return imGrnOutputList;
+	}
+
+	@Transactional
+	public List<ImGrnOutputModel> getGrnListByFrom(GrnInputFilters g) {
+		// Execute the query with all filters set to default values
+		List<ImGrnOutputModel> imGrnOutputList = entityManager.createQuery(
+				"SELECT new main.models.grnModels.outputModels.ImGrnOutputModel(s.grnId, p.vendor_id, s.purchaseOrderId, s.grnDate, s.grnAmount)"
+						+ "FROM ImGrn s " + "JOIN Im_Purchase_Order p on  s.purchaseOrderId=p.purchase_order_id "
+						+ "where s.grnDate>=:fromDate and s.grnDate<=:toDate",
+				ImGrnOutputModel.class).setParameter("toDate", g.getGrnToDate())
+				.setParameter("fromDate", g.getGrnFromDate()).getResultList();
+		for (ImGrnOutputModel i : imGrnOutputList)
+			System.out.println(i);
+		return imGrnOutputList;
+	}
+
+	@Transactional
+	public List<ImGrnOutputModel> getGrnListByTo(GrnInputFilters g) {
+		// Execute the query with all filters set to default values
+		List<ImGrnOutputModel> imGrnOutputList = entityManager.createQuery(
+				"SELECT new main.models.grnModels.outputModels.ImGrnOutputModel(s.grnId, p.vendor_id, s.purchaseOrderId, s.grnDate, s.grnAmount)"
+						+ "FROM ImGrn s " + "JOIN Im_Purchase_Order p on  s.purchaseOrderId=p.purchase_order_id "
+						+ "where s.grnDate<=:toDate",
+				ImGrnOutputModel.class).setParameter("toDate", g.getGrnToDate()).getResultList();
+		for (ImGrnOutputModel i : imGrnOutputList)
+			System.out.println(i);
+		return imGrnOutputList;
+	}
+
 }
