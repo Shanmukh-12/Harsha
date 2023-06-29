@@ -46,7 +46,7 @@ public class IndentsController {
 		       inventoryIndentsDAO.saveInventoryIndent(inventoryIndentsList);
             }  
         catch(Exception e) {
-	        e.printStackTrace();
+	        
             }
 
 		  return "inventory/createIndent";
