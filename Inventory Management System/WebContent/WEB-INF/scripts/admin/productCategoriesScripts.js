@@ -24,12 +24,11 @@ $(document).ready(function () {
       categoryId["categoryId"] = selectedCategoryId;
       console.log(categoryId);
       $.ajax({
-         url: "getProducts",
+         url: "getProductStockData",
          method: "POST",
          data: {
-            "categoryId": JSON.stringify(categoryId)
+           categoryId : $(this).val()
          },
-         dataType: "json",
          success: function (data) {
             console.log(data);
             $("#productTableBody").empty();

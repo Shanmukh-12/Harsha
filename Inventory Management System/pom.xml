@@ -1,5 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>inventory</groupId>
@@ -16,7 +16,28 @@
 		<hibernate.version>5.6.11.Final</hibernate.version>
 
 	</properties>
-	<dependencies>
+
+
+<dependencies>
+<dependency>
+<groupId>org.springframework</groupId>
+<artifactId>spring-webmvc</artifactId>
+<version>4.3.9.RELEASE</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/javax.mail/mail -->
+<dependency>
+    <groupId>javax.mail</groupId>
+    <artifactId>mail</artifactId>
+    <version>1.4.7</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-commons -->
+<!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-commons -->
+<dependency>
+    <groupId>org.springframework.data</groupId>
+    <artifactId>spring-data-commons</artifactId>
+    <version>2.7.8</version>
+</dependency>
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
@@ -102,7 +123,6 @@
 		</dependency>
 
 
-
 		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -137,9 +157,6 @@
 			<scope>provided</scope>
 		</dependency>
 
-
-
-
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-api</artifactId>
@@ -161,26 +178,15 @@
 			<version>1.7.32</version>
 		</dependency>
 
-
-
-
-
 	</dependencies>
 
 	<build>
 		<sourceDirectory>src</sourceDirectory>
-
-
-
-
 		<resources>
 			<resource>
 				<directory>src/main/resources/</directory>
 			</resource>
 		</resources>
-
-
-
 
 		<plugins>
 			<plugin>

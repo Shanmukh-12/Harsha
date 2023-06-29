@@ -29,8 +29,10 @@ public class AdjustmentsController {
 	// The getAdjustments method is used to retrieve a list of all the Adjustments
 	@PostMapping("/adjustmentsListButton")
 	public String showDataPage(Model model) {
+
 		List<AdjustmentsList> adjustments = adjustmentsDAO.getAdjustments();
 		model.addAttribute("adjustments", adjustments);
+
 		return "inventory/adjustmentsList";
 	}
 

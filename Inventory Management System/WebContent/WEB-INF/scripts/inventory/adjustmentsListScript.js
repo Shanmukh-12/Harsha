@@ -98,7 +98,7 @@
 	        $.ajax({
 	          url: "getAdjustmentProductsList",
 	          method: "post",
-	          data:{"adjs_id":JSON.stringify(data)},
+	          data:{"adjsId":JSON.stringify(data)},
 	          success: function (response) {
 	            $("#modalContent").html(response);
 	            $("#productsModal").modal("show");

@@ -164,27 +164,7 @@ public class GrnDAOImpl implements GrnDAO {
 		}
 	}
 
-	// public void updatePurchaseOrder(GrnInputList grnInputList) {
-	// logger.info("Entered into the updatePurchaseOrder ");
-	// // Get the list of products from the GrnInputList object
-	// List<GrnInputProductsList> productsList = grnInputList.getProductsList();
-	//
-	// // Iterate over each product in the list
-	// for (GrnInputProductsList product : productsList) {
-	// logger.info("Updating purchase order for productId={}, purchaseOrderId={}",
-	// product.getProductId(), grnInputList.getPurchaseOrderId());
-	//
-	// // Query the database to retrieve the corresponding PurchaseOrderProducts object
-	// PurchaseOrderProducts p = (PurchaseOrderProducts) entityManager.createQuery(
-	// "SELECT s FROM PurchaseOrderProducts s WHERE s.purchase_order_id = :purId AND s.product_id = :prodId")
-	// .setParameter("purId", grnInputList.getPurchaseOrderId())
-	// .setParameter("prodId", product.getProductId()).getSingleResult();
-	//
-	// // Update the received quantity of the purchase order product
-	// p.setQuantity_received(p.getQuantity_received() + product.getQuantity());
-	// }
-	// }
-
+	
 	@Transactional
 	public List<GrnListProductsOutputModel> getGrnProducts(GrnIdInput grnIdInput) {
 		logger.info("Entered into the getGrnProducts ");
@@ -233,39 +213,7 @@ public class GrnDAOImpl implements GrnDAO {
 		return grnProductsList;
 	}
 
-	// public List<GrnListProductsOutputModel> getGrnProducts(GrnIdInput grnIdInput) {
-	// // Create a ModelMapper instance for object mapping
-	// ModelMapper mapper = new ModelMapper();
-	//
-	// // Create an empty list to store the GrnListProductsOutputModel objects
-	// List<GrnListProductsOutputModel> grnProductsList = new ArrayList<>();
-	//
-	// // Retrieve the ImGrn object from the database based on the provided GRN ID
-	// ImGrn imGrn = (ImGrn) entityManager.createQuery("SELECT s FROM ImGrn s WHERE s.grnId = :x")
-	// .setParameter("x", grnIdInput.getGrnId()).getSingleResult();
-	//
-	// // Get the list of ImGrnProducts from the ImGrn object
-	// List<ImGrnProducts> productsList = imGrn.getProductsList();
-	//
-	// // Iterate over each ImGrnProducts object
-	// for (ImGrnProducts product : productsList) {
-	// // Map the ImGrnProducts object to a GrnListProductsOutputModel object using ModelMapper
-	// GrnListProductsOutputModel grnListProductsOutputModel = mapper.map(product,
-	// GrnListProductsOutputModel.class);
-	//
-	// // Set additional properties of the GrnListProductsOutputModel object
-	// grnListProductsOutputModel.setGrn_id(imGrn.getGrnId());
-	// grnListProductsOutputModel.setProduct_id(product.getProductId());
-	// grnListProductsOutputModel.setBatch_no(product.getBatchNo());
-	// grnListProductsOutputModel.setTotalQuantity(product.getQuantity() + product.getBonus());
-	//
-	// // Add the GrnListProductsOutputModel object to the list
-	// grnProductsList.add(grnListProductsOutputModel);
-	// }
-	//
-	// // Return the list of GrnListProductsOutputModel objects
-	// return grnProductsList;
-	// }
+	
 
 	@Transactional
 	public List<ImGrnOutputModel> getGrnListByIdFrom(GrnInputFilters grnInputFilters) {
@@ -297,21 +245,7 @@ public class GrnDAOImpl implements GrnDAO {
 		}
 	}
 
-	// public List<ImGrnOutputModel> getGrnListByIdFrom(GrnInputFilters grnInputFilters) {
-	// // Execute the query with all filters set to default values
-	// List<ImGrnOutputModel> imGrnOutputList = entityManager.createQuery(
-	// "SELECT new main.models.grnModels.outputModels.ImGrnOutputModel(s.grnId, p.vendor_id, s.purchaseOrderId,
-	// s.grnDate, s.grnAmount)"
-	// + "FROM ImGrn s " + "JOIN Im_Purchase_Order p on s.purchaseOrderId=p.purchase_order_id "
-	// + "where p.vendor_id=:vendorId and s.grnDate>=:fromDate and s.grnDate<=:toDate",
-	// ImGrnOutputModel.class).setParameter("toDate", grnInputFilters.getGrnToDate())
-	// .setParameter("fromDate", grnInputFilters.getGrnFromDate()).setParameter("vendorId",
-	// grnInputFilters.getVendor_id())
-	// .getResultList();
-	// for (ImGrnOutputModel imGrnOutputModel : imGrnOutputList)
-	// System.out.println(imGrnOutputModel);
-	// return imGrnOutputList;
-	// }
+
 
 	@Transactional
 	public List<ImGrnOutputModel> getGrnListById(GrnInputFilters grnInputFilters) {
@@ -340,19 +274,7 @@ public class GrnDAOImpl implements GrnDAO {
 		}
 	}
 
-	// public List<ImGrnOutputModel> getGrnListById(GrnInputFilters grnInputFilters) {
-	// // Execute the query with all filters set to default values
-	// List<ImGrnOutputModel> imGrnOutputList = entityManager.createQuery(
-	// "SELECT new main.models.grnModels.outputModels.ImGrnOutputModel(s.grnId, p.vendor_id, s.purchaseOrderId,
-	// s.grnDate, s.grnAmount)"
-	// + "FROM ImGrn s " + "JOIN Im_Purchase_Order p on s.purchaseOrderId=p.purchase_order_id "
-	// + "where p.vendor_id=:vendorId and s.grnDate<=:toDate",
-	// ImGrnOutputModel.class).setParameter("toDate", grnInputFilters.getGrnToDate())
-	// .setParameter("vendorId", grnInputFilters.getVendor_id()).getResultList();
-	// for (ImGrnOutputModel imGrnOutputModel : imGrnOutputList)
-	// System.out.println(imGrnOutputModel);
-	// return imGrnOutputList;
-	// }
+	
 
 	@Transactional
 	public List<ImGrnOutputModel> getGrnListByFrom(GrnInputFilters grnInputFilters) {
@@ -382,20 +304,7 @@ public class GrnDAOImpl implements GrnDAO {
 		}
 	}
 
-	// public List<ImGrnOutputModel> getGrnListByFrom(GrnInputFilters grnInputFilters) {
-	// // Execute the query with all filters set to default values
-	// List<ImGrnOutputModel> imGrnOutputList = entityManager.createQuery(
-	// "SELECT new main.models.grnModels.outputModels.ImGrnOutputModel(s.grnId, p.vendor_id, s.purchaseOrderId,
-	// s.grnDate, s.grnAmount)"
-	// + "FROM ImGrn s " + "JOIN Im_Purchase_Order p on s.purchaseOrderId=p.purchase_order_id "
-	// + "where s.grnDate>=:fromDate and s.grnDate<=:toDate",
-	// ImGrnOutputModel.class).setParameter("toDate", grnInputFilters.getGrnToDate())
-	// .setParameter("fromDate", grnInputFilters.getGrnFromDate()).getResultList();
-	// for (ImGrnOutputModel imGrnOutputModel : imGrnOutputList)
-	// System.out.println(imGrnOutputModel);
-	// return imGrnOutputList;
-	// }
-
+	
 	@Transactional
 	public List<ImGrnOutputModel> getGrnListByTo(GrnInputFilters grnInputFilters) {
 		Logger logger = LoggerFactory.getLogger(getClass());
@@ -424,17 +333,6 @@ public class GrnDAOImpl implements GrnDAO {
 		}
 	}
 
-	// public List<ImGrnOutputModel> getGrnListByTo(GrnInputFilters grnInputFilters) {
-	// // Execute the query with all filters set to default values
-	// List<ImGrnOutputModel> imGrnOutputList = entityManager.createQuery(
-	// "SELECT new main.models.grnModels.outputModels.ImGrnOutputModel(s.grnId, p.vendor_id, s.purchaseOrderId,
-	// s.grnDate, s.grnAmount)"
-	// + "FROM ImGrn s " + "JOIN Im_Purchase_Order p on s.purchaseOrderId=p.purchase_order_id "
-	// + "where s.grnDate<=:toDate",
-	// ImGrnOutputModel.class).setParameter("toDate", grnInputFilters.getGrnToDate()).getResultList();
-	// for (ImGrnOutputModel imGrnOutputModel : imGrnOutputList)
-	// System.out.println(imGrnOutputModel);
-	// return imGrnOutputList;
-	// }
+	
 
 }
