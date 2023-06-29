@@ -10,9 +10,9 @@ import main.models.storeModels.inputmodels.IndentId;
 
 public interface InventoryIndentsDAO {
 
-	public boolean saveInventoryIndent(InventoryIndentsList inventoryIndentsList);
-	public List<InventoryIndentsList> getAllIndents() ;
+	public boolean saveInventoryIndent(InventoryIndentsList inventoryIndentsList) throws Exception;
+	public List<InventoryIndentsList> getAllIndents() throws Exception ;
 	
-	public List<InventoryIndentProductListData> getInventoryIndentProductsList(IndentId indentid);
-	public List<FilteredIndent> getfilterIndents(FilterInput filterInput) ;
+	public List<InventoryIndentProductListData> getInventoryIndentProductsList(IndentId indentid) throws Exception;
+	public List<FilteredIndent> getfilterIndents(FilterInput filterInput) throws Exception;
 }

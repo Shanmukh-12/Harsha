@@ -19,15 +19,11 @@ public class ProductsCategoryDAL implements ProductCategoryDAO {
 	
     //Getting Product Category ID,Category Name
 	@Transactional
-	public List<ProductsCategory> getProductCategories() throws ProductsDAOException {
-		try {
+	public List<ProductsCategory> getProductCategories() {
 		List<ProductsCategory> categoryList = entityManager.createQuery("SELECT v FROM ProductsCategory v").getResultList();
 		
 
 		return categoryList;
-		}
-		catch(Exception e) {
-			throw new ProductsDAOException("Error occurred while retrieving CategoryIds", e);
-		}
+	
 	}
 }

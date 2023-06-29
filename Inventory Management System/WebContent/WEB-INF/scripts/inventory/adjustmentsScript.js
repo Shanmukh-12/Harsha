@@ -174,12 +174,10 @@ function validateProductCategory() {
                         $('#productnameid').append(option);
                     });
                 },
-               error: function(xhr, status, error) {
-				   console.log(error);
-                   toastr.error(error);
-                   
-                   
-              }
+               error: function(error) {
+            console.log(error.responseText);
+            toastr.error(error.responseText);
+        }
             });
         });
 

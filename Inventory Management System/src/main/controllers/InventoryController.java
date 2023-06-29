@@ -89,7 +89,7 @@ public class InventoryController {
 	
 // It redirected to the InventoryHome page to the Indents List Page.
 	@PostMapping("/indentsButton")
-	public String getIndentsPage(Model m) {
+	public String getIndentsPage(Model m) throws Exception{
 		m.addAttribute("indents", inventoryIndentsDAO.getAllIndents());
 		return "inventory/indents";
 	}
