@@ -168,8 +168,10 @@ function createGRN() {
 		data: {
 			"jsonData": jsonData
 		},
+		dataType:"json",
 		success: function(page) {
-			alert("created successfully");
+		console.log(page);
+			alert("GRN created Successfully");
 		}
 
 	});

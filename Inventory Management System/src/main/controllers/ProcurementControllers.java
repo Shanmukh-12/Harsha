@@ -1,28 +1,20 @@
 package main.controllers;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class ProcurementControllers {
-	
-	 private static Logger logger = LoggerFactory.getLogger(ProcurementControllers.class);
 
+	private static Logger logger = LoggerFactory.getLogger(ProcurementControllers.class);
 
 	// Returns the HomeProcurement page
 	@GetMapping("/HomeProcurement")
 	public String getIndex() {
 		logger.info("redirecting to procurement home page");
 		return "procurement/HomeProcurement";
-	}
-
-	// Returns the PurchasesList page
-	@GetMapping("/PurchasesList")
-	public String getPurchasesList() {
-		logger.info("redirecting to PurchasesList page");
-		return "procurement/PurchasesList";
 	}
 
 	// Returns the grnlist page
@@ -75,12 +67,6 @@ public class ProcurementControllers {
 	@GetMapping("/prnData")
 	public String prnData() {
 		logger.info("redirecting to PurchaseReturnsList page");
-		return "procurement/PurchaseReturnsList";
-	}
-
-	// Returns the PurchaseReturnsList page
-	@GetMapping("/prnData2")
-	public String prnData2() {
 		return "procurement/PurchaseReturnsList";
 	}
 
