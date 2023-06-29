@@ -25,7 +25,7 @@ import main.models.grnModels.outputModels.ImGrnOutputModel;
 import main.models.productModels.dto.ProductPrice;
 import main.models.productModels.dto.SalePrice;
 import main.models.productModels.entities.ProductStock;
-import main.models.purchaseOrder.entityModels.Im_Purchase_Order_Products;
+import main.models.purchaseOrder.entityModels.PurchaseOrderProducts;
 
 @Component
 public class GrnDAOImpl implements GrnDAO {
@@ -114,9 +114,9 @@ public class GrnDAOImpl implements GrnDAO {
 
 		// Iterate over each product in the list
 		for (GrnInputProductsList product : productsList) {
-			// Query the database to retrieve the corresponding Im_Purchase_Order_Products object
-			Im_Purchase_Order_Products p = (Im_Purchase_Order_Products) entityManager.createQuery(
-					"SELECT s FROM Im_Purchase_Order_Products s WHERE s.purchase_order_id = :purId AND s.product_id = :prodId")
+			// Query the database to retrieve the corresponding PurchaseOrderProducts object
+			PurchaseOrderProducts p = (PurchaseOrderProducts) entityManager.createQuery(
+					"SELECT s FROM PurchaseOrderProducts s WHERE s.purchase_order_id = :purId AND s.product_id = :prodId")
 					.setParameter("purId", grnInputList.getPurchaseOrderId())
 					.setParameter("prodId", product.getProductId()).getSingleResult();
 
