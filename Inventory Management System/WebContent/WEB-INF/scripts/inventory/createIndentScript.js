@@ -15,28 +15,16 @@ $(document).ready(function () {
      	     url :"getProductCategories",
      	     method :"post",
      	   success : function(data) {
-				if (data.indexOf("Error:") === 0) {
-					console.log("msdfnshf");
-				var stringList = data;
-
-        // Access and use the list of strings
-        for (var i = 0; i < stringList.length; i++) {
-			console.log("lkjskjk");
-             var errorMessage = stringList[i].substring(6);
-             toastr.error(errorMessage);
-        }
-			
-            
-            }
-				else{
               $.each(data, function(index, category) {
                   var option = '<option value="' + category.productCategoryId + '">' + category.productCategoryName + '</option>';
                   $('#product-category').append(option);
               });
+              },
+              error: function(xhr, status, error) {
+                   toastr.error(error);
+                   
               }
-             hideBufferingLayer();
               
-          },
      	    	  
      	});	
     	 $.ajax({
@@ -269,5 +257,6 @@ $(document).ready(function () {
      		
      	
      	     }
+     });
      }
     

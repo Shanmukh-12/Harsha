@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import main.dal.products.ProductsDAOException;
 import main.dao.products.ProductsDAO;
 import main.models.grnModels.dto.GrnAmount;
 import main.models.grnModels.inputModels.GrnInputList;
@@ -29,7 +30,13 @@ public class GrnBll {
 	public SalePrice getProductSalePrice(ProductPrice productPrice) {
 		ProductsProductIdInputModel productsProductIdInputModel = new ProductsProductIdInputModel(
 				productPrice.getProductId());
-		ProductProfit productProfit = productsDAO.getProfitPercentage(productsProductIdInputModel);
+		ProductProfit productProfit = null;
+		try {
+			productProfit = productsDAO.getProfitPercentage(productsProductIdInputModel);
+		} catch (ProductsDAOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		double unitPrice = productPrice.getCostPrice() / productPrice.getQuantity();
 
 		double salesPrice = unitPrice + ((unitPrice * productProfit.getProfitPercentage()) / 100);

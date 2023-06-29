@@ -1,15 +1,21 @@
 package main.dal.products;
 
 public class ProductsDAOException extends Exception {
-	
-	private final Throwable originalException;
-
-    public ProductsDAOException(String message, Throwable originalException) {
-        super(message);
-        this.originalException = originalException;
+    // Constructors
+    public ProductsDAOException() {
+        super();
     }
 
-    public Throwable getOriginalException() {
-        return originalException;
+    public ProductsDAOException(String message) {
+        super(message);
+    }
+
+    public ProductsDAOException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public ProductsDAOException(Throwable cause) {
+        super(cause);
     }
 }
+

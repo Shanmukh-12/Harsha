@@ -28,24 +28,34 @@ public class ProductsDAL implements ProductsDAO {
 
     // Getting Product Information Based on Category Id
     @Transactional
-    public List<ProductStockData> getProductsByCategory(CategoryRequest categoryInputModel) {
-            String queryString = "SELECT new main.models.productModels.outputModels.ProductStockData(p.productId,p.productName,ps.batchNo,ps.productStock,p.productReorderLevel,p.productHsnCode,ps.productSalePrice,ps.productMrp,ps.productCost) FROM Products p JOIN  p.productStocks ps  WHERE p.category = :categoryId";
+    public List<ProductStockData> getProductsByCategory(CategoryRequest categoryInputModel)  throws ProductsDAOException{
+    	try {
+            String queryString = "SELECT new main.models.productModels.outputModels.ProductStockData(p.productId,p.productName,ps.batchNo,ps.productStock,p.productReorderLevel,p.productHsnCode,ps.productSalePrice,ps.productMrp,ps.productCost) FROM Products p JOIN  p.productStocks ps  p.category = :categoryId";
             TypedQuery<ProductStockData> query = entityManager.createQuery(queryString, ProductStockData.class);
             query.setParameter("categoryId", categoryInputModel.getCategoryId());
             // Returns the Products Data as a List.
             return query.getResultList();
+    } catch (Exception e) {
+        throw new ProductsDAOException("Failed to retrieve Products By Category Id", e);
+    } 
+
        
     }
 
     // Getting ProductId and Product Name Based on Category Id
     @Transactional
-    public List<ProductIdListOutput> getProductsByCategoryId(CategoryRequest categoryInputModel) {
-
+    public List<ProductIdListOutput> getProductsByCategoryId(CategoryRequest categoryInputModel)  throws ProductsDAOException{
+    	try {
             String queryString = "SELECT new main.models.productModels.outputModels.ProductIdListOutput(productId,productName) FROM Products  WHERE category = :categoryId";
             TypedQuery<ProductIdListOutput> query = entityManager.createQuery(queryString, ProductIdListOutput.class);
             query.setParameter("categoryId", categoryInputModel.getCategoryId());
             // Returns the ProductsID and Products Names as a List.
             return query.getResultList();
+            
+    	 } catch (Exception e) {
+             throw new ProductsDAOException("Failed to retrieve Products By Category Id", e);
+         } 
+
        
     }
 

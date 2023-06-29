@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -49,25 +51,30 @@ public class ProductControllers {
 	}
 	
 	
-//It return productsIds and productNames by taking the categoryId as an input
 	@PostMapping("/getProductsIds")
-    public @ResponseBody List<ProductIdListOutput> getProductsIDs(@ModelAttribute("categoryInputModel") CategoryRequest categoryInputModel, Model model) {
+	public @ResponseBody ResponseEntity<?> getProductsIDs(@ModelAttribute("categoryInputModel") CategoryRequest categoryInputModel, Model model) {
+	    try {
+	        // Call the appropriate method in the service layer
+	        List<ProductStockData> products = productsDAO.getProductsByCategory(categoryInputModel);
+	        // Return a successful response with the retrieved products
+	        return ResponseEntity.ok(products);
+	    } catch (ProductsDAOException ex) {
+	        // Log the exception for debugging or monitoring purposes
+	        ex.printStackTrace();
+	        // Create an appropriate error response entity
+	        ProductsDAOException errorResponse = new ProductsDAOException("Failed to load Products by CategoryId");
+	        // Return an error response entity with an appropriate HTTP status code
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+	    } catch (Exception ex) {
+	        // Log any other unexpected exception for debugging or monitoring purposes
+	        ex.printStackTrace();
+	        // Create a generic error response entity
+	        ProductsDAOException errorResponse = new ProductsDAOException("An error occurred while processing the request");
+	        // Return an error response entity with an appropriate HTTP status code
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+	    }
+	}
 
-        // listing the ProductsIds by category by calling productsDao Interface method.
-        List<ProductIdListOutput> products=null;
-        
-		try {
-			
-			products = productsDAO.getProductsByCategoryId(categoryInputModel);
-			
-		} 
-		catch (ProductsDAOException e) {
-			
-			model.addAttribute("error",e.getMessage());
-		}
-		
-        return products;
-    }
 //It return products Data by taking the categoryId as an input
 	@PostMapping("/getProductStockData")
 	public @ResponseBody List<ProductStockData> getProducts(
