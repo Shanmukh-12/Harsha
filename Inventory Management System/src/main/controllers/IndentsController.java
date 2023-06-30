@@ -30,7 +30,7 @@ public class IndentsController {
 
 //It persist the indents created by the inventory team to the procurement team
 	@PostMapping("/createInventoryIndent")
-	public String createInventoryIndent(String jsonData, Model m) {
+	public String createInventoryIndent(String jsonData, Model m) throws Exception {
 		ObjectMapper objectMapper = new ObjectMapper();
 		ModelMapper modelMapper = new ModelMapper();
 		InventoryIndentsInputList inventoryIndentsInputList = null;
@@ -46,7 +46,7 @@ public class IndentsController {
 		       inventoryIndentsDAO.saveInventoryIndent(inventoryIndentsList);
             }  
         catch(Exception e) {
-	        e.printStackTrace();
+	        
             }
 
 		  return "inventory/createIndent";
@@ -55,7 +55,7 @@ public class IndentsController {
 	
 //It returns the InventoryIndentProductList page by taking IndentId as input
 	@PostMapping("/getInventoryIndentProductsList")
-	public String  getInventoryIndentProductsList(String indentId, Model m) {
+	public String  getInventoryIndentProductsList(String indentId, Model m) throws Exception {
 		ObjectMapper objectMapper = new ObjectMapper();
 		IndentId indentid = null;
 		try {
@@ -79,7 +79,7 @@ public class IndentsController {
 // It returns the InventoryIndentProductListData by taking IndentId as input
 	@GetMapping("/getInventoryIndentProductsListData")
 	@ResponseBody
-	public List<InventoryIndentProductListData>  getInventoryIndentProductsListData(String indentId, Model m) {
+	public List<InventoryIndentProductListData>  getInventoryIndentProductsListData(String indentId, Model m) throws Exception {
 		ObjectMapper objectMapper = new ObjectMapper();
 		IndentId indentid = null;
 		try {
@@ -99,7 +99,7 @@ public class IndentsController {
 //It filters the data according to the FromDate,ToDate and IndentStatus
 	@PostMapping("/filterIndents")
 	@ResponseBody
-	public List<FilteredIndent> filterIndents(String filters) {
+	public List<FilteredIndent> filterIndents(String filters) throws Exception {
 		FilterInput filterInput = null;
 		ObjectMapper objectMapper = new ObjectMapper();
 		objectMapper.registerModule(new JavaTimeModule());

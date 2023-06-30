@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import main.dal.products.ProductsDAOException;
 import main.dao.products.ProductsDAO;
 import main.models.grnModels.dto.GrnAmount;
 import main.models.grnModels.inputModels.GrnInputList;
@@ -33,6 +34,7 @@ public class GrnBll {
 	public SalePrice getProductSalePrice(ProductPrice productPrice) {
 		ProductsProductIdInputModel productsProductIdInputModel = new ProductsProductIdInputModel(
 				productPrice.getProductId());
+
 		logger.info("entered into the getProductSalePrice()");
 		ProductProfit productProfit = productsDAO.getProfitPercentage(productsProductIdInputModel);
 		double unitPrice = productPrice.getCostPrice() / productPrice.getQuantity();

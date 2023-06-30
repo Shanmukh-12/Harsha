@@ -1,5 +1,14 @@
+  function showBufferingLayer() {
+            document.getElementById('buffering-layer').style.display = 'flex';
+        }
+
+        // Hide buffering layer
+        function hideBufferingLayer() {
+            document.getElementById('buffering-layer').style.display = 'none';
+        }
     
     function loadIndentProducts(indentId) {
+		showBufferingLayer();
         var currentPageUrl = window.location.href;
         console.log(indentId);
         var data = { "indentId": indentId };
@@ -12,15 +21,19 @@
             	 $("#modalContent").html(response);
                  $("#productsModal").modal("show");
                  history.pushState(null, null, currentPageUrl);
+                 hideBufferingLayer();
             },
             error: function () {
                 console.log("Failed to load Indents");
+                hideBufferingLayer();
             }
         });
     }
 
         $(document).ready(function () {
+			
             $(".filterButton").click(function () {
+				showBufferingLayer();
                 var indentStatus = $("#indentStatus").val();
                 var fromDate = $("#fromDate").val();
                 var toDate = $("#toDate").val();
@@ -69,9 +82,11 @@
         	    		      $('.container').append(issueBlock);
         	    		    });
         	    		  }
+        	    		   hideBufferingLayer();
         	    		},
                     error: function () {
                         console.log("Failed to apply filters");
+                         hideBufferingLayer();
                     }
                 });
                 
@@ -121,3 +136,5 @@
      
  // Add event listener to the search button
   document.getElementById("searchInput").addEventListener("input", performSearch); 
+  
+  setTimeout(hideBufferingLayer, 3000);

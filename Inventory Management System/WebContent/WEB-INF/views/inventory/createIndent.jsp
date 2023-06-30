@@ -6,8 +6,13 @@
   
   <link rel="stylesheet" href="./inventoryHome/styles/createIndentStyles.css">
   <script src="./inventoryHome/scripts/createIndentScript.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 </head>
 <body>
+<div class="overlay" id="buffering-layer">
+        <div class="spinner"></div>
+ </div>
   <div id="htag">
     <h2 align="center">Create Indent</h2>
   </div>

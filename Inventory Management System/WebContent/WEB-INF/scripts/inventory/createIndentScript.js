@@ -1,7 +1,16 @@
- var addedProductIds = [];
-  var addButtons;
-    $(document).ready(function() {
-    
+ function showBufferingLayer() {
+  document.getElementById('buffering-layer').style.display = 'flex';
+}
+
+function hideBufferingLayer() {
+  document.getElementById('buffering-layer').style.display = 'none';
+}
+
+var addedProductIds = [];
+var addButtons;
+
+$(document).ready(function () {
+ showBufferingLayer();
     	 $.ajax({
      	     url :"getProductCategories",
      	     method :"post",
@@ -10,13 +19,14 @@
                   var option = '<option value="' + category.productCategoryId + '">' + category.productCategoryName + '</option>';
                   $('#product-category').append(option);
               });
-          },
-          error: function() {
-              alert('Error occurred while retrieving categories.');
-          }
+              },
+              error: function(xhr, status, error) {
+                   toastr.error(error);
+                   
+              }
+              
      	    	  
      	});	
-
     	 $.ajax({
     	        url: "getReOrderProductsData",
     	        method: "post",
@@ -43,18 +53,17 @@
 
     	            // Check if the product ID is already added
     	            if (addedProductIds.includes(productId)) {
-    	              alert('This product is already added.');
+    	              toastr.info('This product is already added.');
     	              return;
     	            }
 
     	            addRowToSelectedTable(row);
     	            addedProductIds.push(productId);
     	          });
-
-
+               
     	        },
     	        error: function() {
-    	          alert('Error occurred while retrieving Products by categoryId.');
+    	           toastr.error('Error occurred while retrieving ReOder Products.');
     	        }
     	      });
 
@@ -86,23 +95,24 @@
 
             // Check if the product ID is already added
             if (addedProductIds.includes(productId)) {
-              alert('This product is already added.');
+              toastr.info('This product is already added.');
               return;
             }
 
             addRowToSelectedTable(row);
             addedProductIds.push(productId);
           });
-
+            hideBufferingLayer();
         },
         error: function() {
-          alert('Error occurred while retrieving Products by categoryId.');
+            toastr.error('Error occurred while retrieving categories.');
+          hideBufferingLayer();
         }
       });
       
       
       $("#product-category").change(function(){
-			
+			 showBufferingLayer();
 			
 		   	$.ajax({
 		   	     url :"getProductStockData",
@@ -135,21 +145,24 @@
 
     	            // Check if the product ID is already added
     	            if (addedProductIds.includes(productId)) {
-    	              alert('This product is already added.');
+    	               toastr.info('This product is already added.');
     	              return;
     	            }
 
     	            addRowToSelectedTable(row);
     	            addedProductIds.push(productId);
 		          });
-
+		          hideBufferingLayer();
 		        },
 		        error: function() {
-		            alert('Error occurred while retrieving categories.');
+		            toastr.error('Error occurred while retrieving Products.');
+		            hideBufferingLayer();
 		        
 		   	   }
 		   	    	  
 		   	});
+		   	
+		   	
 			});
       
       
@@ -219,6 +232,7 @@
 // Ajax call to create an Inventory Indent.    
      function createIndent()
      {
+	   showBufferingLayer();
      	var data = getTableData();
      	const jsonData = JSON.stringify(data);
      	$.ajax({
@@ -228,11 +242,21 @@
      		success:function(page)
      		{
      			$('#products-table tbody').empty();
-     			alert('Succesfully created Indents to the Procurement');
-     			 
+     			hideBufferingLayer();
+     			toastr.success("Succesfully Inventory Indent has been Created");
      			
-     		}
+     			
+     		},
+     		error: function(xhr, textStatus, errorThrown) {
+                    var errorResponse = xhr.responseJSON;
+                    if (errorResponse) {
+                      // Append the error message to the specified <div> element
+                        toastr.error(errorResponse.message);
+                    } 
+
+     		
      	
-     	});
+     	     }
+     });
      }
     

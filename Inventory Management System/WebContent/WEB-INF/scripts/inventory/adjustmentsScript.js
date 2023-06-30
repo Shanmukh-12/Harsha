@@ -174,9 +174,10 @@ function validateProductCategory() {
                         $('#productnameid').append(option);
                     });
                 },
-                error: function() {
-                    alert('Error occurred while retrieving products.');
-                }
+               error: function(error) {
+            console.log(error.responseText);
+            toastr.error(error.responseText);
+        }
             });
         });
 
