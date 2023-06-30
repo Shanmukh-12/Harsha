@@ -74,7 +74,7 @@ public class GrnDAOImpl implements GrnDAO {
 
 	@Override
 	@Transactional
-	public void updateStock(GrnInputList grnInputList) {
+	public void updateStock(GrnInputList grnInputList) throws Exception {
 		logger.info("entered into the updateStock");
 		// Get the list of products from the GrnInputList object
 		List<GrnInputProductsList> productsList = grnInputList.getProductsList();
@@ -164,7 +164,6 @@ public class GrnDAOImpl implements GrnDAO {
 		}
 	}
 
-	
 	@Transactional
 	public List<GrnListProductsOutputModel> getGrnProducts(GrnIdInput grnIdInput) {
 		logger.info("Entered into the getGrnProducts ");
@@ -213,8 +212,6 @@ public class GrnDAOImpl implements GrnDAO {
 		return grnProductsList;
 	}
 
-	
-
 	@Transactional
 	public List<ImGrnOutputModel> getGrnListByIdFrom(GrnInputFilters grnInputFilters) {
 		Logger logger = LoggerFactory.getLogger(getClass());
@@ -245,8 +242,6 @@ public class GrnDAOImpl implements GrnDAO {
 		}
 	}
 
-
-
 	@Transactional
 	public List<ImGrnOutputModel> getGrnListById(GrnInputFilters grnInputFilters) {
 		try {
@@ -273,8 +268,6 @@ public class GrnDAOImpl implements GrnDAO {
 			return Collections.emptyList();
 		}
 	}
-
-	
 
 	@Transactional
 	public List<ImGrnOutputModel> getGrnListByFrom(GrnInputFilters grnInputFilters) {
@@ -304,7 +297,6 @@ public class GrnDAOImpl implements GrnDAO {
 		}
 	}
 
-	
 	@Transactional
 	public List<ImGrnOutputModel> getGrnListByTo(GrnInputFilters grnInputFilters) {
 		Logger logger = LoggerFactory.getLogger(getClass());
@@ -332,7 +324,5 @@ public class GrnDAOImpl implements GrnDAO {
 			return Collections.emptyList();
 		}
 	}
-
-	
 
 }

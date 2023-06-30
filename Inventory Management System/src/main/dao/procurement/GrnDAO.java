@@ -22,8 +22,9 @@ public interface GrnDAO {
 	 * Updates the stock based on the received products in the GRN.
 	 *
 	 * @param grnInputList The GRN input list containing product information.
+	 * @throws Exception
 	 */
-	public void updateStock(GrnInputList grnInputList);
+	public void updateStock(GrnInputList grnInputList) throws Exception;
 
 	/**
 	 * Updates the purchase order based on the received products in the GRN.

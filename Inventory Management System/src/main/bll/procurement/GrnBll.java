@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import main.dal.products.ProductsDAOException;
 import main.dao.products.ProductsDAO;
 import main.models.grnModels.dto.GrnAmount;
 import main.models.grnModels.inputModels.GrnInputList;
@@ -30,8 +29,9 @@ public class GrnBll {
 	 *
 	 * @param productPrice The product price information.
 	 * @return The calculated sale price.
+	 * @throws Exception
 	 */
-	public SalePrice getProductSalePrice(ProductPrice productPrice) {
+	public SalePrice getProductSalePrice(ProductPrice productPrice) throws Exception {
 		ProductsProductIdInputModel productsProductIdInputModel = new ProductsProductIdInputModel(
 				productPrice.getProductId());
 
