@@ -5,69 +5,8 @@
 	    var storeIssueStatus = document.getElementById("indent-status-dropdown").value;
 	    var fromDate = document.getElementById("indent-date-dropdown-from").value;
 	    var toDate = document.getElementById("indent-date-dropdown-to").value;
-	    var url = null;
-		if(storeId)
-		{
-			if(storeIssueStatus)
-			{
-				if(fromDate)
-				{
-					url="getIssuesFilterDataIdStatusFrom";				
-				}
-				else
-				{
-					url="getIssuesFilterDataIdStatus";
-				}
-			}
-			else
-			{
-				if(fromDate)
-				{
-					url="getIssuesFilterDataIdFrom";
-				}
-				else
-				{
-					url="getIssuesFilterDataId";
-				}
-				
-			}
-		}
-		else
-		{
-			if(storeIssueStatus)
-			{
-				if(fromDate)
-				{
-					url="getIssuesFilterDataStatusFrom";				
-				}
-				else
-				{
-					url="getIssuesFilterDataStatus";
-				}
-			}
-			else
-			{
-				if(fromDate)
-				{
-					url="getIssuesFilterDataFrom";
-				}
-				else
-				{
-					console.log("TO only");
-					url="getIssuesFilterDataTo";
-				}
-				
-			}
-			
-		}
-		console.log(storeId);
-		console.log(storeIssueStatus);
-		console.log(fromDate);
-		console.log(toDate);
-		console.log(url);
 	    $.ajax({
-			
-	    	url:url,
+	    	url:"getIssuesFilterData",
 	    	method:"POST",
 	    	dataType:"json",
 	    	data:{

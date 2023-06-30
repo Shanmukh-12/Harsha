@@ -34,11 +34,9 @@ public class ProductControllers {
 	@Autowired
 	ProductCategoryDAO productCategoryDAO;
 
-	
-//It returns the Product Categories
+	// It returns the Product Categories
 	@PostMapping("/getProductCategories")
-	public @ResponseBody List<ProductsCategory> getProductCategories(Model model) {
-		
+	public @ResponseBody List<ProductsCategory> getProductCategories(Model model) {		
 		 // listing the CategoryIds by category by calling productsDao Interface method.
 		List<ProductsCategory> productCategory = null;
 		try {
@@ -68,23 +66,33 @@ public class ProductControllers {
 			@ModelAttribute("categoryInputModel") CategoryRequest categoryInputModel, Model model) throws Exception{
 
 
+		ObjectMapper objectMapper = new ObjectMapper();
+		CategoryRequest categoryRequest = null;
+		try {
+			// Reading the input JSon into the Input CategoryRequest Class
+			categoryRequest = objectMapper.readValue(categoryId, CategoryRequest.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	 // listing the Products Details by category by calling productsDao Interface method.
 		List<ProductStockData> products=null;
 
 			
 			products = productsDAO.getProductsByCategory(categoryInputModel);
 
+
 		return products;
 	}
-	
-//It return product BatchNos by taking the productId as an input
+
+	// It return product BatchNos by taking the productId as an input
 	@PostMapping("/getProductBatchNos")
 	public @ResponseBody List<ProductStockData> getProductBatchesNos(
 			@ModelAttribute("productsProductIdInputModel") ProductsProductIdInputModel productsProductIdInputModel,
 			Model model)  throws Exception {
 
 		int selectedProductId = productsProductIdInputModel.getProductId();
-		
+
 		// listing the Product BatchNos by category by calling productsDao Interface method.
 		List<ProductStockData> batchesNos =null;
 		
@@ -96,10 +104,11 @@ public class ProductControllers {
 			
 			model.addAttribute("error",e.getMessage());
 		}
+
 		return batchesNos;
 	}
 
-//It return products Data by taking the categoryId as an input
+	// It return products Data by taking the categoryId as an input
 	@PostMapping("/getProductQuantityOrPrice")
 	public @ResponseBody ProductStockData getProductQuantityOrPrice(
 			@ModelAttribute("productsProductIdandBatchNoInputModel") ProductsProductIdandBatchNoInputModel productsProductIdandBatchNoInputModel,
@@ -119,7 +128,7 @@ public class ProductControllers {
 		return quantityOrPrice;
 	}
 
-//It returns List of Re-order Products 
+	// It returns List of Re-order Products
 	@PostMapping("/getReOrderProductsData")
 	public @ResponseBody List<ProductsReOrderList> getReOrderLevelProducts(Model model)  throws Exception {
 		
@@ -137,21 +146,19 @@ public class ProductControllers {
 
 		return reOrderlist;
 	}
-	
-//It persist the category created by procurement team
+
+	// It persist the category created by procurement team
 	@PostMapping("/createCategory")
 	@ResponseBody
 	public void saveCategory(@ModelAttribute("categoryInputModel") CategoryRequest2 categoryInputModel)  throws Exception {
 		ModelMapper modelMapper = new ModelMapper();
-
 		//Mapping the input model to the Entity Model by using Model Mapping.
 		ProductsCategory productsCategory = modelMapper.map(categoryInputModel, ProductsCategory.class);
 		productsDAO.saveCategory(productsCategory);
 
 	}
-	
-	
-//It persist the HSN created by the procurement team
+
+	// It persist the HSN created by the procurement team
 	@PostMapping("/createHSN")
 	
 	public void saveHSN(@ModelAttribute("hsnInputModel") HSNInputModel hsnInputModel)  throws Exception{
@@ -162,7 +169,6 @@ public class ProductControllers {
 		HSNEntityModel hsnEntityModel = modelMapper.map(hsnInputModel, HSNEntityModel.class);
 		
 		productsDAO.saveHSN(hsnEntityModel);
-
 
 
 	}

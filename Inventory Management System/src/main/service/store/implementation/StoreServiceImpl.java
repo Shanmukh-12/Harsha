@@ -1,70 +1,31 @@
-package main.controllers;
+package main.service.store.implementation;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.springframework.stereotype.Component;
 
 import main.dao.storeIndents.StoreIndentsDao;
-import main.models.storeModels.entities.Store;
+import main.dao.storeReturns.StoreReturnsDao;
 import main.models.storeModels.entities.StoreIndentData;
 import main.models.storeModels.inputmodels.StoreFilters;
-import main.models.storeModels.outputmodels.StoreIds;
+import main.models.storeReturnsModels.outputModels.StoreReturnsDataOutput;
+import main.service.store.interfaces.StoreService;
 
-@Controller
-public class StoreDataContoroller {
+@Component
+public class StoreServiceImpl implements StoreService {
 
 	@Autowired
 	// Autowired dependency for StoreIndentsDao
 	StoreIndentsDao storeIndentsDao;
 
 	@Autowired
-	// Autowired dependency for ModelMapper
-	ModelMapper modelMapper;
+	// Autowired dependency for StoreReturnsDao
+	StoreReturnsDao storeReturnsDao;
 
-	// Creating an instance of ObjectMapper
-	ObjectMapper objectMapper = new ObjectMapper();
-
-	@PostMapping("/getStoreIds")
-	// Listing the Store ids
-	public @ResponseBody List<StoreIds> getStoreIds(Model m) {
-
-		// Fetching list of stores from StoreIndentsDao
-		List<Store> storeIds = storeIndentsDao.getStoreIds();
-		List<StoreIds> storeIdsList = new ArrayList();
-
-		// Converting each Store entity object to output model
-		for (Store store : storeIds)
-			storeIdsList.add(modelMapper.map(store, StoreIds.class));
-
-		// Returning the list of StoreIds
-		return storeIdsList;
-	}
-
-	@PostMapping("/getIndentsByFilterData")
-	public @ResponseBody List<StoreIndentData> getIndentsByFilterData(String filters, Model m) {
-		StoreFilters storeFilters = null;
-
-		// Registering JavaTimeModule with the objectMapper
-		objectMapper.registerModule(new JavaTimeModule());
-
-		try {
-			// Deserializing filters string to StoreFilters object
-			storeFilters = objectMapper.readValue(filters, StoreFilters.class);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
+	@Override
+	public List<StoreIndentData> getStoreIndetnsByFilterData(StoreFilters storeFilters) {
 		List<StoreIndentData> storeIndents = null;
-
 		if (storeFilters.getStoreId() != 0) {
 			if (storeFilters.getIndentStatus().length() > 0) {
 				if (storeFilters.getFromDate() != null) {
@@ -102,8 +63,31 @@ public class StoreDataContoroller {
 				}
 			}
 		}
-
-		// Returning the list of StoreIndentData
 		return storeIndents;
 	}
+
+	@Override
+	public List<StoreReturnsDataOutput> getStoreReturnsByFilterData(StoreFilters storeFilters) {
+		List<StoreReturnsDataOutput> storeReturnsData = null;
+
+		if (storeFilters.getStoreId() != 0) {
+			if (storeFilters.getFromDate() != null) {
+				// Fetching store returns data based on storeId, toDate and fromDate
+				storeReturnsData = storeReturnsDao.getStoreReturnsFilterDataIdFrom(storeFilters);
+			} else {
+				// Fetching store returns data based on storeId and toDate
+				storeReturnsData = storeReturnsDao.getStoreReturnsFilterDataId(storeFilters);
+			}
+		} else {
+			if (storeFilters.getFromDate() != null) {
+				// Fetching store returns data based on fromDate and toDate
+				storeReturnsData = storeReturnsDao.getStoreReturnsFilterDataFrom(storeFilters);
+			} else {
+				// Fetching store returns data based on toDate only
+				storeReturnsData = storeReturnsDao.getStoreReturnsFilterDataTo(storeFilters);
+			}
+		}
+		return storeReturnsData;
+	}
+
 }

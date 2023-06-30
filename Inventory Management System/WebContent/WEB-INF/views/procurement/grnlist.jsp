@@ -1,5 +1,5 @@
 <head>
-    <link rel="stylesheet" href="./HomeProcurement/styles/grnListStyles.css">
+<link rel="stylesheet" href="./HomeProcurement/styles/grnListStyles.css">
 </head>
 <script src="./HomeProcurement/scripts/grnListScript.js"></script>
 <!-- Include jQuery library -->
@@ -7,33 +7,35 @@
 
 <!-- Include Bootstrap CSS and JS -->
 <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
- --><script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+ -->
+<script
+	src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 
 
 <h1 class="text-center mb-4">GRN's Data</h1>
-<div class="grnClass2">
 
-	<label>Select VendorID:</label> <select id="vendorId">
-		<option value="">Select Vendor</option>
-		<option>20001</option>
-		<option>20002</option>
-		<option>20003</option>
-	</select> <label>GRN Cost</label> <select id="cost">
-		<option value="">Select Cost</option>
-		<option>2000000</option>
-		<option>2000001</option>
-		<option>2000002</option>
-	</select>
+<form onsubmit="applyFilter(); return false">
+<div class="grnFilters">
+
+	<div>
+		<label>Select VendorID:</label>
+		<select id="vendorId">
+			<option>Select Vendor Id</option>
+		</select><br><br>
+	</div>
+	<div class="grnDate">
+		<label>Received From Date:</label> <input type="date" id="fromDate">
+		<label>Received To Date:</label> <input type="date" id="toDate"><br><br>
+	</div>
+	<div>
+	<input type="submit" value="filter" style="color: white; background-color: green;">
+	<input type="reset" style="color: white; background-color: green;">
+	</div>
 </div>
-<div class="grnClass1">
-	<label>Received From Date:</label> <input type="date" id="fromDate">
-	<label>Received To Date:</label> <input type="date" id="toDate">
-	<input type="button" value="filter" onclick="applyFilter()"
-		style="color: white; background-color: green;"> <input
-		type="button" value="clear" onclick="clearSelection()"
-		style="color: white; background-color: green;">
-</div>
+</form>
+
+
 <form method="Get">
 	<div class="container">
 		<div class="issues-block">

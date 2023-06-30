@@ -3,6 +3,8 @@ package main.controllers;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -24,6 +26,7 @@ import main.models.grnModels.inputModels.GrnInputFilters;
 import main.models.grnModels.inputModels.GrnInputList;
 import main.models.grnModels.outputModels.GrnListProductsOutputModel;
 import main.models.grnModels.outputModels.ImGrnOutputModel;
+import main.service.procurement.interfaces.GrnService;
 
 @Controller
 public class GrnController {
@@ -32,14 +35,21 @@ public class GrnController {
 	GrnDAO grndao;
 
 	@Autowired
+	GrnService grnService;
+
+	@Autowired
 	ModelMapper modelMapper;
 
 	@Autowired
 	GrnBll grnBll;
 
+	// creating the object for the logger
+	private static final Logger logger = LoggerFactory.getLogger(GrnController.class);
+
 	@PostMapping("/makeGrn")
 	// It takes GRN data as input and updates it in the GRN table and also the stock table.
-	public void makeGrn(String jsonData) {
+	public @ResponseBody String makeGrn(String jsonData) {
+		logger.info("Received request to make GRN");
 
 		// Create an object mapper to deserialize JSON
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -49,8 +59,11 @@ public class GrnController {
 
 			// Deserialize the JSON data into a GrnInputList object
 			grnInputList = objectMapper.readValue(jsonData, GrnInputList.class);
+			logger.info("jsonData is mapped to the grnInputList");
 
 		} catch (JsonProcessingException e) {
+
+			logger.error("Error occurred while parsing JSON data: {}", e.getMessage());
 
 			// Handle any JSON processing exceptions and print the stack trace
 			e.printStackTrace();
@@ -73,16 +86,25 @@ public class GrnController {
 
 			// Update the purchase order using the GrnDAO
 			grndao.updatePurchaseOrder(grnInputList);
+
+			logger.info("GRN successfully created and updated in the database");
+
 		} catch (Exception e) {
 			// Handle any exceptions that occur during the database operations and print the stack trace
 			e.printStackTrace();
+			logger.error("Error occurred while processing GRN: {}", e.getMessage());
+
 		}
+		logger.info("completion of makeGrn method execution!");
+		return "Success";
 	}
 
 	// It takes GRN id as input and returns list of products corresponing to that GRN id
 	@RequestMapping(value = "/getGrnProducts", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public String getGrnProducts(GrnIdInput grnIdInput) {
+		logger.info("Received request to get GRN products");
+
 		try {
 			// Retrieve the list of GrnListProductsOutputModel objects from the GrnDAO
 			List<GrnListProductsOutputModel> productsList = grndao.getGrnProducts(grnIdInput);
@@ -94,40 +116,59 @@ public class GrnController {
 			// Convert the list of GrnListProductsOutputModel objects to JSON string
 			String jsonData = objectMapper.writeValueAsString(productsList);
 
+			logger.info("GRN products successfully retrieved");
+			logger.info("completed the execution of getGrnProducts method!");
+
 			// Return the JSON data as the response
 			return jsonData;
 
 		} catch (JsonProcessingException e) {
+
+			logger.error("Error occurred while processing GRN products: {}", e.getMessage());
 			// Handle the JsonProcessingException and print the stack trace
 			e.printStackTrace();
 			// Return an error message or appropriate response
 			return "Error occurred while processing JSON data";
 		}
+
 	}
 
 	@RequestMapping(value = "/getGrnList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public String getGrnList(GrnInputFilters grnInputFilter) {
+	public String getGrnList(String filters) {
+
+		logger.info("Received request to get GRN list");
+
+		ObjectMapper objectMapper = new ObjectMapper();
+		objectMapper.registerModule(new JavaTimeModule());
+
+		GrnInputFilters grnInputFilter = null;
 		try {
+			// Deserializing filters string to StoreFilters object
+			grnInputFilter = objectMapper.readValue(filters, GrnInputFilters.class);
+		} catch (Exception e) {
+			logger.error("Error occurred while parsing filters JSON data: {}", e.getMessage());
 
-			// Retrieve the list of ImGrnOutputModel objects from the GrnDAO based on the input filter
-			List<ImGrnOutputModel> l = grndao.getGrnList(grnInputFilter);
-
-			// Create an object mapper and register the JavaTimeModule for date/time serialization/deserialization
-			ObjectMapper objectMapper = new ObjectMapper();
-			objectMapper.registerModule(new JavaTimeModule());
-
-			// Convert the list of ImGrnOutputModel objects to JSON string
-			String jsonData = objectMapper.writeValueAsString(l);
-
-			// Return the JSON data as the response
-			return jsonData;
-		} catch (JsonProcessingException e) {
-			// Handle the JsonProcessingException and print the stack trace
 			e.printStackTrace();
-			// Return an error message or appropriate response
-			return "Error occurred while processing JSON data";
 		}
+
+		// Retrieve the list of ImGrnOutputModel objects from the GrnDAO based on the input filter
+		List<ImGrnOutputModel> l = grnService.getGrnList(grnInputFilter);
+
+		// Convert the list of ImGrnOutputModel objects to JSON string
+		String jsonData = null;
+		try {
+			jsonData = objectMapper.writeValueAsString(l);
+		} catch (JsonProcessingException e) {
+			logger.error("Error occurred while processing GRN list: {}", e.getMessage());
+
+			e.printStackTrace();
+		}
+
+		logger.info("GRN list successfully retrieved");
+
+		// Return the JSON data as the response
+		return jsonData;
 	}
 
 }

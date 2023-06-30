@@ -15,12 +15,16 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import main.dao.storeReturns.StoreReturnsDao;
 import main.models.storeModels.inputmodels.StoreFilters;
 import main.models.storeReturnsModels.outputModels.StoreReturnsDataOutput;
+import main.service.store.interfaces.StoreService;
 
 @Controller
 public class StoreReturnDataController {
 
 	@Autowired
 	StoreReturnsDao storeReturnsDao; // Autowired dependency for StoreReturnsDao
+
+	@Autowired
+	StoreService storeService;
 
 	@Autowired
 	ModelMapper modelMapper; // Autowired dependency for ModelMapper
@@ -41,25 +45,8 @@ public class StoreReturnDataController {
 			e.printStackTrace();
 		}
 
-		List<StoreReturnsDataOutput> storeReturnsData = null;
-
-		if (storeFilters.getStoreId() != 0) {
-			if (storeFilters.getFromDate() != null) {
-				// Fetching store returns data based on storeId, toDate and fromDate
-				storeReturnsData = storeReturnsDao.getStoreReturnsFilterDataIdFrom(storeFilters);
-			} else {
-				// Fetching store returns data based on storeId and toDate
-				storeReturnsData = storeReturnsDao.getStoreReturnsFilterDataId(storeFilters);
-			}
-		} else {
-			if (storeFilters.getFromDate() != null) {
-				// Fetching store returns data based on fromDate and toDate
-				storeReturnsData = storeReturnsDao.getStoreReturnsFilterDataFrom(storeFilters);
-			} else {
-				// Fetching store returns data based on toDate only
-				storeReturnsData = storeReturnsDao.getStoreReturnsFilterDataTo(storeFilters);
-			}
-		}
+		// Getting the store return data based on the input filters
+		List<StoreReturnsDataOutput> storeReturnsData = storeService.getStoreReturnsByFilterData(storeFilters);
 		return storeReturnsData; // Returning the store returns data
 	}
 }

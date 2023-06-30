@@ -81,8 +81,6 @@ function Myfunction(containerurl) {
 
 					}
 					tr.append(td1);
-
-
 				}
 
 				table.append(tr);
